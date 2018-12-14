@@ -12,7 +12,7 @@ function! s:MinTreeOpen(path)
   setlocal nomodifiable
   setlocal buftype=nofile noswapfile
   setlocal foldcolumn=0 nonumber
-  setlocal foldtext=substitute(getline(v:foldstart)[5:],'▾','▸','')
+  setlocal foldtext=substitute(getline(v:foldstart)[5:],'▾','▸','').'\ \ [children:\ '.(v:foldend-v:foldstart).']'
   setlocal nowrap nolist virtualedit=all sidescrolloff=0
   augroup HideMetaColumns
     autocmd!
