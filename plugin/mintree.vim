@@ -32,11 +32,12 @@ endfunction
 function! s:OpenFolder(line)
   let [indent, parent] = s:GetSelectedItem(a:line)
   let children = split(system('ls -A '.parent.' | sort -f'), '\n')
-  let prefix = printf("%02d   %s",indent+1, repeat(' ', indent*2))
+  let prefix = printf('%02d   %s',indent+1, repeat(' ', indent*2))
   call map(children, {idx,val -> prefix.(isdirectory(parent.'/'.val) ? '▸ ': '  ').val})
   " echomsg 'indent: ' .indent.'   parent: '.parent.'    children:'.string(children)
   setlocal modifiable
   call append(a:line, children)
+  execute a:line.'s/▸/▾/e'
   setlocal nomodifiable
 endfunction
 
