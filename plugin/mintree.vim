@@ -19,7 +19,14 @@ function! s:MinTreeOpen(path)
     autocmd CursorMoved =MinTree= if 1+virtcol('.')-wincol() <= 5 | execute 'normal! 05zl' | endif
   augroup END
 
-  nnoremap <buffer> o :call <SID>OpenFolder(line('.'))<CR>
+  nnoremap <buffer> o :call <SID>DoAction('o', line('.'))<CR>
+endfunction
+
+function! s:DoAction(action, line)
+    if a:action == 'o'
+        call s:OpenFolder(a:line)
+        " other 'o' actions: close folder, open file
+    endif
 endfunction
 
 function! s:OpenFolder(line)
