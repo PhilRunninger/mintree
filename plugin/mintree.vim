@@ -10,10 +10,9 @@ function! s:MinTreeOpen(path)
     call setline(1, '00   '.fnamemodify(a:path, ':p'))
     call s:OpenFolder(1)
 
-    setlocal nomodifiable
-    setlocal buftype=nofile nowrap nonumber nolist noswapfile
-    setlocal foldcolumn=0
-    setlocal foldtext=substitute(getline(v:foldstart)[5:],'▾','▸','').'\ \ [children:\ '.(v:foldend-v:foldstart).']'
+    setlocal nomodifiable buftype=nofile noswapfile
+    setlocal nowrap nonumber nolist
+    setlocal foldcolumn=0 foldtext=substitute(getline(v:foldstart)[5:],'▾','▸','').'\ \ [children:\ '.(v:foldend-v:foldstart).']'
 
     nnoremap <buffer> o :call <SID>DoAction('o', line('.'))<CR>
     nnoremap <buffer> <CR> :call <SID>DoAction('o', line('.'))<CR>
@@ -21,8 +20,10 @@ endfunction
 
 function! s:DoAction(action, line)
     if a:action == 'o'
-        call s:OpenFolder(a:line)
-        " other 'o' actions: close folder, open file
+        if getline(a:line) =~ '▸'
+            call s:OpenFolder(a:line)
+        endif
+        " other 'o' actions: ▾ close folder, open file
     endif
 endfunction
 
