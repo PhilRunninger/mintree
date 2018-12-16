@@ -2,6 +2,10 @@ let s:dirArrows = '▾▸'
 exec 'syn match MinTreeArrows #['.s:dirArrows.']\ze .*# containedin=MinTreeDir'
 exec 'syn match MinTreeDir #['.s:dirArrows.'].*#'
 
+syn match MinTreeMeta #^.\{5\}# conceal containedin=ALL
+setlocal conceallevel=3 concealcursor=nvic
+
+
 hi def link MinTreeDir Directory
 hi def link MinTreeArrows LineNr
 " hi def link Folded Directory
