@@ -3,6 +3,7 @@ command! -n=? -complete=dir MinTreeOpen :call <SID>MinTreeOpen('<args>')
 function! s:MinTreeOpen(path)
   let s:min_tree_buffer = bufnr('=MinTree=', 1)
   execute 'silent buffer ' . s:min_tree_buffer
+  set ft=mintree
   setlocal modifiable
   execute '%delete'
 
@@ -20,6 +21,7 @@ function! s:MinTreeOpen(path)
   augroup END
 
   nnoremap <buffer> o :call <SID>DoAction('o', line('.'))<CR>
+  nnoremap <buffer> <CR> :call <SID>DoAction('o', line('.'))<CR>
 endfunction
 
 function! s:DoAction(action, line)
