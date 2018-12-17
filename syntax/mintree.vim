@@ -8,7 +8,7 @@ setlocal conceallevel=3 concealcursor=nvic
 
 hi def link MinTreeDir Directory
 hi def link MinTreeArrows LineNr
-" hi def link Folded Directory
+hi! def link Folded Directory
 
 "let s:tree_up_dir_line = '.. (up a dir)'
 "syn match NERDTreeIgnore #\~#
