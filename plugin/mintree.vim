@@ -44,8 +44,7 @@ function! s:GetChildren(line)
     let parent = s:FullPath(a:line)
     let children = split(system('ls '.fnameescape(parent).' | sort -f'), '\n')
     let prefix = printf('%02d   %s',indent+1, repeat(' ', indent*2))
-    call map(children, {idx,val -> prefix.(isdirectory(parent.'/'.val) ? '▸ ': '  ').val})
-    " echomsg 'indent: ' .indent.'   parent: '.parent.'    children:'.string(children)
+    call map(children, {idx,val -> prefix.(isdirectory(parent.'/'.val) ? '▸ ': '  ').val.(isdirectory(parent.'/'.val) ? '/' : ''  )})
     setlocal modifiable
     call append(a:line, children)
     call setline(a:line, substitute(getline(a:line),'▸','▾',''))
@@ -73,7 +72,7 @@ function! s:FullPath(line)
         let indent -= 1
         call search(printf('^%02d', indent),'bW')
         let parent = strcharpart(getline('.'),5 + 2*indent)
-        let file = parent . '/' . file
+        let file = parent . file
     endwhile
     call setpos('.', pos)
     return file
