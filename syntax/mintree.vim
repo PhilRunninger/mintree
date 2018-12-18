@@ -1,14 +1,14 @@
-let s:dirArrows = '▾▸'
-exec 'syn match MinTreeArrows #['.s:dirArrows.']\ze .*# containedin=MinTreeDir'
-exec 'syn match MinTreeDir #['.s:dirArrows.'].*#'
-
+syn match MinTreeArrows #[▾▸]\ze .*# containedin=MinTreeDir
+syn match MinTreeDir #[▾▸].*#
 syn match MinTreeMeta #^.\{5\}# conceal containedin=ALL
-setlocal conceallevel=3 concealcursor=nvic
+syn match MinTreeRoot #^.\{5\}/.*$#
 
-
+hi def link MinTreeRoot Statement
 hi def link MinTreeDir Directory
 hi def link MinTreeArrows LineNr
 hi! def link Folded Directory
+
+setlocal conceallevel=3 concealcursor=nvic
 
 "let s:tree_up_dir_line = '.. (up a dir)'
 "syn match NERDTreeIgnore #\~#
