@@ -18,17 +18,11 @@ function! s:MinTreeOpen(path)
     call setline(1, '00   '.s:root)
     call s:GetChildren(1)
 
-    setlocal nomodifiable
-    setlocal buftype=nofile noswapfile
-    setlocal nowrap nonumber nolist
-    setlocal foldmethod=expr foldexpr=<SID>MyFoldLevel(v:lnum)
-    setlocal foldcolumn=0 foldtext=substitute(getline(v:foldstart)[5:],'▾','▸','').'\ \ [children:\ '.(v:foldend-v:foldstart).']'
-
     nnoremap <buffer> o :call <SID>ActivateNode('o', line('.'))<CR>
     nnoremap <buffer> s :call <SID>OpenFile('wincmd s', line('.'))<CR>
     nnoremap <buffer> v :call <SID>OpenFile('wincmd v', line('.'))<CR>
-    nnoremap <buffer> u :call <SID>MinTreeOpen(simplify(<SID>FullPath(1).'..'))<CR>
-    nnoremap <buffer> C :call <SID>MinTreeOpen(simplify(<SID>FullPath(line('.'))))<CR>
+    nnoremap <buffer> u :call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>
+    nnoremap <buffer> C :call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>
     nnoremap <buffer> q :buffer #<CR>
 endfunction
 
@@ -45,7 +39,7 @@ function! s:ActivateNode(action, line)
 endfunction
 
 function! s:OpenFile(windowCmd, line)
-    let path = s:FullPath(a:line)
+    let path = mintree#fullPath(a:line)
     if path !~ '\/$'
         execute 'buffer #'
         execute a:windowCmd
@@ -54,11 +48,11 @@ function! s:OpenFile(windowCmd, line)
 endfunction
 
 function! s:GetChildren(line)
-    let indent = s:Indent(a:line)
-    let parent = s:FullPath(a:line)
+    let indent = mintree#indent(a:line)
+    let parent = mintree#fullPath(a:line)
     let children = split(system('ls '.fnameescape(parent).' | sort -f'), '\n')
     let prefix = printf('%02d   %s',indent+1, repeat(' ', indent*2))
-    call map(children, {idx,val -> prefix.(isdirectory(parent.'/'.val) ? '▸ ': '  ').val.(isdirectory(parent.'/'.val) ? '/' : ''  )})
+    call map(children, {idx,val -> printf((isdirectory(parent.'/'.val) ? '%s▸ %s/': '%s  %s'), prefix, val)})
     setlocal modifiable
     call append(a:line, children)
     call setline(a:line, substitute(getline(a:line),'▸','▾',''))
@@ -73,42 +67,3 @@ function! s:ToggleFolder(line)
     execute 'normal! za'
 endfunction
 
-function! s:Indent(line)
-    let file = getline(a:line)
-    return str2nr(file[0:1])
-endfunction
-
-function! s:FullPath(line)
-    let pos = getpos('.')
-    let indent = s:Indent(a:line)
-    let file = strcharpart(getline(a:line),5 + 2*indent)
-    while indent > 0
-        let indent -= 1
-        call search(printf('^%02d', indent),'bW')
-        let parent = strcharpart(getline('.'),5 + 2*indent)
-        let file = parent . file
-    endwhile
-    call setpos('.', pos)
-    return file
-endfunction
-
-function! s:MyFoldLevel(lnum)
-    let indent1 = s:Indent(a:lnum)
-    if a:lnum == line('$')
-        let result = ['<', indent1-1]
-    else
-        let indent2 = s:Indent(a:lnum+1)
-        if indent1 < indent2
-            let result = ['>', indent2-1]
-        elseif indent1 > indent2
-            let result = ['<', indent1-1]
-        else
-            let result = ['', indent1-1]
-        endif
-    endif
-    if result[1] == 0
-        return '0'
-    else
-        return join(result, '')
-    endif
-endfunction
