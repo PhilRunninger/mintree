@@ -25,6 +25,8 @@ function! s:MinTreeOpen(path)
     setlocal foldcolumn=0 foldtext=substitute(getline(v:foldstart)[5:],'▾','▸','').'\ \ [children:\ '.(v:foldend-v:foldstart).']'
 
     nnoremap <buffer> o :call <SID>ActivateNode('o', line('.'))<CR>
+    nnoremap <buffer> s :call <SID>OpenFile('wincmd s', line('.'))<CR>
+    nnoremap <buffer> v :call <SID>OpenFile('wincmd v', line('.'))<CR>
 endfunction
 
 function! s:ActivateNode(action, line)
@@ -33,12 +35,21 @@ function! s:ActivateNode(action, line)
             call s:GetChildren(a:line)
         elseif getline(a:line) =~ '▾'
             call s:ToggleFolder(a:line)
+        else
+            call s:OpenFile('', a:line)
         endif
-        " other 'o' actions: ▾ close folder, open file
     endif
 endfunction
 
-function! s:OpenFolder(line)
+function! s:OpenFile(windowCmd, line)
+    let path = s:FullPath(a:line)
+    if path !~ '\/$'
+        execute 'buffer #'
+        execute a:windowCmd
+        execute 'edit '.path
+    endif
+endfunction
+
 function! s:GetChildren(line)
     let indent = s:Indent(a:line)
     let parent = s:FullPath(a:line)
