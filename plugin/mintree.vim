@@ -16,11 +16,10 @@ function! s:MinTreeOpen(path)
     setlocal foldmethod=expr foldexpr=<SID>MyFoldLevel(v:lnum)
     setlocal foldcolumn=0 foldtext=substitute(getline(v:foldstart)[5:],'▾','▸','').'\ \ [children:\ '.(v:foldend-v:foldstart).']'
 
-    nnoremap <buffer> o :call <SID>DoAction('o', line('.'))<CR>
-    nnoremap <buffer> <CR> :call <SID>DoAction('o', line('.'))<CR>
+    nnoremap <buffer> o :call <SID>ActivateNode('o', line('.'))<CR>
 endfunction
 
-function! s:DoAction(action, line)
+function! s:ActivateNode(action, line)
     if a:action == 'o'
         if getline(a:line) =~ '▸'
             call s:OpenFolder(a:line)
