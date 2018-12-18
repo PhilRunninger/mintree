@@ -1,14 +1,22 @@
-command! -n=? -complete=dir MinTreeOpen :call <SID>MinTreeOpen('<args>')
+command! -n=? -complete=dir MinTree :call <SID>MinTree('<args>')
+
+function! s:MinTree(path)
+    if bufexists('=MinTree=') && (empty(a:path) || simplify(fnamemodify(a:path, ':p')) == s:root)
+        execute 'buffer =MinTree='
+    else
+        call s:MinTreeOpen(a:path)
+    endif
+endfunction
 
 function! s:MinTreeOpen(path)
-    let s:min_tree_buffer = bufnr('=MinTree=', 1)
-    execute 'silent buffer ' . s:min_tree_buffer
+    execute 'silent buffer ' . bufnr('=MinTree=', 1)
     set ft=mintree
     setlocal modifiable
     execute '%delete'
 
-    call setline(1, '00   '.fnamemodify(a:path, ':p'))
-    call s:OpenFolder(1)
+    let s:root = simplify(fnamemodify(a:path, ':p'))
+    call setline(1, '00   '.s:root)
+    call s:GetChildren(1)
 
     setlocal nomodifiable
     setlocal buftype=nofile noswapfile
@@ -22,7 +30,7 @@ endfunction
 function! s:ActivateNode(action, line)
     if a:action == 'o'
         if getline(a:line) =~ '▸'
-            call s:OpenFolder(a:line)
+            call s:GetChildren(a:line)
         elseif getline(a:line) =~ '▾'
             call s:ToggleFolder(a:line)
         endif
@@ -31,6 +39,7 @@ function! s:ActivateNode(action, line)
 endfunction
 
 function! s:OpenFolder(line)
+function! s:GetChildren(line)
     let indent = s:Indent(a:line)
     let parent = s:FullPath(a:line)
     let children = split(system('ls '.fnameescape(parent).' | sort -f'), '\n')
