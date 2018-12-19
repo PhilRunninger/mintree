@@ -34,6 +34,7 @@ endfunction
 function! s:ActivateNode(line)
     if getline(a:line) =~ '▸'
         call s:GetChildren(a:line)
+        execute 'normal! zO'
     elseif getline(a:line) =~ '▾'
         call s:ToggleFolder(a:line)
     else
@@ -59,10 +60,6 @@ function! s:GetChildren(line)
     setlocal modifiable
     call append(a:line, children)
     call setline(a:line, substitute(getline(a:line),'▸','▾',''))
-    try
-        execute 'normal! zO'
-    catch
-    endtry
     setlocal nomodifiable
 endfunction
 
