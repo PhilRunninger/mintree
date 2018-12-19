@@ -24,6 +24,7 @@ function! s:MinTreeOpen(path)
     nnoremap <buffer> t :call <SID>OpenFile('tabnew', line('.'))<CR>
     nnoremap <buffer> u :call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>
     nnoremap <buffer> C :call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>
+    nnoremap <buffer> x :call <SID>CloseParent(line('.'))<CR>
     nnoremap <buffer> q :buffer #<CR>
 endfunction
 
@@ -66,3 +67,9 @@ function! s:ToggleFolder(line)
     execute 'normal! za'
 endfunction
 
+function! s:CloseParent(line)
+    if foldlevel(a:line) > 0
+        normal zc
+        execute 'normal! '.foldclosed(a:line).'gg'
+    endif
+endfunction
