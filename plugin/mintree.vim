@@ -22,10 +22,13 @@ function! s:MinTreeOpen(path)
     nnoremap <buffer> s :call <SID>OpenFile('wincmd s', line('.'))<CR>
     nnoremap <buffer> v :call <SID>OpenFile('wincmd v', line('.'))<CR>
     nnoremap <buffer> t :call <SID>OpenFile('tabnew', line('.'))<CR>
+    nnoremap <buffer> p :call <SID>GoToParent(line('.'))<CR>
     nnoremap <buffer> u :call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>
     nnoremap <buffer> C :call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>
     nnoremap <buffer> x :call <SID>CloseParent(line('.'))<CR>
     nnoremap <buffer> q :buffer #<CR>
+    " r, R
+    " O
 endfunction
 
 function! s:ActivateNode(line)
@@ -72,4 +75,8 @@ function! s:CloseParent(line)
         normal zc
         execute 'normal! '.foldclosed(a:line).'gg'
     endif
+endfunction
+
+function! s:GoToParent(line)
+    call search(printf('^%02d', mintree#indent(a:line)-1),'bW')
 endfunction
