@@ -18,7 +18,7 @@ function! s:MinTreeOpen(path)
     call setline(1, '00   '.s:root)
     call s:GetChildren(1)
 
-    nnoremap <buffer> o :call <SID>ActivateNode('o', line('.'))<CR>
+    nnoremap <buffer> o :call <SID>ActivateNode(line('.'))<CR>
     nnoremap <buffer> s :call <SID>OpenFile('wincmd s', line('.'))<CR>
     nnoremap <buffer> v :call <SID>OpenFile('wincmd v', line('.'))<CR>
     nnoremap <buffer> u :call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>
@@ -26,15 +26,13 @@ function! s:MinTreeOpen(path)
     nnoremap <buffer> q :buffer #<CR>
 endfunction
 
-function! s:ActivateNode(action, line)
-    if a:action == 'o'
-        if getline(a:line) =~ '▸'
-            call s:GetChildren(a:line)
-        elseif getline(a:line) =~ '▾'
-            call s:ToggleFolder(a:line)
-        else
-            call s:OpenFile('', a:line)
-        endif
+function! s:ActivateNode(line)
+    if getline(a:line) =~ '▸'
+        call s:GetChildren(a:line)
+    elseif getline(a:line) =~ '▾'
+        call s:ToggleFolder(a:line)
+    else
+        call s:OpenFile('', a:line)
     endif
 endfunction
 
