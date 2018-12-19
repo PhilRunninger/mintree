@@ -21,6 +21,7 @@ function! s:MinTreeOpen(path)
     nnoremap <buffer> o :call <SID>ActivateNode(line('.'))<CR>
     nnoremap <buffer> s :call <SID>OpenFile('wincmd s', line('.'))<CR>
     nnoremap <buffer> v :call <SID>OpenFile('wincmd v', line('.'))<CR>
+    nnoremap <buffer> t :call <SID>OpenFile('tabnew', line('.'))<CR>
     nnoremap <buffer> u :call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>
     nnoremap <buffer> C :call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>
     nnoremap <buffer> q :buffer #<CR>
