@@ -18,15 +18,15 @@ function! s:MinTreeOpen(path)
     call setline(1, '00   '.s:root)
     call s:GetChildren(1)
 
-    nnoremap <buffer> o :call <SID>ActivateNode(line('.'))<CR>
-    nnoremap <buffer> s :call <SID>OpenFile('wincmd s', line('.'))<CR>
-    nnoremap <buffer> v :call <SID>OpenFile('wincmd v', line('.'))<CR>
-    nnoremap <buffer> t :call <SID>OpenFile('tabnew', line('.'))<CR>
-    nnoremap <buffer> p :call <SID>GoToParent(line('.'))<CR>
-    nnoremap <buffer> u :call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>
-    nnoremap <buffer> C :call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>
-    nnoremap <buffer> x :call <SID>CloseParent(line('.'))<CR>
-    nnoremap <buffer> q :buffer #<CR>
+    nnoremap <silent> <buffer> o :call <SID>ActivateNode(line('.'))<CR>
+    nnoremap <silent> <buffer> s :call <SID>OpenFile('wincmd s', line('.'))<CR>
+    nnoremap <silent> <buffer> v :call <SID>OpenFile('wincmd v', line('.'))<CR>
+    nnoremap <silent> <buffer> t :call <SID>OpenFile('tabnew', line('.'))<CR>
+    nnoremap <silent> <buffer> p :call <SID>GoToParent(line('.'))<CR>
+    nnoremap <silent> <buffer> u :call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>
+    nnoremap <silent> <buffer> C :call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>
+    nnoremap <silent> <buffer> x :call <SID>CloseParent(line('.'))<CR>
+    nnoremap <silent> <buffer> q :buffer #<CR>
     " r, R
     " O
 endfunction
