@@ -1,3 +1,8 @@
+if !has("folding")
+    echomsg "MinTree requires Vim to be compiled with the +folding feature."
+    finish
+endif
+
 command! -n=? -complete=dir MinTree :call <SID>MinTree('<args>')
 
 function! s:MinTree(path)
