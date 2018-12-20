@@ -3,17 +3,19 @@ if !has("folding")
     finish
 endif
 
-" Default keys for bindings.
-let g:MinTreeOpen            = get(g:, 'MinTreeOpen',            'o')
-let g:MinTreeOpenRecursively = get(g:, 'MinTreeOpenRecursively', 'O')
-let g:MinTreeOpenSplit       = get(g:, 'MinTreeOpenSplit',       's')
-let g:MinTreeOpenVSplit      = get(g:, 'MinTreeOpenVSplit',      'v')
-let g:MinTreeOpenTab         = get(g:, 'MinTreeOpenTab',         't')
-let g:MinTreeGoToParent      = get(g:, 'MinTreeGoToParent',      'p')
-let g:MinTreeSetRootUp       = get(g:, 'MinTreeSetRootUp',       'u')
-let g:MinTreeSetRoot         = get(g:, 'MinTreeSetRoot',         'C')
-let g:MinTreeCloseParent     = get(g:, 'MinTreeCloseParent',     'x')
-let g:MinTreeExit            = get(g:, 'MinTreeExit',            'q')
+let s:key_bindings =
+    \ {get(g:, 'MinTreeOpen',            'o'): ":call <SID>ActivateNode(line('.'))<CR>",
+    \  get(g:, 'MinTreeOpenRecursively', 'O'): ":call <SID>OpenRecursively(line('.'))<CR>",
+    \  get(g:, 'MinTreeOpenSplit',       's'): ":call <SID>OpenFile('wincmd s', line('.'))<CR>",
+    \  get(g:, 'MinTreeOpenVSplit',      'v'): ":call <SID>OpenFile('wincmd v', line('.'))<CR>",
+    \  get(g:, 'MinTreeOpenTab',         't'): ":call <SID>OpenFile('tabnew', line('.'))<CR>",
+    \  get(g:, 'MinTreeGoToParent',      'p'): ":call <SID>GoToParent(line('.'))<CR>",
+    \  get(g:, 'MinTreeSetRootUp',       'u'): ":call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>",
+    \  get(g:, 'MinTreeSetRoot',         'C'): ":call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>",
+    \  get(g:, 'MinTreeCloseParent',     'x'): ":call <SID>CloseParent(line('.'))<CR>",
+    \  get(g:, 'MinTreeExit',            'q'): ":buffer #<CR>"
+    \ }
+    "ToDo: r, R
 
 command! -n=? -complete=dir MinTree :call <SID>MinTree('<args>')
 
@@ -26,26 +28,16 @@ function! s:MinTree(path)
 endfunction
 
 function! s:MinTreeOpen(path)
+    let s:root = simplify(fnamemodify(a:path, ':p'))
     execute 'silent buffer ' . bufnr('=MinTree=', 1)
     set ft=mintree
+
     setlocal modifiable
     execute '%delete'
-
-    let s:root = simplify(fnamemodify(a:path, ':p'))
     call setline(1, '00'.s:root)
     call s:GetChildren(1)
 
-    execute "nnoremap <silent> <buffer> ".g:MinTreeOpen.           " :call <SID>ActivateNode(line('.'))<CR>"
-    execute "nnoremap <silent> <buffer> ".g:MinTreeOpenRecursively." :call <SID>OpenRecursively(line('.'))<CR>"
-    execute "nnoremap <silent> <buffer> ".g:MinTreeOpenSplit.      " :call <SID>OpenFile('wincmd s', line('.'))<CR>"
-    execute "nnoremap <silent> <buffer> ".g:MinTreeOpenVSplit.     " :call <SID>OpenFile('wincmd v', line('.'))<CR>"
-    execute "nnoremap <silent> <buffer> ".g:MinTreeOpenTab.        " :call <SID>OpenFile('tabnew', line('.'))<CR>"
-    execute "nnoremap <silent> <buffer> ".g:MinTreeGoToParent.     " :call <SID>GoToParent(line('.'))<CR>"
-    execute "nnoremap <silent> <buffer> ".g:MinTreeSetRootUp.      " :call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>"
-    execute "nnoremap <silent> <buffer> ".g:MinTreeSetRoot.        " :call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>"
-    execute "nnoremap <silent> <buffer> ".g:MinTreeCloseParent.    " :call <SID>CloseParent(line('.'))<CR>"
-    execute "nnoremap <silent> <buffer> ".g:MinTreeExit.           " :buffer #<CR>"
-    " r, R
+    call map(copy(s:key_bindings), {key, cmd -> execute("nnoremap <silent> <buffer> ".key." ".cmd)})
 endfunction
 
 function! s:ActivateNode(line)
