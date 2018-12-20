@@ -2,7 +2,8 @@ set nomodifiable
 set buftype=nofile noswapfile
 set nowrap nonumber nolist
 set foldmethod=expr foldexpr=MinTreeFoldLevel(v:lnum)
-set foldcolumn=0 foldtext=substitute(getline(v:foldstart)[5:],'▾','▸','').'\ \ [children:\ '.(v:foldend-v:foldstart).']'
+setlocal foldcolumn=0
+    setlocal foldtext=substitute(getline(v:foldstart)[2:],'▾','▸','').'\ \ [children:\ '.(v:foldend-v:foldstart).']'
 
 function! MinTreeFoldLevel(lnum)
     let indent1 = mintree#indent(a:lnum)
