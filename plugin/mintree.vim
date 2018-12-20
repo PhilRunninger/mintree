@@ -3,6 +3,18 @@ if !has("folding")
     finish
 endif
 
+" Default keys for bindings.
+let g:MinTreeOpen            = get(g:, 'MinTreeOpen',            'o')
+let g:MinTreeOpenRecursively = get(g:, 'MinTreeOpenRecursively', 'O')
+let g:MinTreeOpenSplit       = get(g:, 'MinTreeOpenSplit',       's')
+let g:MinTreeOpenVSplit      = get(g:, 'MinTreeOpenVSplit',      'v')
+let g:MinTreeOpenTab         = get(g:, 'MinTreeOpenTab',         't')
+let g:MinTreeGoToParent      = get(g:, 'MinTreeGoToParent',      'p')
+let g:MinTreeSetRootUp       = get(g:, 'MinTreeSetRootUp',       'u')
+let g:MinTreeSetRoot         = get(g:, 'MinTreeSetRoot',         'C')
+let g:MinTreeCloseParent     = get(g:, 'MinTreeCloseParent',     'x')
+let g:MinTreeExit            = get(g:, 'MinTreeExit',            'q')
+
 command! -n=? -complete=dir MinTree :call <SID>MinTree('<args>')
 
 function! s:MinTree(path)
@@ -23,16 +35,16 @@ function! s:MinTreeOpen(path)
     call setline(1, '00'.s:root)
     call s:GetChildren(1)
 
-    nnoremap <silent> <buffer> o :call <SID>ActivateNode(line('.'))<CR>
-    nnoremap <silent> <buffer> O :call <SID>OpenRecursively(line('.'))<CR>
-    nnoremap <silent> <buffer> s :call <SID>OpenFile('wincmd s', line('.'))<CR>
-    nnoremap <silent> <buffer> v :call <SID>OpenFile('wincmd v', line('.'))<CR>
-    nnoremap <silent> <buffer> t :call <SID>OpenFile('tabnew', line('.'))<CR>
-    nnoremap <silent> <buffer> p :call <SID>GoToParent(line('.'))<CR>
-    nnoremap <silent> <buffer> u :call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>
-    nnoremap <silent> <buffer> C :call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>
-    nnoremap <silent> <buffer> x :call <SID>CloseParent(line('.'))<CR>
-    nnoremap <silent> <buffer> q :buffer #<CR>
+    execute "nnoremap <silent> <buffer> ".g:MinTreeOpen.           " :call <SID>ActivateNode(line('.'))<CR>"
+    execute "nnoremap <silent> <buffer> ".g:MinTreeOpenRecursively." :call <SID>OpenRecursively(line('.'))<CR>"
+    execute "nnoremap <silent> <buffer> ".g:MinTreeOpenSplit.      " :call <SID>OpenFile('wincmd s', line('.'))<CR>"
+    execute "nnoremap <silent> <buffer> ".g:MinTreeOpenVSplit.     " :call <SID>OpenFile('wincmd v', line('.'))<CR>"
+    execute "nnoremap <silent> <buffer> ".g:MinTreeOpenTab.        " :call <SID>OpenFile('tabnew', line('.'))<CR>"
+    execute "nnoremap <silent> <buffer> ".g:MinTreeGoToParent.     " :call <SID>GoToParent(line('.'))<CR>"
+    execute "nnoremap <silent> <buffer> ".g:MinTreeSetRootUp.      " :call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>"
+    execute "nnoremap <silent> <buffer> ".g:MinTreeSetRoot.        " :call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>"
+    execute "nnoremap <silent> <buffer> ".g:MinTreeCloseParent.    " :call <SID>CloseParent(line('.'))<CR>"
+    execute "nnoremap <silent> <buffer> ".g:MinTreeExit.           " :buffer #<CR>"
     " r, R
 endfunction
 

@@ -36,4 +36,3 @@ Default Key | Variable                   | Function
 **`C`**     | `g:MinTreeSetRoot`         | Change the root of the tree to the directory under the cursor.
 **`x`**     | `g:MinTreeCloseParent`     | Close the directory containing the current file or directory.
 **`q`**     | `g:MinTreeExit`            | Exit the MinTree, and return to the previous buffer.
-**`?`**     |                            | Display short descriptions of these commands.
