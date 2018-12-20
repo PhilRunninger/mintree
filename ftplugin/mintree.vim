@@ -1,7 +1,7 @@
-set nomodifiable
-set buftype=nofile noswapfile
-set nowrap nonumber nolist
-set foldmethod=expr foldexpr=MinTreeFoldLevel(v:lnum)
+setlocal nomodifiable
+setlocal buftype=nofile noswapfile
+setlocal nowrap nonumber nolist
+setlocal foldmethod=expr foldexpr=MinTreeFoldLevel(v:lnum)
 setlocal foldcolumn=0
     setlocal foldtext=substitute(getline(v:foldstart)[2:],'▾','▸','').'\ \ [children:\ '.(v:foldend-v:foldstart).']'
 
