@@ -19,6 +19,7 @@ function! s:MinTreeOpen(path)
     call s:GetChildren(1)
 
     nnoremap <silent> <buffer> o :call <SID>ActivateNode(line('.'))<CR>
+    nnoremap <silent> <buffer> O :call <SID>OpenRecursively(line('.'))<CR>
     nnoremap <silent> <buffer> s :call <SID>OpenFile('wincmd s', line('.'))<CR>
     nnoremap <silent> <buffer> v :call <SID>OpenFile('wincmd v', line('.'))<CR>
     nnoremap <silent> <buffer> t :call <SID>OpenFile('tabnew', line('.'))<CR>
@@ -28,15 +29,14 @@ function! s:MinTreeOpen(path)
     nnoremap <silent> <buffer> x :call <SID>CloseParent(line('.'))<CR>
     nnoremap <silent> <buffer> q :buffer #<CR>
     " r, R
-    " O
 endfunction
 
 function! s:ActivateNode(line)
     if getline(a:line) =~ '▸'
         call s:GetChildren(a:line)
-        execute 'normal! zO'
+        normal! zO
     elseif getline(a:line) =~ '▾'
-        call s:ToggleFolder(a:line)
+        normal! za
     else
         call s:OpenFile('', a:line)
     endif
@@ -61,10 +61,7 @@ function! s:GetChildren(line)
     call append(a:line, children)
     call setline(a:line, substitute(getline(a:line),'▸','▾',''))
     setlocal nomodifiable
-endfunction
-
-function! s:ToggleFolder(line)
-    execute 'normal! za'
+    return len(children)
 endfunction
 
 function! s:CloseParent(line)
@@ -76,4 +73,21 @@ endfunction
 
 function! s:GoToParent(line)
     call search(printf('^%02d', mintree#indent(a:line)-1),'bW')
+endfunction
+
+function! s:OpenRecursively(line)
+    if a:line == 1
+        let l:end = line('$')
+    elseif getline('.') =~ '\/$'
+        let l:end = a:line + 1
+    else
+        return
+    endif
+    let l:line = search('▸','cW')
+    while l:line > 0 && l:line <= l:end
+        let l:end += s:GetChildren(l:line)
+        normal! zO
+        let l:line = search('▸','cW')
+    endwhile
+    execute 'normal! '.a:line.'gg'
 endfunction
