@@ -1,88 +1,39 @@
 # MinTree
 
-A minimalist version of [NERDTree](https://github.com/scrooloose/nerdtree)
+A minimalist version of [NERDTree](https://github.com/scrooloose/nerdtree). How much of NERDTree can I replicate with the fewest lines of code while, at the same time, doing it faster? This project is my answer to that question.
 
-## Pseudocode Ramblings
-```
-Line 1: '0' + path given (or pwd)
-let x = split(system('ls ' . path (or pwd)), '\n')
-let indent = (column 1 of previous line) + 1
-let prefix = indent . repeat(indent*2, ' ') for files, or
-             indent . '▶' . repeat(indent*2 -1, ' ') for dirs
-call map(x, 'prefix.v:val')
-call append(1, x)
+## Installation
 
-setlocal readonly nomodifiable
-setlocal nofoldenable foldcolumn=0 nonumber
-setlocal nowrap nolist virtualedit=all sidescrolloff=0
-augroup HideMetaColumns
-    autocmd!
-    " To hide first N columns:                                N                     N
-    "                                                         |                     |
-    autocmd CursorMoved MinTree if 1+virtcol('.')-wincol() <= 5 | execute 'normal! 05zl' | endif
-augroup END
-
-generalize and refactor for opening a folder.
+Use your favorite plugin manager to install this plugin. My personal favorite is [vim-plug](https://github.com/junegunn/vim-plug). In your **`.vimrc`**, add the following line.
+```vim
+Plug 'git@github.com:PhilRunninger/mintree.git'
 ```
 
-## Sample Trees
+[Vundle](https://github.com/VundleVim/Vundle.vim), [pathogen](https://github.com/tpope/vim-pathogen), and others should also work as easily. Just follow the convention set up by the plugin manager of your choice.
+
+## Commands
+
+The only command is **`:MinTree [path]`**. This command opens a buffer with the name **`=MinTree=`** in the current window, and shows a tree of either the path given or the current working directory.
+
+The command can be assigned to a key, and this assignment is left to the user, so as not to interfere with any existing mappings. For example,
 ```
-0ABCD/Users/prunninger/projects                                  /Users/prunninger/projects   ═─╞│├└   /Users/prunninger/projects  
-1ABCD▸ AllAlgorithmsErlang                                       ╞═AllAlgorithmsErlang                 ╞ AllAlgorithmsErlang       
-1ABCD▸ CyaraAutomation                                           ╞═CyaraAutomation                     ╞ CyaraAutomation           
-1ABCD▸ DeveloperUtilities                                        ╞═DeveloperUtilities                  ╞ DeveloperUtilities        
-1ABCD▸ KATAS                                                     ╞═KATAS                               ╞ KATAS                     
-1ABCD▾ PinewoodDerby                                             ╞═PinewoodDerby                       ╞ PinewoodDerby             
-2ABCD    README.md                                               │ ├─README.md                         │ ├ README.md              
-2ABCD  ▸ VB6                                                     │ ╞═VB6                               │ ╞ VB6                    
-2ABCD    generator.erl                                           │ ├─generator.erl                     │ ├ generator.erl          
-2ABCD    tags                                                    │ └─tags                              │ └ tags                   
-1ABCD▸ RPN                                                       ╞═RPN                                 ╞ RPN                       
-1ABCD▾ SPIKES                                                    ╞═SPIKES                              ╞ SPIKES                    
-2ABCD  ▾ FoodTrucks                                              │ ╞═FoodTrucks                        │ ╞ FoodTrucks             
-3ABCD      Dockerfile                                            │ │ ├─Dockerfile                      │ │ ├ Dockerfile          
-3ABCD      README.md                                             │ │ ├─README.md                       │ │ ├ README.md           
-3ABCD      aws-compose.yml                                       │ │ ├─aws-compose.yml                 │ │ ├ aws-compose.yml     
-3ABCD      docker-compose.yml                                    │ │ ├─docker-compose.yml              │ │ ├ docker-compose.yml  
-3ABCD      flask-app                                             │ │ ├─flask-app                       │ │ ├ flask-app           
-3ABCD      setup-aws-ecs.sh                                      │ │ ├─setup-aws-ecs.sh                │ │ ├ setup-aws-ecs.sh    
-3ABCD      setup-docker.sh                                       │ │ ├─setup-docker.sh                 │ │ ├ setup-docker.sh     
-3ABCD      shot.png                                              │ │ ├─shot.png                        │ │ ├ shot.png            
-3ABCD    ▸ utils                                                 │ │ ╘═utils                           │ │ ╘ utils               
-2ABCD  ▸ RabbitMQ                                                │ ╞═RabbitMQ                          │ ╞ RabbitMQ               
-2ABCD  ▸ bus_route_part_2                                        │ ╞═bus_route_part_2                  │ ╞ bus_route_part_2       
-2ABCD  ▸ docker                                                  │ ╞═docker                            │ ╞ docker                 
-2ABCD  ▸ docker-curriculum                                       │ ╞═docker-curriculum                 │ ╞ docker-curriculum      
-2ABCD  ▸ license_manager                                         │ ╞═license_manager                   │ ╞ license_manager        
-2ABCD    tags                                                    │ └─tags                              │ └ tags                   
-1ABCD▸ StarTrek                                                  ╘═StarTrek                            ╘ StarTrek                  
-1ABCD▸ callback_cloud
-1ABCD▸ callback_cloud_test_infrastructure
-1ABCD▸ callback_cloud_vagrant
-1ABCD  id_rsa
-1ABCD▸ rebar_3
-1ABCD▾ sipp
-2ABCD    1
-2ABCD    10
-2ABCD    100
-2ABCD    1000
-2ABCD    10000
-2ABCD    1001
-2ABCD    1002
-2ABCD    1003
-2ABCD    1004
-2ABCD    1005
-2ABCD    1006
-2ABCD    1007
-2ABCD    1008
-...
-2ABCD    9994
-2ABCD    9995
-2ABCD    9996
-2ABCD    9997
-2ABCD    9998
-2ABCD    9999
-1ABCD▸ sippy_cup
-1ABCD▸ syntaxerl
-1ABCD  update_vm.sh
+nnoremap <leader>o :MinTree<CR>
 ```
+
+## Key Mappings
+
+The following key mappings are used only within the **`=MinTree=`** buffer. They are configurable by setting the corresponding global variables.
+
+Default Key | Variable                   | Function
+---         | ---                        | ---
+**`o`**     | `g:MinTreeOpen`            | Open the selected file in the current window, or expand/close the directory.
+**`O`**     | `g:MinTreeOpenRecursively` | Fully expand the tree under the cursor.
+**`s`**     | `g:MinTreeOpenSplit`       | Split the window horizontally, and open the selected file there.
+**`v`**     | `g:MinTreeOpenVSplit`      | Split the window vertically, and open the selected file there.
+**`t`**     | `g:MinTreeOpenTab`         | Open the selected file in a new tab.
+**`p`**     | `g:MinTreeGoToParent`      | Navigate quickly to the next closest parent folder.
+**`u`**     | `g:MinTreeSetRootUp`       | Change the root of the tree to the parent directory of the current root.
+**`C`**     | `g:MinTreeSetRoot`         | Change the root of the tree to the directory under the cursor.
+**`x`**     | `g:MinTreeCloseParent`     | Close the directory containing the current file or directory.
+**`q`**     | `g:MinTreeExit`            | Exit the MinTree, and return to the previous buffer.
+**`?`**     |                            | Display short descriptions of these commands.
