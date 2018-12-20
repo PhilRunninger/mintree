@@ -3,7 +3,11 @@ setlocal buftype=nofile noswapfile
 setlocal nowrap nonumber nolist
 setlocal foldmethod=expr foldexpr=MinTreeFoldLevel(v:lnum)
 setlocal foldcolumn=0
+if has("conceal")
     setlocal foldtext=substitute(getline(v:foldstart)[2:],'▾','▸','').'\ \ [children:\ '.(v:foldend-v:foldstart).']'
+else
+    setlocal foldtext='\ \ '.substitute(getline(v:foldstart)[2:],'▾','▸','').'\ \ [children:\ '.(v:foldend-v:foldstart).']'
+endif
 
 function! MinTreeFoldLevel(lnum)
     let indent1 = mintree#indent(a:lnum)
