@@ -77,14 +77,14 @@ endfunction
 
 function! s:OpenRecursively(line)
     if a:line == 1
-        let l:end = line('$')
+        let l:end = line('$')+1
     elseif getline('.') =~ '\/$'
         let l:end = a:line + 1
     else
         return
     endif
     let l:line = search('▸','cW')
-    while l:line > 0 && l:line <= l:end
+    while l:line > 0 && l:line < l:end
         let l:end += s:GetChildren(l:line)
         normal! zO
         let l:line = search('▸','cW')
