@@ -3,6 +3,14 @@ if !has("folding")
     finish
 endif
 
+if has("win16") || has("win32") || has("win64")
+    let g:MinTreeDirCmd = get(g:, 'MinTreeDirCmd', 'dir /b %s')
+    let g:Slash = '\'
+else
+    let g:MinTreeDirCmd = get(g:, 'MinTreeDirCmd', 'ls %s | sort -f')
+    let g:Slash = '/'
+endif
+
 let s:key_bindings =
     \ {get(g:, 'MinTreeOpen',            'o'): ":call <SID>ActivateNode(line('.'))<CR>",
     \  get(g:, 'MinTreeOpenRecursively', 'O'): ":call <SID>OpenRecursively(line('.'))<CR>",
@@ -53,7 +61,7 @@ endfunction
 
 function! s:OpenFile(windowCmd, line)
     let path = mintree#fullPath(a:line)
-    if path !~ '\/$'
+    if path !~  escape(g:Slash,'\').'$'
         execute 'buffer #'
         execute a:windowCmd
         execute 'edit '.path
@@ -63,9 +71,9 @@ endfunction
 function! s:GetChildren(line)
     let indent = mintree#indent(a:line)
     let parent = mintree#fullPath(a:line)
-    let children = split(system('ls '.fnameescape(parent).' | sort -f'), '\n')
+    let children = split(system(printf(g:MinTreeDirCmd, fnameescape(parent))), '\n')
     let prefix = printf('%02d%s',indent+1, repeat(' ', indent*2))
-    call map(children, {idx,val -> printf((isdirectory(parent.'/'.val) ? '%s▸ %s/': '%s  %s'), prefix, val)})
+    call map(children, {idx,val -> printf((isdirectory(parent.g:Slash.val) ? '%s▸ %s'.g:Slash: '%s  %s'), prefix, val)})
     setlocal modifiable
     call append(a:line, children)
     call setline(a:line, substitute(getline(a:line),'▸','▾',''))
@@ -87,8 +95,16 @@ endfunction
 function! s:OpenRecursively(line)
     if a:line == 1
         let l:end = line('$')+1
-    elseif getline('.') =~ '\/$'
+    elseif getline(a:line) =~ '▸'
         let l:end = a:line + 1
+    elseif getline(a:line) =~ '▾'
+        if foldclosedend(a:line) == -1
+            normal! ]z
+            let l:end = line('.') + 1
+            normal! [z
+        else
+            let l:end = foldclosedend(a:line) + 1
+        endif
     else
         return
     endif
