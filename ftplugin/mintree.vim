@@ -4,9 +4,9 @@ setlocal nowrap nonumber nolist
 setlocal foldmethod=expr foldexpr=MinTreeFoldLevel(v:lnum)
 setlocal foldcolumn=0
 if has("conceal")
-    setlocal foldtext=substitute(getline(v:foldstart)[2:],'▾','▸','').'\ \ [children:\ '.(v:foldend-v:foldstart).']'
+    setlocal foldtext=substitute(getline(v:foldstart)[2:],'▾','▸','').'\ \ \ {'.(v:foldend-v:foldstart).(v:foldend-v:foldstart==1?'\ child}':'\ children}')
 else
-    setlocal foldtext='\ \ '.substitute(getline(v:foldstart)[2:],'▾','▸','').'\ \ [children:\ '.(v:foldend-v:foldstart).']'
+    setlocal foldtext='\ \ '.substitute(getline(v:foldstart)[2:],'▾','▸','').'\ \ \ {'.(v:foldend-v:foldstart).(v:foldend-v:foldstart==1?'\ child}':'\ children}')
 endif
 
 function! MinTreeFoldLevel(lnum)
