@@ -10,19 +10,20 @@ else
 endif
 
 function! MinTreeFoldLevel(lnum)
-    let indent1 = mintree#indent(a:lnum)
+    let l:current_indent = mintree#indent(a:lnum) - 1
     if a:lnum == line('$')
-        let result = ['<', indent1-1]
+        let result = ['<', l:current_indent]
     else
-        let indent2 = mintree#indent(a:lnum+1)
-        if indent1 < indent2
-            let result = ['>', indent2-1]
-        elseif indent1 > indent2
-            let result = ['<', indent1-1]
+        let l:next_indent = mintree#indent(a:lnum+1) - 1
+        if l:current_indent < l:next_indent
+            let result = ['>', l:next_indent]
+        elseif l:current_indent > l:next_indent
+            let result = ['<', l:current_indent]
         else
-            let result = ['', indent1-1]
+            let result = ['', l:current_indent]
         endif
     endif
+
     if result[1] == 0
         return '0'
     else
