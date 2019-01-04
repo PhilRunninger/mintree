@@ -43,8 +43,8 @@ function! s:MinTreeOpen(path)
 
     setlocal modifiable
     execute '%delete'
-    call setline(1, '00'.s:root)
-    call s:GetChildren(1)
+    call setline(1, '00▸ '.s:root)
+    call s:ActivateNode(1)
 
     call map(copy(s:key_bindings), {key, cmd -> execute("nnoremap <silent> <buffer> ".key." ".cmd)})
 endfunction
@@ -73,7 +73,7 @@ function! s:GetChildren(line)
     let indent = mintree#indent(a:line)
     let parent = mintree#fullPath(a:line)
     let children = split(system(printf(g:MinTreeDirCmd, fnameescape(parent))), '\n')
-    let prefix = printf('%02d%s',indent+1, repeat(' ', indent*2))
+    let prefix = printf('%02d%s',indent+1, repeat(' ', (indent+1)*2))
     call map(children, {idx,val -> printf((isdirectory(parent.g:Slash.val) ? '%s▸ %s'.g:Slash: '%s  %s'), prefix, val)})
     setlocal modifiable
     call append(a:line, children)

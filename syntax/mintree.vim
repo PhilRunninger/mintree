@@ -1,8 +1,6 @@
 syn match MinTreeArrows #[▾▸]\ze .*# containedin=MinTreeDir
 syn match MinTreeDir #[▾▸].*#
-syn match MinTreeRoot #^00/.*$#
 
-hi def link MinTreeRoot Statement
 hi def link MinTreeDir Directory
 hi def link MinTreeArrows LineNr
 hi! def link Folded Directory

@@ -6,11 +6,11 @@ endfunction
 function! mintree#fullPath(line)
     let pos = getpos('.')
     let indent = mintree#indent(a:line)
-    let file = strcharpart(getline(a:line),2 + 2*indent)
+    let file = strcharpart(getline(a:line),2 + (indent+1)*2)
     while indent > 0
         let indent -= 1
         call search(printf('^%02d', indent),'bW')
-        let parent = strcharpart(getline('.'),2 + 2*indent)
+        let parent = strcharpart(getline('.'),2 + (indent+1)*2)
         let file = parent . file
     endwhile
     call setpos('.', pos)
