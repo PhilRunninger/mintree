@@ -7,7 +7,7 @@ if has("win16") || has("win32") || has("win64")
     let g:MinTreeDirCmd = get(g:, 'MinTreeDirCmd', 'dir /b %s')
     let g:Slash = '\'
 else
-    let g:MinTreeDirCmd = get(g:, 'MinTreeDirCmd', 'ls %s | sort -f')
+    let g:MinTreeDirCmd = get(g:, 'MinTreeDirCmd', 'ls -A %s | sort -f')
     let g:Slash = '/'
 endif
 
@@ -24,7 +24,7 @@ let s:key_bindings =
     \  get(g:, 'MinTreeRefresh',         'r'): ":call <SID>Refresh(line('.'))<CR>",
     \  get(g:, 'MinTreeExit',            'q'): ":buffer #<CR>"
     \ }
-    "ToDo: r, R
+    "ToDo: R, I
 
 command! -n=? -complete=dir MinTree :call <SID>MinTree('<args>')
 
