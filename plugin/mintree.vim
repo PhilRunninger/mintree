@@ -21,6 +21,7 @@ let s:key_bindings =
     \  get(g:, 'MinTreeSetRootUp',       'u'): ":call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>",
     \  get(g:, 'MinTreeSetRoot',         'C'): ":call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>",
     \  get(g:, 'MinTreeCloseParent',     'x'): ":call <SID>CloseParent(line('.'))<CR>",
+    \  get(g:, 'MinTreeRefresh',         'r'): ":call <SID>Refresh(line('.'))<CR>",
     \  get(g:, 'MinTreeExit',            'q'): ":buffer #<CR>"
     \ }
     "ToDo: r, R
@@ -115,4 +116,19 @@ function! s:OpenRecursively(line)
         let l:line = search('▸','cW')
     endwhile
     execute 'normal! '.a:line.'gg'
+endfunction
+
+function! s:Refresh(line)
+    if foldclosed(a:line) == -1
+        normal! zc
+    endif
+    let l:start = foldclosed(a:line)
+    let l:end = foldclosedend(a:line)
+    setlocal modifiable
+    normal! zO
+    execute l:start+1.','.l:end.'delete'
+    execute 'normal! '.l:start.'gg'
+    call setline(l:start, substitute(getline(l:start),'▾','▸',''))
+    setlocal nomodifiable
+    call s:ActivateNode(l:start)
 endfunction
