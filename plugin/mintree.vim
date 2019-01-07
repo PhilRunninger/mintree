@@ -114,19 +114,23 @@ function! s:OpenRecursively(line)
 endfunction
 
 function! s:Refresh(line)
-    if foldclosed(a:line) == -1
-        execute 'normal! '.a:line.'gg'
-        normal! zc
-    endif
-    let l:start = foldclosed(a:line)
-    let l:end = foldclosedend(a:line)
+    let [l:start,l:end] = s:FoldLimits(a:line)
     setlocal modifiable
-    normal! zO
     execute 'silent '.(l:start+1).','.l:end.'delete'
     execute 'normal! '.l:start.'gg'
     call setline(l:start, substitute(getline(l:start),'▾','▸',''))
     setlocal nomodifiable
     call s:ActivateNode(l:start)
+endfunction
+
+function! s:FoldLimits(line)
+    if foldclosed(a:line) == -1
+        execute 'normal! '.a:line.'gg'
+        normal! zc
+    endif
+    let l:limits = [foldclosed(a:line), foldclosedend(a:line)]
+    normal! zo
+    return l:limits
 endfunction
 
 function! s:ToggleHidden()
