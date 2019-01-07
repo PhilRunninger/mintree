@@ -35,4 +35,17 @@ Default Key | Variable                   | Function
 **`u`**     | `g:MinTreeSetRootUp`       | Change the root of the tree to the parent directory of the current root.
 **`C`**     | `g:MinTreeSetRoot`         | Change the root of the tree to the directory under the cursor.
 **`x`**     | `g:MinTreeCloseParent`     | Close the directory containing the current file or directory.
+**`r`**     | `g:MinTreeRefresh`         | Refresh the directory under the cursor, or the directory containing the file under the cursor.
+**`R`**     | `g:MinTreeRefreshRoot`     | Refresh the whole tree.
+**`I`**     | `g:MinTreeToggleHidden`    | Toggles the display of hidden files, those starting with a period, or marked hidden in Windows.
 **`q`**     | `g:MinTreeExit`            | Exit the MinTree, and return to the previous buffer.
+
+## Settings
+
+The following settings can be used to customize the commands that gather files and directories for your unique situation.
+
+Variable | Default
+--- | ---
+**`g:MinTreeDirAll`**<br>returns all files/dirs in the `%s` folder. | Windows: `dir /b %s`<br>others: `ls -A %s \| sort -f`
+**`g:MinTreeDirNoHidden`**<br>returns all non hidden files/dirs in the `%s` folder. | Windows: `dir /b /a:-h %s \| findstr -v "^\."`<br>others: `ls %s \| sort -f`
+**`g:MinTreeShowHidden`**<br>sets which of the above two commands to use by default. | 0

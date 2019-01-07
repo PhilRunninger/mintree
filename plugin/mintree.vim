@@ -3,14 +3,7 @@ if !has("folding")
     finish
 endif
 
-if has("win16") || has("win32") || has("win64")
-    let g:MinTreeDirCmd = get(g:, 'MinTreeDirCmd', 'dir /b %s')
-    let g:Slash = '\'
-else
-    let g:MinTreeDirCmd = get(g:, 'MinTreeDirCmd', 'ls -A %s | sort -f')
-    let g:Slash = '/'
-endif
-
+let g:MinTreeShowHidden = get(g:, 'MinTreeShowHidden', 0)
 let s:key_bindings =
     \ {get(g:, 'MinTreeOpen',            'o'): ":call <SID>ActivateNode(line('.'))<CR>",
     \  get(g:, 'MinTreeOpenRecursively', 'O'): ":call <SID>OpenRecursively(line('.'))<CR>",
@@ -23,9 +16,10 @@ let s:key_bindings =
     \  get(g:, 'MinTreeCloseParent',     'x'): ":call <SID>CloseParent(line('.'))<CR>",
     \  get(g:, 'MinTreeRefresh',         'r'): ":call <SID>Refresh(line('.'))<CR>",
     \  get(g:, 'MinTreeRefreshRoot',     'R'): ":call <SID>Refresh(1)<CR>",
+    \  get(g:, 'MinTreeToggleHidden',    'I'): ":call <SID>ToggleHidden()<CR>",
     \  get(g:, 'MinTreeExit',            'q'): ":buffer #<CR>"
     \ }
-    "ToDo: R, I
+    "ToDo: MinTreeFind(), retain open folders on refresh
 
 command! -n=? -complete=dir MinTree :call <SID>MinTree('<args>')
 
@@ -63,7 +57,7 @@ endfunction
 
 function! s:OpenFile(windowCmd, line)
     let path = mintree#fullPath(a:line)
-    if path !~  escape(g:Slash,'\').'$'
+    if path !~  escape(s:Slash(),'\').'$'
         execute 'buffer #'
         execute a:windowCmd
         execute 'edit '.path
@@ -73,9 +67,9 @@ endfunction
 function! s:GetChildren(line)
     let indent = mintree#indent(a:line)
     let parent = mintree#fullPath(a:line)
-    let children = split(system(printf(g:MinTreeDirCmd, fnameescape(parent))), '\n')
+    let children = split(system(printf(s:DirCmd(), fnameescape(parent))), '\n')
     let prefix = printf('%02d%s',indent+1, repeat(' ', (indent+1)*2))
-    call map(children, {idx,val -> printf((isdirectory(parent.g:Slash.val) ? '%s▸ %s'.g:Slash: '%s  %s'), prefix, val)})
+    call map(children, {idx,val -> printf((isdirectory(parent.s:Slash().val) ? '%s▸ %s'.s:Slash(): '%s  %s'), prefix, val)})
     setlocal modifiable
     call append(a:line, children)
     call setline(a:line, substitute(getline(a:line),'▸','▾',''))
@@ -134,3 +128,21 @@ function! s:Refresh(line)
     setlocal nomodifiable
     call s:ActivateNode(l:start)
 endfunction
+
+function! s:ToggleHidden()
+    let g:MinTreeShowHidden = !g:MinTreeShowHidden
+    call s:Refresh(1)
+endfunction
+
+function! s:DirCmd()
+    if has("win16") || has("win32") || has("win64")
+        return (g:MinTreeShowHidden ? get(g:, 'MinTreeDirAll',   'dir /b %s') : get(g:, 'MinTreeDirNoHidden', 'dir /b /a:-h %s | findstr -v "^\."'))
+    else
+        return (g:MinTreeShowHidden ? get(g:, 'MinTreeDirAll',   'ls -A %s | sort -f') : get(g:, 'MinTreeDirNoHidden', 'ls %s | sort -f'))
+    endif
+endfunction
+
+function! s:Slash()
+    return ((has("win16") || has("win32") || has("win64")) ? '\' : '/')
+endfunction
+
