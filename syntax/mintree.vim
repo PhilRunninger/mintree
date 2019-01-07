@@ -1,9 +1,7 @@
-syn match MinTreeArrows #[▾▸]\ze .*# containedin=MinTreeDir
-syn match MinTreeDir #[▾▸].*#
+syntax match MinTreeArrows #[▾▸]\ze .*# containedin=MinTreeDir
+syntax match MinTreeDir #[▾▸].*#
+syntax match MinTreeMeta #^\d\d# conceal containedin=ALL
 
-hi def link MinTreeDir Directory
-hi def link MinTreeArrows LineNr
-hi! def link Folded Directory
-
-syn match MinTreeMeta #^\d\d# conceal containedin=ALL
-setlocal conceallevel=3 concealcursor=nvic
+highlight default link MinTreeDir Directory
+highlight default link MinTreeArrows LineNr
+highlight! default link Folded Directory
