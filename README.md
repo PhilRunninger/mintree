@@ -2,6 +2,10 @@
 
 A minimalist version of [NERDTree](https://github.com/scrooloose/nerdtree). How much of NERDTree can I replicate with the fewest lines of code while, at the same time, doing it faster? This project is my answer to that question.
 
+## Prerequisite
+
+MinTree uses the `folding` and `conceal` features of Vim. It should run on Vim version 7.3+, as long as it is compiled with those features enabled. Make sure you see `+folding` and `+conceal` in the output of `:version`.
+
 ## Installation
 
 Use your favorite plugin manager to install this plugin. My personal favorite is [vim-plug](https://github.com/junegunn/vim-plug). In your **`.vimrc`**, add the following line.

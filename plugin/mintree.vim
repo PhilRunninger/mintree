@@ -1,5 +1,5 @@
-if !has("folding")
-    echomsg "MinTree requires Vim to be compiled with the +folding feature."
+if !has("folding") && !has("conceal")
+    echomsg "MinTree requires Vim to be compiled with the +folding and +conceal features."
     finish
 endif
 
@@ -145,4 +145,3 @@ endfunction
 function! s:Slash()
     return ((has("win16") || has("win32") || has("win64")) ? '\' : '/')
 endfunction
-
