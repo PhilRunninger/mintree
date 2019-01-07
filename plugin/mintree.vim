@@ -135,13 +135,17 @@ function! s:ToggleHidden()
 endfunction
 
 function! s:DirCmd()
-    if has("win16") || has("win32") || has("win64")
-        return (g:MinTreeShowHidden ? get(g:, 'MinTreeDirAll',   'dir /b %s') : get(g:, 'MinTreeDirNoHidden', 'dir /b /a:-h %s | findstr -v "^\."'))
+    if nerdtree#runningWindows()
+        return (g:MinTreeShowHidden ?
+             \  get(g:, 'MinTreeDirAll', 'dir /b %s') :
+             \  get(g:, 'MinTreeDirNoHidden', 'dir /b /a:-h %s | findstr -v "^\."'))
     else
-        return (g:MinTreeShowHidden ? get(g:, 'MinTreeDirAll',   'ls -A %s | sort -f') : get(g:, 'MinTreeDirNoHidden', 'ls %s | sort -f'))
+        return (g:MinTreeShowHidden ?
+             \  get(g:, 'MinTreeDirAll', 'ls -A %s | sort -f') :
+             \  get(g:, 'MinTreeDirNoHidden', 'ls %s | sort -f'))
     endif
 endfunction
 
 function! s:Slash()
-    return ((has("win16") || has("win32") || has("win64")) ? '\' : '/')
+    return (nerdtree#runningWindows() ? '\' : '/')
 endfunction

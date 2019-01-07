@@ -1,3 +1,7 @@
+function! mintree#runningWindows()
+    return has("win16") || has("win32") || has("win64")
+endfunction
+
 function! mintree#indent(line)
     let file = getline(a:line)
     return str2nr(file[0:1])
