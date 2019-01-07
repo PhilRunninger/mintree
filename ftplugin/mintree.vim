@@ -1,8 +1,8 @@
 setlocal nomodifiable
 setlocal buftype=nofile noswapfile
-setlocal nowrap number nolist                                            " Set to number for development only. Don't commit, or set back to nonumber!!!
-setlocal conceallevel=0 concealcursor=nvic                               " Set to 0 for development only. Don't commit, or set back to 3!!!
-setlocal foldcolumn=5 foldmethod=expr foldexpr=MinTreeFoldLevel(v:lnum)  " Set to 5 for development only. Don't commit, or set back to 0!!!
+setlocal nowrap nonumber nolist
+setlocal conceallevel=3 concealcursor=nvic
+setlocal foldcolumn=0 foldmethod=expr foldexpr=MinTreeFoldLevel(v:lnum)
 setlocal foldtext=substitute(getline(v:foldstart)[2:],'▾','▸','').'\ \ \ {'.(v:foldend-v:foldstart).(v:foldend-v:foldstart==1?'\ child}':'\ children}')
 
 function! MinTreeFoldLevel(lnum)
