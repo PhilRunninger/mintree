@@ -139,7 +139,7 @@ function! s:ToggleHidden()
 endfunction
 
 function! s:DirCmd()
-    if nerdtree#runningWindows()
+    if mintree#runningWindows()
         return (g:MinTreeShowHidden ?
              \  get(g:, 'MinTreeDirAll', 'dir /b %s') :
              \  get(g:, 'MinTreeDirNoHidden', 'dir /b /a:-h %s | findstr -v "^\."'))
