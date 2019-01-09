@@ -19,9 +19,37 @@ let s:key_bindings =
     \  get(g:, 'MinTreeToggleHidden',    'I'): ":call <SID>ToggleHidden()<CR>",
     \  get(g:, 'MinTreeExit',            'q'): ":buffer #<CR>"
     \ }
-    "ToDo: MinTreeFind(), retain open folders on refresh
 
 command! -n=? -complete=dir MinTree :call <SID>MinTree('<args>')
+command! -n=? -complete=file MinTreeFind :call <SID>MinTreeFind('<args>')
+
+function! s:MinTreeFind(path)
+    let l:path = empty(a:path) ? expand('%:p') : a:path
+    if l:path !~# '^'.s:root
+        call s:MinTreeOpen(fnamemodify(l:path,':h'))
+    endif
+
+    let l:path = split(l:path[len(s:root):],mintree#slash())
+    let l:line = 1
+    for l:part in l:path
+        execute 'normal! '.l:line.'gg'
+        if foldclosed(l:line) == -1
+            normal! zc
+        endif
+        let l:end = foldclosedend(l:line)
+        let l:indent = mintree#indent(l:line)
+        normal! zo
+        if search((l:indent+1).' *▸ '.l:part.mintree#slash(), 'W', l:end) > 0
+            call s:GetChildren(line('.'))
+            let l:line = line('.')
+        elseif search((l:indent+1).' *▾ '.l:part.mintree#slash(), 'W', l:end) > 0
+            let l:line = line('.')
+        elseif search((l:indent+1).' *'.l:part.'$', 'W', l:end) == 0
+            echomsg 'Path '.a:path.' not found.'
+            return
+        endif
+    endfor
+endfunction
 
 function! s:MinTree(path)
     if bufexists('=MinTree=') && (empty(a:path) || simplify(fnamemodify(a:path, ':p')) == s:root)
