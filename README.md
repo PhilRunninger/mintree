@@ -17,11 +17,16 @@ Plug 'git@github.com:PhilRunninger/mintree.git'
 
 ## Commands
 
-The only command is **`:MinTree [path]`**. This command opens a buffer with the name **`=MinTree=`** in the current window, and shows a tree of either the path given or the current working directory.
+### **`:MinTree [path]`**
+This command opens a buffer with the name **`=MinTree=`** in the current window, and shows a tree of either the path given or the current working directory.
 
-The command can be assigned to a key, and this assignment is left to the user, so as not to interfere with any existing mappings. For example,
+### **`:MinTreeFind [path]`**
+This command searches the **`=MinTree=`** buffer for the given path. If no path was given, it looks for the current buffer. If not found in the current tree, a new one is created to show the file being sought.
+
+The commands can be assigned to a key, and these assignments are left to the user, so as not to interfere with any existing mappings. For example,
 ```
 nnoremap <leader>o :MinTree<CR>
+nnoremap <leader>f :MinTreeFind<CR>
 ```
 
 ## Key Mappings
