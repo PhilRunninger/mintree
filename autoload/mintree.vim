@@ -9,6 +9,7 @@ endfunction
 
 function! mintree#fullPath(line)
     let pos = getpos('.')
+    execute 'normal! '.a:line.'gg'
     let indent = mintree#indent(a:line)
     let file = strcharpart(getline(a:line),2 + (indent+1)*2)
     while indent > 0
