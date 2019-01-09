@@ -20,3 +20,7 @@ function! mintree#fullPath(line)
     call setpos('.', pos)
     return file
 endfunction
+
+function! mintree#slash()
+    return (mintree#runningWindows() ? '\' : '/')
+endfunction

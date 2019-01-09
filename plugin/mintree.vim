@@ -57,7 +57,7 @@ endfunction
 
 function! s:OpenFile(windowCmd, line)
     let path = mintree#fullPath(a:line)
-    if path !~  escape(s:Slash(),'\').'$'
+    if path !~  escape(mintree#slash(),'\').'$'
         execute 'buffer #'
         execute a:windowCmd
         execute 'edit '.path
@@ -69,7 +69,7 @@ function! s:GetChildren(line)
     let parent = mintree#fullPath(a:line)
     let children = split(system(printf(s:DirCmd(), fnameescape(parent))), '\n')
     let prefix = printf('%02d%s',indent+1, repeat(' ', (indent+1)*2))
-    call map(children, {idx,val -> printf((isdirectory(parent.s:Slash().val) ? '%s▸ %s'.s:Slash(): '%s  %s'), prefix, val)})
+    call map(children, {idx,val -> printf((isdirectory(parent.mintree#slash().val) ? '%s▸ %s'.mintree#slash(): '%s  %s'), prefix, val)})
     setlocal modifiable
     call append(a:line, children)
     call setline(a:line, substitute(getline(a:line),'▸','▾',''))
@@ -148,8 +148,4 @@ function! s:DirCmd()
              \  get(g:, 'MinTreeDirAll', 'ls -A %s | sort -f') :
              \  get(g:, 'MinTreeDirNoHidden', 'ls %s | sort -f'))
     endif
-endfunction
-
-function! s:Slash()
-    return (nerdtree#runningWindows() ? '\' : '/')
 endfunction
