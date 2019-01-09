@@ -143,12 +143,14 @@ endfunction
 
 function! s:Refresh(line)
     let [l:start,l:end] = s:FoldLimits(a:line)
+    let l:open_folders = map(filter(range(l:start+1,l:end), {_,l->getline(l)=~'▾' && foldclosed(l)==-1}), {_,l->mintree#fullPath(l)})
     setlocal modifiable
     execute 'silent '.(l:start+1).','.l:end.'delete'
-    execute 'normal! '.l:start.'gg'
     call setline(l:start, substitute(getline(l:start),'▾','▸',''))
-    setlocal nomodifiable
     call s:ActivateNode(l:start)
+    call map(l:open_folders, {_,f -> s:MinTreeFind(f)})
+    execute 'normal! '.l:start.'gg'
+    setlocal nomodifiable
 endfunction
 
 function! s:FoldLimits(line)
