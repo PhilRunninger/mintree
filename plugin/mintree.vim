@@ -25,26 +25,23 @@ command! -n=? -complete=file MinTreeFind :call <SID>MinTreeFind('<args>')
 
 function! s:MinTreeFind(path)
     let l:path = empty(a:path) ? expand('%:p') : a:path
-    if l:path !~# '^'.s:root
+    if l:path =~# '^'.s:root
+        execute 'buffer =MinTree='
+    else
         call s:MinTreeOpen(fnamemodify(l:path,':h'))
     endif
 
     let l:path = split(l:path[len(s:root):],mintree#slash())
     let l:line = 1
     for l:part in l:path
-        execute 'normal! '.l:line.'gg'
-        if foldclosed(l:line) == -1
-            normal! zc
-        endif
-        let l:end = foldclosedend(l:line)
+        let [_,l:end] = s:FoldLimits(l:line)
         let l:indent = mintree#indent(l:line)
-        normal! zo
-        if search((l:indent+1).' *▸ '.l:part.mintree#slash(), 'W', l:end) > 0
+        if search(printf('^%02d *▸ %s%s', l:indent+1, l:part ,mintree#slash()), 'W', l:end) > 0
             call s:GetChildren(line('.'))
             let l:line = line('.')
-        elseif search((l:indent+1).' *▾ '.l:part.mintree#slash(), 'W', l:end) > 0
+        elseif search(printf('^%02d *▾ %s%s', l:indent+1, l:part ,mintree#slash()), 'W', l:end) > 0
             let l:line = line('.')
-        elseif search((l:indent+1).' *'.l:part.'$', 'W', l:end) == 0
+        elseif search(printf('^%02d *%s$', l:indent+1, l:part), 'W', l:end) == 0
             echomsg 'Path '.a:path.' not found.'
             return
         endif
@@ -154,8 +151,8 @@ function! s:Refresh(line)
 endfunction
 
 function! s:FoldLimits(line)
+    execute 'normal! '.a:line.'gg'
     if foldclosed(a:line) == -1
-        execute 'normal! '.a:line.'gg'
         normal! zc
     endif
     let l:limits = [foldclosed(a:line), foldclosedend(a:line)]
