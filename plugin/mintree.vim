@@ -82,7 +82,7 @@ endfunction
 
 function! s:OpenFile(windowCmd, line)
     let path = mintree#fullPath(a:line)
-    if path !~  escape(mintree#slash(),'\').'$'
+    if path !~ escape(mintree#slash(),'\').'$'
         execute 'buffer #'
         execute a:windowCmd
         execute 'edit '.path
