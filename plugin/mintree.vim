@@ -25,7 +25,7 @@ command! -n=? -complete=file MinTreeFind :call <SID>MinTreeFind('<args>')
 
 function! s:MinTreeFind(path)
     let l:path = empty(a:path) ? expand('%:p') : a:path
-    if l:path =~# '^'.s:root
+    if stridx(l:path, s:root) == 0
         execute 'buffer =MinTree='
     else
         call s:MinTreeOpen(fnamemodify(l:path,':h'))
@@ -92,7 +92,7 @@ endfunction
 function! s:GetChildren(line)
     let indent = mintree#indent(a:line)
     let parent = mintree#fullPath(a:line)
-    let children = split(system(printf(s:DirCmd(), fnameescape(parent))), '\n')
+    let children = split(system(printf(s:DirCmd(), shellescape(parent))), '\n')
     let prefix = printf('%02d%s',indent+1, repeat(' ', (indent+1)*2))
     call map(children, {idx,val -> printf((isdirectory(parent.mintree#slash().val) ? '%s▸ %s'.mintree#slash(): '%s  %s'), prefix, val)})
     setlocal modifiable
