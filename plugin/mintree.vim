@@ -11,6 +11,10 @@ let s:key_bindings =
     \  get(g:, 'MinTreeOpenVSplit',      'v'): ":call <SID>OpenFile('wincmd v', line('.'))<CR>",
     \  get(g:, 'MinTreeOpenTab',         't'): ":call <SID>OpenFile('tabnew', line('.'))<CR>",
     \  get(g:, 'MinTreeGoToParent',      'p'): ":call <SID>GoToParent(line('.'))<CR>",
+    \  get(g:, 'MinTreeLastSibling',     'J'): ":call <SID>GoToSibling( 1, {dest,start -> dest < start})<CR>",
+    \  get(g:, 'MinTreeFirstSibling',    'K'): ":call <SID>GoToSibling(-1, {dest,start -> dest < start})<CR>",
+    \  get(g:, 'MinTreeNextSibling', '<C-J>'): ":call <SID>GoToSibling( 1, {dest,start -> dest <= start})<CR>",
+    \  get(g:, 'MinTreePrevSibling', '<C-K>'): ":call <SID>GoToSibling(-1, {dest,start -> dest <= start})<CR>",
     \  get(g:, 'MinTreeSetRootUp',       'u'): ":call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>",
     \  get(g:, 'MinTreeSetRoot',         'C'): ":call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>",
     \  get(g:, 'MinTreeCloseParent',     'x'): ":call <SID>CloseParent(line('.'))<CR>",
@@ -111,6 +115,24 @@ endfunction
 
 function! s:GoToParent(line)
     call search(printf('^%02d', mintree#indent(a:line)-1),'bW')
+endfunction
+
+function! s:GoToSibling(delta, stop_when)
+    let l:line = line('.')
+    let l:destination = l:line
+    let l:indent = mintree#indent(l:line)
+    let l:line += a:delta
+    while l:line >=1 && l:line <= line('$')
+        let l:dest_indent = mintree#indent(l:line)
+        if l:dest_indent == l:indent
+            let l:destination = l:line
+        endif
+        if a:stop_when(l:dest_indent, l:indent)
+            break
+        endif
+        let l:line += a:delta
+    endwhile
+    execute 'normal! '.l:destination.'gg'
 endfunction
 
 function! s:OpenRecursively(line)

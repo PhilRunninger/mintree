@@ -40,7 +40,11 @@ Default Key | Variable                   | Function
 **`s`**     | `g:MinTreeOpenSplit`       | Split the window horizontally, and open the selected file there.
 **`v`**     | `g:MinTreeOpenVSplit`      | Split the window vertically, and open the selected file there.
 **`t`**     | `g:MinTreeOpenTab`         | Open the selected file in a new tab.
-**`p`**     | `g:MinTreeGoToParent`      | Navigate quickly to the next closest parent folder.
+**`p`**     | `g:MinTreeGoToParent`      | Navigate quickly to the next closest parent directory.
+**`J`**     | `g:MinTreeLastSibling`     | Navigate quickly to the last sibling file or directory.
+**`K`**     | `g:MinTreeFirstSibling`    | Navigate quickly to the first sibling file or directory.
+**`<C-J>`** | `g:MinTreeNextSibling`     | Navigate quickly to the next sibling file or directory.
+**`<C-K>`** | `g:MinTreePrevSibling`,    | Navigate quickly to the previous sibling file or directory.
 **`u`**     | `g:MinTreeSetRootUp`       | Change the root of the tree to the parent directory of the current root.
 **`C`**     | `g:MinTreeSetRoot`         | Change the root of the tree to the directory under the cursor.
 **`x`**     | `g:MinTreeCloseParent`     | Close the directory containing the current file or directory.
@@ -55,6 +59,6 @@ The following settings can be used to customize the commands that gather files a
 
 Variable | Default
 --- | ---
-**`g:MinTreeDirAll`**<br>returns all files/dirs in the `%s` folder. | Windows: `dir /b %s`<br>others: `ls -A %s \| sort -f`
-**`g:MinTreeDirNoHidden`**<br>returns all non hidden files/dirs in the `%s` folder. | Windows: `dir /b /a:-h %s \| findstr -v "^\."`<br>others: `ls %s \| sort -f`
+**`g:MinTreeDirAll`**<br>returns all files/dirs in the `%s` directory. | Windows: `dir /b %s`<br>others: `ls -A %s \| sort -f`
+**`g:MinTreeDirNoHidden`**<br>returns all non hidden files/dirs in the `%s` directory. | Windows: `dir /b /a:-h %s \| findstr -v "^\."`<br>others: `ls %s \| sort -f`
 **`g:MinTreeShowHidden`**<br>sets which of the above two commands to use by default. | 0
