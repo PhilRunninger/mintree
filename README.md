@@ -4,7 +4,7 @@ A minimalist version of [NERDTree](https://github.com/scrooloose/nerdtree). How 
 
 ## Prerequisite
 
-MinTree uses the `folding` and `conceal` features of Vim. It should run on Vim version 7.3+, as long as it is compiled with those features enabled. Make sure you see `+folding` and `+conceal` in the output of `:version`.
+MinTree requires Vim version 8.0+, and it must be compiled with the `folding`, `conceal`, and `lambda` features turned on. Make sure you see `+folding`, `+conceal`, and `+lambda` in the output of `:version` or `vim --version`.
 
 ## Installation
 
