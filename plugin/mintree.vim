@@ -34,8 +34,15 @@ function! s:MinTreeFind(path)
     else
         call s:MinTreeOpen(fnamemodify(l:path,':h'))
     endif
+    if s:LocateFile(l:path) == -1
+        buffer #
+        echomsg 'Path '.l:path.' not found.'
+        echomsg ' '
+    endif
+endfunction
 
-    let l:path = split(l:path[len(s:root):],mintree#slash())
+function! s:LocateFile(path)
+    let l:path = split(a:path[len(s:root):],mintree#slash())
     let l:line = 1
     for l:part in l:path
         let [_,l:end] = s:FoldLimits(l:line)
@@ -46,10 +53,10 @@ function! s:MinTreeFind(path)
         elseif search(printf('^%02d *▾ %s%s', l:indent+1, l:part ,mintree#slash()), 'W', l:end) > 0
             let l:line = line('.')
         elseif search(printf('^%02d *%s$', l:indent+1, l:part), 'W', l:end) == 0
-            echomsg 'Path '.a:path.' not found.'
-            return
+            return -1
         endif
     endfor
+    return line('.')
 endfunction
 
 function! s:MinTree(path)
