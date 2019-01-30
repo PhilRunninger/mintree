@@ -29,7 +29,7 @@ command! -n=? -complete=file MinTreeFind :call <SID>MinTreeFind('<args>')
 
 function! s:MinTreeFind(path)
     let l:path = empty(a:path) ? expand('%:p') : a:path
-    if stridx(l:path, s:root) == 0
+    if exists("s:root") && stridx(l:path, s:root) == 0 && bufexists('=MinTree=')
         execute 'buffer =MinTree='
     else
         call s:MinTreeOpen(fnamemodify(l:path,':h'))
