@@ -55,9 +55,9 @@ function! s:_locateFile(path, indent, line)
         let [_,l:end] = s:FoldLimits(a:line)
         if search(printf('^%02d *%s %s%s', a:indent+1, g:MinTreeCollapsed, l:part ,mintree#slash()), 'W', l:end) > 0
             call s:GetChildren(line('.'))
-            return s:_locateFile(path[1:], a:indent+1, line('.'))
+            return s:_locateFile(a:path[1:], a:indent+1, line('.'))
         elseif search(printf('^%02d *%s %s%s', a:indent+1, g:MinTreeExpanded, l:part ,mintree#slash()), 'W', l:end) > 0
-            return s:_locateFile(path[1:], a:indent+1, line('.'))
+            return s:_locateFile(a:path[1:], a:indent+1, line('.'))
         elseif search(printf('^%02d *%s$', a:indent+1, l:part), 'W', l:end) > 0
             return line('.')
         else
