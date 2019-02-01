@@ -36,27 +36,32 @@ function! s:MinTreeFind(path)
     endif
     if s:LocateFile(l:path) == -1
         buffer #
-        echomsg 'Path '.l:path.' not found.'
+        echomsg 'File '.l:path.' was not found.'
         echomsg ' '
     endif
 endfunction
 
 function! s:LocateFile(path)
-    let l:path = split(a:path[len(s:root):],mintree#slash())
-    let l:line = 1
-    for l:part in l:path
-        let [_,l:end] = s:FoldLimits(l:line)
-        let l:indent = mintree#indent(l:line)
-        if search(printf('^%02d *▸ %s%s', l:indent+1, l:part ,mintree#slash()), 'W', l:end) > 0
+    return s:_locateFile(split(a:path[len(s:root):],mintree#slash()), 0, 1)
+endfunction
+
+function! s:_locateFile(path, indent, line)
+    if a:path == []
+        return -1
+    else
+        let l:part = a:path[0]
+        let [_,l:end] = s:FoldLimits(a:line)
+        if search(printf('^%02d *▸ %s%s', a:indent+1, l:part ,mintree#slash()), 'W', l:end) > 0
             call s:GetChildren(line('.'))
-            let l:line = line('.')
-        elseif search(printf('^%02d *▾ %s%s', l:indent+1, l:part ,mintree#slash()), 'W', l:end) > 0
-            let l:line = line('.')
-        elseif search(printf('^%02d *%s$', l:indent+1, l:part), 'W', l:end) == 0
+            return s:_locateFile(path[1:], a:indent+1, line('.'))
+        elseif search(printf('^%02d *▾ %s%s', a:indent+1, l:part ,mintree#slash()), 'W', l:end) > 0
+            return s:_locateFile(path[1:], a:indent+1, line('.'))
+        elseif search(printf('^%02d *%s$', a:indent+1, l:part), 'W', l:end) > 0
+            return line('.')
+        else
             return -1
         endif
-    endfor
-    return line('.')
+    endif
 endfunction
 
 function! s:MinTree(path)
