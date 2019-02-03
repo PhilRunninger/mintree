@@ -53,12 +53,12 @@ function! s:_locateFile(path, indent, line)
     else
         let l:part = a:path[0]
         let [_,l:end] = s:FoldLimits(a:line)
-        if search(printf('^%02d *%s %s%s', a:indent+1, g:MinTreeCollapsed, l:part ,mintree#slash()), 'W', l:end) > 0
+        if search(printf('^%02d. *%s %s%s', a:indent+1, g:MinTreeCollapsed, l:part ,mintree#slash()), 'W', l:end) > 0
             call s:GetChildren(line('.'))
             return s:_locateFile(a:path[1:], a:indent+1, line('.'))
-        elseif search(printf('^%02d *%s %s%s', a:indent+1, g:MinTreeExpanded, l:part ,mintree#slash()), 'W', l:end) > 0
+        elseif search(printf('^%02d. *%s %s%s', a:indent+1, g:MinTreeExpanded, l:part ,mintree#slash()), 'W', l:end) > 0
             return s:_locateFile(a:path[1:], a:indent+1, line('.'))
-        elseif search(printf('^%02d *%s$', a:indent+1, l:part), 'W', l:end) > 0
+        elseif search(printf('^%02d. *%s$', a:indent+1, l:part), 'W', l:end) > 0
             return line('.')
         else
             return -1
@@ -81,7 +81,7 @@ function! s:MinTreeOpen(path)
 
     setlocal modifiable
     execute '%delete'
-    call setline(1, printf('00%s %s', g:MinTreeCollapsed, s:root))
+    call setline(1, printf('00 %s %s', g:MinTreeCollapsed, s:root))
     call s:ActivateNode(1)
 
     call map(copy(s:key_bindings), {key, cmd -> execute("nnoremap <silent> <buffer> ".key." ".cmd)})
@@ -111,7 +111,7 @@ function! s:GetChildren(line)
     let indent = mintree#indent(a:line)
     let parent = mintree#fullPath(a:line)
     let children = split(system(printf(s:DirCmd(), shellescape(parent))), '\n')
-    let prefix = printf('%02d%s',indent+1, repeat(' ', (indent+1)*2))
+    let prefix = printf('%02d %s',indent+1, repeat(' ', (indent+1)*2))
     call map(children, {idx,val -> printf((isdirectory(parent.mintree#slash().val) ? '%s'.g:MinTreeCollapsed.' %s'.mintree#slash(): '%s  %s'), prefix, val)})
     setlocal modifiable
     call append(a:line, children)
