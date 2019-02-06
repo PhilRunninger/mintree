@@ -45,28 +45,28 @@ function! s:MinTreeFind(path)
     else
         call s:MinTreeOpen(fnamemodify(l:path,':h'))
     endif
-    if s:LocateFile(l:path) == -1
+    if s:LocateFile(l:path,1,0) == -1
         buffer #
         echomsg 'File '.l:path.' was not found.'
         echomsg ' '
     endif
 endfunction
 
-function! s:LocateFile(path)
-    return s:_locateFile(split(a:path[len(s:root):],mintree#slash()), 0, 1)
+function! s:LocateFile(path,get_children,restore_folds)
+    return s:_locateFile(split(a:path[len(s:root):],mintree#slash()), 0, 1, a:get_children, a:restore_folds)
 endfunction
 
-function! s:_locateFile(path, indent, line)
+function! s:_locateFile(path, indent, line, get_children, restore_folds)
     if a:path == []
         return -1
     else
         let l:part = a:path[0]
-        let [_,l:end] = s:FoldLimits(a:line)
-        if search(printf('^%02d. *%s %s%s', a:indent+1, g:MinTreeCollapsed, l:part ,mintree#slash()), 'W', l:end) > 0
+        let [_,l:end] = s:FoldLimits(a:line, a:restore_folds)
+        if search(printf('^%02d. *%s %s%s', a:indent+1, g:MinTreeCollapsed, l:part ,mintree#slash()), 'W', l:end) > 0 && a:get_children
             call s:GetChildren(line('.'))
-            return s:_locateFile(a:path[1:], a:indent+1, line('.'))
+            return s:_locateFile(a:path[1:], a:indent+1, line('.'), a:get_children, a:restore_folds)
         elseif search(printf('^%02d. *%s %s%s', a:indent+1, g:MinTreeExpanded, l:part ,mintree#slash()), 'W', l:end) > 0
-            return s:_locateFile(a:path[1:], a:indent+1, line('.'))
+            return s:_locateFile(a:path[1:], a:indent+1, line('.'), a:get_children, a:restore_folds)
         elseif search(printf('^%02d. *%s$', a:indent+1, l:part), 'W', l:end) > 0
             return line('.')
         else
@@ -172,11 +172,11 @@ function! s:OpenRecursively(line)
         normal! zO
         let l:line = search(g:MinTreeCollapsed,'cW')
     endwhile
-    execute 'normal! '.a:line.'gg'
+    call s:UpdateOpen()
 endfunction
 
 function! s:Refresh(line)
-    let [l:start,l:end] = s:FoldLimits(a:line)
+    let [l:start,l:end] = s:FoldLimits(a:line, 0)
     let l:open_folders = map(filter(range(l:start+1,l:end), {_,l->getline(l)=~g:MinTreeExpanded && foldclosed(l)==-1}), {_,l->mintree#fullPath(l)})
     setlocal modifiable
     execute 'silent '.(l:start+1).','.l:end.'delete'
@@ -187,13 +187,16 @@ function! s:Refresh(line)
     setlocal nomodifiable
 endfunction
 
-function! s:FoldLimits(line)
+function! s:FoldLimits(line, restore_folds)
     execute 'normal! '.a:line.'gg'
-    if foldclosed(a:line) == -1
+    let l:is_fold_closed = foldclosed(a:line) != -1
+    if !l:is_fold_closed
         normal! zc
     endif
     let l:limits = [foldclosed(a:line), foldclosedend(a:line)]
-    normal! zo
+    if !l:is_fold_closed && a:restore_folds
+        normal! zo
+    endif
     return l:limits
 endfunction
 
