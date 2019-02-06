@@ -49,7 +49,26 @@ function! s:MinTreeFind(path)
         buffer #
         echomsg 'File '.l:path.' was not found.'
         echomsg ' '
+    else
+        call s:UpdateOpen()
     endif
+endfunction
+
+function! s:UpdateOpen()
+    let l:save_position = line('.')
+    set modifiable
+    normal gg0llGr0
+    for buf in range(1,bufnr('$'))
+        if bufexists(buf)
+            let l:line = s:LocateFile(fnamemodify(bufname(buf),':p'),0,1). bufname(buf)
+            if l:line != -1
+                let l:text = getline(l:line)
+                call setline(l:line, l:text[0:1].'1'.text[3:])
+            endif
+        endif
+    endfor
+    set nomodifiable
+    execute 'normal! '.l:save_position.'gg'
 endfunction
 
 function! s:LocateFile(path,get_children,restore_folds)
@@ -92,6 +111,7 @@ function! s:ActivateNode(line)
     if getline(a:line) =~ g:MinTreeCollapsed
         call s:GetChildren(a:line)
         normal! zO
+        call s:UpdateOpen()
     elseif getline(a:line) =~ g:MinTreeExpanded
         normal! za
     else
