@@ -29,6 +29,15 @@ let s:key_bindings =
 command! -n=? -complete=dir MinTree :call <SID>MinTree('<args>')
 command! -n=? -complete=file MinTreeFind :call <SID>MinTreeFind('<args>')
 
+function! s:MinTree(path)
+    if bufexists('=MinTree=') && (empty(a:path) || simplify(fnamemodify(a:path, ':p')) == s:root)
+        execute 'buffer =MinTree='
+    else
+        call s:MinTreeOpen(a:path)
+    endif
+    call s:UpdateOpen()
+endfunction
+
 function! s:MinTreeFind(path)
     let l:path = empty(a:path) ? expand('%:p') : a:path
     if exists("s:root") && stridx(l:path, s:root) == 0 && bufexists('=MinTree=')
@@ -63,14 +72,6 @@ function! s:_locateFile(path, indent, line)
         else
             return -1
         endif
-    endif
-endfunction
-
-function! s:MinTree(path)
-    if bufexists('=MinTree=') && (empty(a:path) || simplify(fnamemodify(a:path, ':p')) == s:root)
-        execute 'buffer =MinTree='
-    else
-        call s:MinTreeOpen(a:path)
     endif
 endfunction
 
