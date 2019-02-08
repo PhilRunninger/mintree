@@ -56,7 +56,7 @@ endfunction
 
 function! s:UpdateOpen()
     let l:save_position = line('.')
-    set modifiable
+    setlocal modifiable
     normal gg0llGr0
     for buf in range(1,bufnr('$'))
         if bufexists(buf)
@@ -67,7 +67,7 @@ function! s:UpdateOpen()
             endif
         endif
     endfor
-    set nomodifiable
+    setlocal nomodifiable
     execute 'normal! '.l:save_position.'gg'
 endfunction
 
