@@ -3,23 +3,22 @@ function! mintree#runningWindows()
 endfunction
 
 function! mintree#indent(line)
-    let file = getline(a:line)
-    return str2nr(file[0:1])
+    return str2nr(getline(a:line)[0:1])
 endfunction
 
 function! mintree#fullPath(line)
-    let pos = getpos('.')
+    let l:pos = getpos('.')
     execute 'normal! '.a:line.'gg'
-    let indent = mintree#indent(a:line)
-    let file = strcharpart(getline(a:line),3 + (indent+1)*2)
-    while indent > 0
-        let indent -= 1
-        call search(printf('^%02d', indent),'bW')
-        let parent = strcharpart(getline('.'),3 + (indent+1)*2)
-        let file = parent . file
+    let l:indent = mintree#indent(a:line)
+    let l:file = strcharpart(getline(a:line),3 + (l:indent+1)*2)
+    while l:indent > 0
+        let l:indent -= 1
+        call search(printf('^%02d', l:indent),'bW')
+        let l:parent = strcharpart(getline('.'),3 + (l:indent+1)*2)
+        let l:file = l:parent . l:file
     endwhile
-    call setpos('.', pos)
-    return file
+    call setpos('.', l:pos)
+    return l:file
 endfunction
 
 function! mintree#slash()

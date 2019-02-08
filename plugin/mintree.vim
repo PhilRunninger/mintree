@@ -55,7 +55,7 @@ function! s:MinTreeFind(path)
 endfunction
 
 function! s:UpdateOpen()
-    let l:save_position = line('.')
+    let l:pos = getpos('.')
     setlocal modifiable
     normal gg0llGr0
     for buf in range(1,bufnr('$'))
@@ -68,7 +68,7 @@ function! s:UpdateOpen()
         endif
     endfor
     setlocal nomodifiable
-    execute 'normal! '.l:save_position.'gg'
+    call setpos('.', l:pos)
 endfunction
 
 function! s:LocateFile(path,get_children,restore_folds)
@@ -120,25 +120,25 @@ function! s:ActivateNode(line)
 endfunction
 
 function! s:OpenFile(windowCmd, line)
-    let path = mintree#fullPath(a:line)
-    if path !~ escape(mintree#slash(),'\').'$'
+    let l:path = mintree#fullPath(a:line)
+    if l:path !~ escape(mintree#slash(),'\').'$'
         execute 'buffer #'
         execute a:windowCmd
-        execute 'edit '.path
+        execute 'edit '.l:path
     endif
 endfunction
 
 function! s:GetChildren(line)
-    let indent = mintree#indent(a:line)
-    let parent = mintree#fullPath(a:line)
-    let children = split(system(printf(s:DirCmd(), shellescape(parent))), '\n')
-    let prefix = printf('%02d0%s',indent+1, repeat(' ', (indent+1)*2))
-    call map(children, {idx,val -> printf((isdirectory(parent.mintree#slash().val) ? '%s'.g:MinTreeCollapsed.' %s'.mintree#slash(): '%s  %s'), prefix, val)})
+    let l:indent = mintree#indent(a:line)
+    let l:parent = mintree#fullPath(a:line)
+    let l:children = split(system(printf(s:DirCmd(), shellescape(l:parent))), '\n')
+    let l:prefix = printf('%02d0%s',l:indent+1, repeat(' ', (l:indent+1)*2))
+    call map(l:children, {idx,val -> printf((isdirectory(l:parent.mintree#slash().val) ? '%s'.g:MinTreeCollapsed.' %s'.mintree#slash(): '%s  %s'), l:prefix, val)})
     setlocal modifiable
-    call append(a:line, children)
+    call append(a:line, l:children)
     call setline(a:line, substitute(getline(a:line),g:MinTreeCollapsed,g:MinTreeExpanded,''))
     setlocal nomodifiable
-    return len(children)
+    return len(l:children)
 endfunction
 
 function! s:CloseParent(line)
