@@ -206,6 +206,7 @@ function! s:Refresh(line)
     call setline(l:start, substitute(getline(l:start),g:MinTreeExpanded,g:MinTreeCollapsed,''))
     call s:ActivateNode(l:start)
     call map(l:open_folders, {_,f -> s:LocateFile(f,1)})
+    call s:UpdateOpen()
     execute 'normal! '.l:start.'gg'
     setlocal nomodifiable
 endfunction
