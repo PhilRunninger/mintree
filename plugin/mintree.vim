@@ -51,6 +51,7 @@ function! s:MinTreeFind(path)
         echomsg 'File '.l:path.' was not found.'
         echomsg ' '
     else
+        normal zO
         call s:UpdateOpen()
     endif
 endfunction
