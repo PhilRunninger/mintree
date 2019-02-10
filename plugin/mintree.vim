@@ -205,7 +205,7 @@ function! s:Refresh(line)
     execute 'silent '.(l:start+1).','.l:end.'delete'
     call setline(l:start, substitute(getline(l:start),g:MinTreeExpanded,g:MinTreeCollapsed,''))
     call s:ActivateNode(l:start)
-    call map(l:open_folders, {_,f -> s:MinTreeFind(f)})
+    call map(l:open_folders, {_,f -> s:LocateFile(f,1)})
     execute 'normal! '.l:start.'gg'
     setlocal nomodifiable
 endfunction
