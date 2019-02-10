@@ -101,7 +101,7 @@ function! s:MinTreeOpen(path)
     set ft=mintree
 
     setlocal modifiable
-    execute '%delete'
+    %delete
     call setline(1, printf('000%s %s', g:MinTreeCollapsed, s:root))
     call s:ActivateNode(1)
 
@@ -123,7 +123,7 @@ endfunction
 function! s:OpenFile(windowCmd, line)
     let l:path = mintree#fullPath(a:line)
     if l:path !~ escape(mintree#slash(),'\').'$'
-        execute 'buffer #'
+        buffer #
         execute a:windowCmd
         execute 'edit '.l:path
     endif
