@@ -3,6 +3,7 @@ if !has("folding") && !has("conceal")
     finish
 endif
 
+let s:MinTreeBuffer = '=MinTree='
 let g:MinTreeCollapsed = get(g:, 'MinTreeCollapsed', '▸')
 let g:MinTreeExpanded = get(g:, 'MinTreeExpanded', '▾')
 let g:MinTreeShowHidden = get(g:, 'MinTreeShowHidden', 0)
@@ -30,8 +31,8 @@ command! -n=? -complete=dir MinTree :call <SID>MinTree('<args>')
 command! -n=? -complete=file MinTreeFind :call <SID>MinTreeFind('<args>')
 
 function! s:MinTree(path)
-    if bufexists('=MinTree=') && (empty(a:path) || simplify(fnamemodify(a:path, ':p')) == s:root)
-        execute 'buffer =MinTree='
+    if bufexists(s:MinTreeBuffer) && (empty(a:path) || simplify(fnamemodify(a:path, ':p')) == s:root)
+        execute 'buffer '.s:MinTreeBuffer
     else
         call s:MinTreeOpen(a:path)
     endif
@@ -40,8 +41,8 @@ endfunction
 
 function! s:MinTreeFind(path)
     let l:path = empty(a:path) ? expand('%:p') : a:path
-    if exists("s:root") && stridx(l:path, s:root) == 0 && bufexists('=MinTree=')
-        execute 'buffer =MinTree='
+    if exists("s:root") && stridx(l:path, s:root) == 0 && bufexists(s:MinTreeBuffer)
+        execute 'buffer '.s:MinTreeBuffer
     else
         call s:MinTreeOpen(fnamemodify(l:path,':h'))
     endif
@@ -96,7 +97,7 @@ endfunction
 
 function! s:MinTreeOpen(path)
     let s:root = simplify(fnamemodify(a:path, ':p'))
-    execute 'silent buffer ' . bufnr('=MinTree=', 1)
+    execute 'silent buffer ' . bufnr(s:MinTreeBuffer, 1)
     set ft=mintree
 
     setlocal modifiable
