@@ -44,7 +44,7 @@ Default Key | Variable                   | Function
 **`J`**     | `g:MinTreeLastSibling`     | Navigate quickly to the last sibling file or directory.
 **`K`**     | `g:MinTreeFirstSibling`    | Navigate quickly to the first sibling file or directory.
 **`<C-J>`** | `g:MinTreeNextSibling`     | Navigate quickly to the next sibling file or directory.
-**`<C-K>`** | `g:MinTreePrevSibling`,    | Navigate quickly to the previous sibling file or directory.
+**`<C-K>`** | `g:MinTreePrevSibling`     | Navigate quickly to the previous sibling file or directory.
 **`u`**     | `g:MinTreeSetRootUp`       | Change the root of the tree to the parent directory of the current root.
 **`C`**     | `g:MinTreeSetRoot`         | Change the root of the tree to the directory under the cursor.
 **`x`**     | `g:MinTreeCloseParent`     | Close the directory containing the current file or directory.
