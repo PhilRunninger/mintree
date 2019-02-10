@@ -1,5 +1,5 @@
-if !has("folding") && !has("conceal")
-    echomsg "MinTree requires Vim to be compiled with the +folding and +conceal features."
+if !has("folding") && !has("conceal") && !has("lambda")
+    echomsg "MinTree requires Vim 8.0+, and to be compiled with the +folding, +conceal, and +lambda features."
     finish
 endif
 
