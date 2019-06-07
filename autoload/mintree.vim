@@ -1,12 +1,13 @@
-function! mintree#runningWindows()
+" vim: foldmethod=marker
+function! mintree#runningWindows()    " {{{1
     return has("win16") || has("win32") || has("win64")
 endfunction
 
-function! mintree#indent(line)
+function! mintree#indent(line)    " {{{1
     return str2nr(getline(a:line)[0:1])
 endfunction
 
-function! mintree#fullPath(line)
+function! mintree#fullPath(line)    " {{{1
     let l:pos = getpos('.')
     execute 'normal! '.a:line.'gg'
     let l:indent = mintree#indent(a:line)
@@ -21,6 +22,6 @@ function! mintree#fullPath(line)
     return l:file
 endfunction
 
-function! mintree#slash()
+function! mintree#slash()    " {{{1
     return (mintree#runningWindows() ? '\' : '/')
 endfunction

@@ -1,8 +1,11 @@
+" vim: foldmethod=marker
+" Compatibility Check   {{{1
 if !has("folding") && !has("conceal") && !has("lambda")
     echomsg "MinTree requires Vim 8.0+, and to be compiled with the +folding, +conceal, and +lambda features."
     finish
 endif
 
+" Initialization   {{{1
 let s:MinTreeBuffer = '=MinTree='
 let g:MinTreeCollapsed = get(g:, 'MinTreeCollapsed', '▸')
 let g:MinTreeExpanded = get(g:, 'MinTreeExpanded', '▾')
@@ -30,7 +33,7 @@ let s:key_bindings =
 command! -n=? -complete=dir MinTree :call <SID>MinTree('<args>')
 command! -n=? -complete=file MinTreeFind :call <SID>MinTreeFind('<args>')
 
-function! s:MinTree(path)
+function! s:MinTree(path)   " {{{1
     if bufexists(s:MinTreeBuffer) && (empty(a:path) || simplify(fnamemodify(a:path, ':p')) == s:root)
         execute 'buffer '.s:MinTreeBuffer
     else
@@ -39,7 +42,7 @@ function! s:MinTree(path)
     call s:UpdateOpen()
 endfunction
 
-function! s:MinTreeFind(path)
+function! s:MinTreeFind(path)   " {{{1
     let l:path = empty(a:path) ? expand('%:p') : a:path
     if exists("s:root") && stridx(l:path, s:root) == 0 && bufexists(s:MinTreeBuffer)
         execute 'buffer '.s:MinTreeBuffer
@@ -56,7 +59,7 @@ function! s:MinTreeFind(path)
     endif
 endfunction
 
-function! s:UpdateOpen()
+function! s:UpdateOpen()   " {{{1
     let l:pos = getpos('.')
     setlocal modifiable
     normal gg0llGr0
@@ -74,7 +77,7 @@ function! s:UpdateOpen()
     call setpos('.', l:pos)
 endfunction
 
-function! s:LocateFile(path,get_children)
+function! s:LocateFile(path,get_children)   " {{{1
     return s:_locateFile(split(a:path[len(s:root):],mintree#slash()), 0, 1, a:get_children)
 endfunction
 
@@ -97,7 +100,7 @@ function! s:_locateFile(path, indent, line, get_children)
     endif
 endfunction
 
-function! s:MinTreeOpen(path)
+function! s:MinTreeOpen(path)   " {{{1
     let s:root = simplify(fnamemodify(a:path, ':p'))
     execute 'silent buffer ' . bufnr(s:MinTreeBuffer, 1)
     set ft=mintree
@@ -110,7 +113,7 @@ function! s:MinTreeOpen(path)
     call map(copy(s:key_bindings), {key, cmd -> execute("nnoremap <silent> <buffer> ".key." ".cmd)})
 endfunction
 
-function! s:ActivateNode(line)
+function! s:ActivateNode(line)   " {{{1
     if getline(a:line) =~ g:MinTreeCollapsed
         call s:GetChildren(a:line)
         normal! zO
@@ -122,7 +125,7 @@ function! s:ActivateNode(line)
     endif
 endfunction
 
-function! s:OpenFile(windowCmd, line)
+function! s:OpenFile(windowCmd, line)   " {{{1
     let l:path = mintree#fullPath(a:line)
     if l:path !~ escape(mintree#slash(),'\').'$'
         buffer #
@@ -131,7 +134,7 @@ function! s:OpenFile(windowCmd, line)
     endif
 endfunction
 
-function! s:GetChildren(line)
+function! s:GetChildren(line)   " {{{1
     let l:indent = mintree#indent(a:line)
     let l:parent = mintree#fullPath(a:line)
     let l:children = split(system(printf(s:DirCmd(), shellescape(l:parent))), '\n')
@@ -144,18 +147,18 @@ function! s:GetChildren(line)
     return len(l:children)
 endfunction
 
-function! s:CloseParent(line)
+function! s:CloseParent(line)   " {{{1
     if foldlevel(a:line) > 0
         normal zc
         execute 'normal! '.foldclosed(a:line).'gg'
     endif
 endfunction
 
-function! s:GoToParent(line)
+function! s:GoToParent(line)   " {{{1
     call search(printf('^%02d', mintree#indent(a:line)-1),'bW')
 endfunction
 
-function! s:GoToSibling(delta, stop_when)
+function! s:GoToSibling(delta, stop_when)   " {{{1
     let l:line = line('.')
     let l:destination = l:line
     let l:indent = mintree#indent(l:line)
@@ -173,7 +176,7 @@ function! s:GoToSibling(delta, stop_when)
     execute 'normal! '.l:destination.'gg'
 endfunction
 
-function! s:OpenRecursively(line)
+function! s:OpenRecursively(line)   " {{{1
     if a:line == 1
         let l:end = line('$')+1
     elseif getline(a:line) =~ g:MinTreeCollapsed
@@ -198,7 +201,7 @@ function! s:OpenRecursively(line)
     call s:UpdateOpen()
 endfunction
 
-function! s:Refresh(line)
+function! s:Refresh(line)   " {{{1
     let [l:start,l:end] = s:FoldLimits(a:line)
     let l:open_folders = map(filter(range(l:start+1,l:end), {_,l->getline(l)=~g:MinTreeExpanded && foldclosed(l)==-1}), {_,l->mintree#fullPath(l)})
     setlocal modifiable
@@ -211,7 +214,7 @@ function! s:Refresh(line)
     setlocal nomodifiable
 endfunction
 
-function! s:FoldLimits(line)
+function! s:FoldLimits(line)   " {{{1
     execute 'normal! '.a:line.'gg'
     let l:is_fold_open = foldclosed(a:line) == -1
     if l:is_fold_open
@@ -224,7 +227,7 @@ function! s:FoldLimits(line)
     return l:limits
 endfunction
 
-function! s:ToggleHidden()
+function! s:ToggleHidden()   " {{{1
     let g:MinTreeShowHidden = !g:MinTreeShowHidden
     call s:Refresh(1)
 endfunction
