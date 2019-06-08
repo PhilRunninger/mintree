@@ -91,10 +91,10 @@ function! s:_locateFile(path, indent, line, get_children)
     else
         let l:part = a:path[0]
         let [_,l:end] = s:FoldLimits(a:line)
-        if search(printf('^%02d. *%s %s%s', a:indent+1, g:MinTreeCollapsed, l:part ,mintree#slash()), 'W', l:end) > 0 && a:get_children
+        if search(printf('^%02d. *%s%s%s', a:indent+1, g:MinTreeCollapsed, l:part ,mintree#slash()), 'W', l:end) > 0 && a:get_children
             call s:GetChildren(line('.'))
             return s:_locateFile(a:path[1:], a:indent+1, line('.'), a:get_children)
-        elseif search(printf('^%02d. *%s %s%s', a:indent+1, g:MinTreeExpanded, l:part ,mintree#slash()), 'W', l:end) > 0
+        elseif search(printf('^%02d. *%s%s%s', a:indent+1, g:MinTreeExpanded, l:part ,mintree#slash()), 'W', l:end) > 0
             return s:_locateFile(a:path[1:], a:indent+1, line('.'), a:get_children)
         elseif search(printf('^%02d. *%s$', a:indent+1, l:part), 'W', l:end) > 0
             return line('.')
@@ -111,7 +111,7 @@ function! s:MinTreeOpen(path)   " {{{1
 
     setlocal modifiable
     %delete
-    call setline(1, printf('000%s %s', g:MinTreeCollapsed, s:root))
+    call setline(1, printf('000%s%s', g:MinTreeCollapsed, s:root))
     call s:ActivateNode(1)
 
     call map(copy(s:key_bindings), {key, cmd -> execute("nnoremap <silent> <buffer> ".key." ".cmd)})
@@ -151,7 +151,7 @@ function! s:GetChildren(line)   " {{{1
     let l:parent = mintree#fullPath(a:line)
     let l:children = split(system(printf(s:DirCmd(), shellescape(l:parent))), '\n')
     let l:prefix = printf('%02d0%s',l:indent+1, repeat(' ', (l:indent+1)*2))
-    call map(l:children, {idx,val -> printf((isdirectory(l:parent.mintree#slash().val) ? '%s'.g:MinTreeCollapsed.' %s'.mintree#slash(): '%s  %s'), l:prefix, val)})
+    call map(l:children, {idx,val -> printf((isdirectory(l:parent.mintree#slash().val) ? '%s'.g:MinTreeCollapsed.'%s'.mintree#slash(): '%s %s'), l:prefix, val)})
     setlocal modifiable
     call append(a:line, l:children)
     call setline(a:line, substitute(getline(a:line),g:MinTreeCollapsed,g:MinTreeExpanded,''))
