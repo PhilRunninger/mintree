@@ -150,7 +150,7 @@ function! s:GetChildren(line)   " {{{1
     let l:indent = mintree#indent(a:line)
     let l:parent = mintree#fullPath(a:line)
     let l:children = split(system(printf(s:DirCmd(), shellescape(l:parent))), '\n')
-    let l:prefix = printf('%02d0%s',l:indent+1, repeat(' ', (l:indent+1)*2))
+    let l:prefix = printf('%02d0%s',l:indent+1, repeat(' ', (l:indent+1)*1))
     call map(l:children, {idx,val -> printf((isdirectory(l:parent.mintree#slash().val) ? '%s'.g:MinTreeCollapsed.'%s'.mintree#slash(): '%s %s'), l:prefix, val)})
     setlocal modifiable
     call append(a:line, l:children)
