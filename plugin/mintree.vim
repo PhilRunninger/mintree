@@ -7,6 +7,7 @@ endif
 
 " Initialization   {{{1
 let s:MinTreeBuffer = '=MinTree='
+let s:BookmarksFile = expand('<sfile>:p:h:h').mintree#slash().'.MinTreeBookmarks'
 let g:MinTreeCollapsed = get(g:, 'MinTreeCollapsed', '▸')
 let g:MinTreeExpanded = get(g:, 'MinTreeExpanded', '▾')
 let g:MinTreeShowHidden = get(g:, 'MinTreeShowHidden', 0)
@@ -27,7 +28,8 @@ let s:key_bindings =
     \  get(g:, 'MinTreeRefresh',         'r'): ":call <SID>Refresh(line('.'))<CR>",
     \  get(g:, 'MinTreeRefreshRoot',     'R'): ":call <SID>Refresh(1)<CR>",
     \  get(g:, 'MinTreeToggleHidden',    'I'): ":call <SID>ToggleHidden()<CR>",
-    \  get(g:, 'MinTreeExit',            'q'): ":buffer #<CR>"
+    \  get(g:, 'MinTreeExit',            'q'): ":buffer #<CR>",
+    \  get(g:, 'MinTreeCreateMark',      'm'): ":call <SID>CreateMark(line('.'))<CR>",
     \ }
 
 command! -n=? -complete=dir MinTree :call <SID>MinTree('<args>')
@@ -232,7 +234,7 @@ function! s:ToggleHidden()   " {{{1
     call s:Refresh(1)
 endfunction
 
-function! s:DirCmd()
+function! s:DirCmd()   " {{{1
     if mintree#runningWindows()
         return (g:MinTreeShowHidden ?
              \  get(g:, 'MinTreeDirAll', 'dir /b %s') :
@@ -241,5 +243,30 @@ function! s:DirCmd()
         return (g:MinTreeShowHidden ?
              \  get(g:, 'MinTreeDirAll', 'ls -A %s | sort -f') :
              \  get(g:, 'MinTreeDirNoHidden', 'ls %s | sort -f'))
+    endif
+endfunction
+
+function! s:CreateMark(line)   " {{{1
+    echo "Name: "
+    let l:mark = nr2char(getchar())
+    redraw!
+    if l:mark != "\<ESC>"
+        if l:mark !~ "[a-zA-Z]"
+            echomsg "Invalid mark name"
+        else
+            let l:bookmarks = s:_readMarks()
+            let l:bookmarks[l:mark] = mintree#fullPath(a:line)
+            call writefile([string(l:bookmarks)], s:BookmarksFile)
+            echomsg "Mark ".l:mark." points to ".l:bookmarks[l:mark]
+        endif
+    endif
+endfunction
+
+function! s:_readMarks()   " {{{1
+    if filereadable(s:BookmarksFile)
+        execute "let l:bookmarks = " . readfile(s:BookmarksFile)[0]
+        return l:bookmarks
+    else
+        return {}
     endif
 endfunction
