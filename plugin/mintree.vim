@@ -138,7 +138,11 @@ function! s:_openFile(windowCmd, path)   " {{{1
     if a:path !~ escape(mintree#slash(),'\').'$'
         buffer #
         execute a:windowCmd
-        execute 'edit '.l:path
+        if bufnr(a:path) == -1
+            execute 'edit '.a:path
+        else
+            execute 'buffer '.a:path
+        endif
     endif
 endfunction
 
