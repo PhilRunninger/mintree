@@ -30,6 +30,7 @@ let s:key_bindings =
     \  get(g:, 'MinTreeToggleHidden',    'I'): ":call <SID>ToggleHidden()<CR>",
     \  get(g:, 'MinTreeExit',            'q'): ":buffer #<CR>",
     \  get(g:, 'MinTreeCreateMark',      'm'): ":call <SID>CreateMark(line('.'))<CR>",
+    \  get(g:, 'MinTreeGotoMark',        "'"): ":call <SID>GotoMark()<CR>",
     \ }
 
 command! -n=? -complete=dir MinTree :call <SID>MinTree('<args>')
@@ -129,7 +130,11 @@ endfunction
 
 function! s:OpenFile(windowCmd, line)   " {{{1
     let l:path = mintree#fullPath(a:line)
-    if l:path !~ escape(mintree#slash(),'\').'$'
+    call s:_openFile(a:windowCmd, l:path)
+endfunction
+
+function! s:_openFile(windowCmd, path)   " {{{1
+    if a:path !~ escape(mintree#slash(),'\').'$'
         buffer #
         execute a:windowCmd
         execute 'edit '.l:path
@@ -258,6 +263,28 @@ function! s:CreateMark(line)   " {{{1
             let l:bookmarks[l:mark] = mintree#fullPath(a:line)
             call writefile([string(l:bookmarks)], s:BookmarksFile)
             echomsg "Mark ".l:mark." points to ".l:bookmarks[l:mark]
+        endif
+    endif
+endfunction
+
+function! s:GotoMark()   " {{{1
+    let l:bookmarks = s:_readMarks()
+    for key in sort(keys(l:bookmarks))
+        echomsg key.": ".l:bookmarks[key]
+    endfor
+    echo "Name: "
+    let l:mark = nr2char(getchar())
+    redraw!
+    if l:mark != "\<ESC>"
+        if has_key(l:bookmarks, l:mark)
+            let l:path = l:bookmarks[l:mark]
+            if isdirectory(l:path)
+                call s:MinTree(l:path)
+            else
+                call s:_openFile('', l:path)
+            endif
+        else
+            echomsg "Mark ".l:mark." is not set"
         endif
     endif
 endfunction
