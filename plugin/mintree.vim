@@ -31,6 +31,7 @@ let s:key_bindings =
     \  get(g:, 'MinTreeExit',            'q'): ":buffer #<CR>",
     \  get(g:, 'MinTreeCreateMark',      'm'): ":call <SID>CreateMark(line('.'))<CR>",
     \  get(g:, 'MinTreeGotoMark',        "'"): ":call <SID>GotoMark()<CR>",
+    \  'd'.get(g:, 'MinTreeCreateMark',  "m"): ":call <SID>DeleteMarks()<CR>",
     \ }
 
 command! -n=? -complete=dir MinTree :call <SID>MinTree('<args>')
@@ -287,6 +288,24 @@ function! s:GotoMark()   " {{{1
             echomsg "Mark ".l:mark." is not set"
         endif
     endif
+endfunction
+
+function! s:DeleteMarks()   " {{{1
+    let l:bookmarks = s:_readMarks()
+    for key in sort(keys(l:bookmarks))
+        echomsg key.": ".l:bookmarks[key]
+    endfor
+    let l:marks = input("Which mark(s) to delete: (* for all) ")
+    if l:marks == '*'
+        let l:bookmarks = {}
+    else
+        for l:mark in split(l:marks, '\zs')
+            if has_key(l:bookmarks, l:mark)
+                call remove(l:bookmarks, l:mark)
+            endif
+        endfor
+    endif
+    call writefile([string(l:bookmarks)], s:BookmarksFile)
 endfunction
 
 function! s:_readMarks()   " {{{1
