@@ -8,7 +8,8 @@ MinTree requires Vim version 8.0+, and it must be compiled with the `folding`, `
 
 ## Installation
 
-Use your favorite plugin manager to install this plugin. My personal favorite is [vim-plug](https://github.com/junegunn/vim-plug). In your **`.vimrc`**, add the following line.
+Use your favorite plugin manager to install this plugin. If you have no favorite, I recommend [vim-plug](https://github.com/junegunn/vim-plug). In your **`.vimrc`**, add the following line.
+
 ```vim
 Plug 'git@github.com:PhilRunninger/mintree.git'
 ```
@@ -24,14 +25,15 @@ This command opens a buffer with the name **`=MinTree=`** in the current window,
 This command searches the **`=MinTree=`** buffer for the given path. If no path was given, it looks for the current buffer. If not found in the current tree, a new one is created to show the file being sought.
 
 The commands can be assigned to a key, and these assignments are left to the user, so as not to interfere with any existing mappings. For example,
-```
+
+```vim
 nnoremap <leader>o :MinTree<CR>
 nnoremap <leader>f :MinTreeFind<CR>
 ```
 
-## Key Mappings
+## Key Bindings
 
-The following key mappings are used only within the **`=MinTree=`** buffer. They are configurable by setting the corresponding global variables.
+The following key bindings are used only within the **`=MinTree=`** buffer. They are configurable by setting the corresponding global variables.
 
 Default Key | Variable                   | Function
 ---         | ---                        | ---
@@ -51,11 +53,14 @@ Default Key | Variable                   | Function
 **`r`**     | `g:MinTreeRefresh`         | Refresh the directory under the cursor, or the directory containing the file under the cursor.
 **`R`**     | `g:MinTreeRefreshRoot`     | Refresh the whole tree.
 **`I`**     | `g:MinTreeToggleHidden`    | Toggles the display of hidden files, those starting with a period, or marked hidden in Windows.
+**`m`**     | `g:MinTreeCreateMark`      | Creates a single-letter bookmark for the current node.
+**`'`**     | `g:MinTreeGotoMark`        | Displays all bookmarks, and opens the one selected.
+**`dm`**    | `g:MinTreeCreateMark`      | Displays all bookmarks, and deletes the ones selected. This is the same variable used for creating bookmarks, but prefixed with a `d`.
 **`q`**     | `g:MinTreeExit`            | Exit the MinTree, and return to the previous buffer.
 
 ## Settings
 
-The following settings can be used to customize the commands that gather files and directories for your unique situation.
+The following variables define the OS commands that gather files and directories. If necessary, you can customize them for your unique situation.
 
 Variable | Default
 --- | ---
