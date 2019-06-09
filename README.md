@@ -60,17 +60,19 @@ Default Key | Variable                   | Function
 
 ## Settings
 
-The following variables define the OS commands that gather files and directories. If necessary, you can customize them for your unique situation.
+* The following variables define the OS commands that gather files and directories. If necessary, you can customize them for your unique situation.
 
-Variable | Default
---- | ---
-**`g:MinTreeDirAll`**<br>returns all files/dirs in the `%s` directory. | Windows: `dir /b %s`<br>others: `ls -A %s \| sort -f`
-**`g:MinTreeDirNoHidden`**<br>returns all non hidden files/dirs in the `%s` directory. | Windows: `dir /b /a:-h %s \| findstr -v "^\."`<br>others: `ls %s \| sort -f`
-**`g:MinTreeShowHidden`**<br>sets which of the above two commands to use by default. | 0
+    Variable | Default
+    --- | ---
+    **`g:MinTreeDirAll`**<br>returns all files/dirs in the `%s` directory. | Windows: `dir /b %s`<br>others: `ls -A %s \| sort -f`
+    **`g:MinTreeDirNoHidden`**<br>returns all non hidden files/dirs in the `%s` directory. | Windows: `dir /b /a:-h %s \| findstr -v "^\."`<br>others: `ls %s \| sort -f`
+    **`g:MinTreeShowHidden`**<br>sets which of the above two commands to use by default. | 0
 
-The characters used to indicate whether a directory is collapsed or expanded can be customized with these two variables
+* The characters used to indicate whether a directory is collapsed or expanded can be customized with these two variables
 
-Variable | Default
---- | ---
-**`g:MinTreeExpanded`**<br>Character used to indicate a directory's contents are being shown. | `▾`
-**`g:MinTreeCollapsed`**<br>Character used to indicate a directory's contents are hidden or not yet retrieved. | `▸`
+    Variable | Default
+    --- | ---
+    **`g:MinTreeExpanded`**<br>Character used to indicate a directory's contents are being shown. | `▾`
+    **`g:MinTreeCollapsed`**<br>Character used to indicate a directory's contents are hidden or not yet retrieved. | `▸`
+
+* To change the indentation level, change the value of **`g:MinTreeIndentSize`**. It is the number of spaces to use for each level of indentation, and its default value is `2`.
