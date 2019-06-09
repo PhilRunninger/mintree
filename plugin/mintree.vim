@@ -11,6 +11,7 @@ let s:BookmarksFile = expand('<sfile>:p:h:h').mintree#slash().'.MinTreeBookmarks
 let g:MinTreeCollapsed = get(g:, 'MinTreeCollapsed', '▸')
 let g:MinTreeExpanded = get(g:, 'MinTreeExpanded', '▾')
 let g:MinTreeShowHidden = get(g:, 'MinTreeShowHidden', 0)
+let g:MinTreeIndentSize = get(g:, 'MinTreeIndentSize', 2)
 let s:key_bindings =
     \ {get(g:, 'MinTreeOpen',            'o'): ":call <SID>ActivateNode(line('.'))<CR>",
     \  get(g:, 'MinTreeOpenRecursively', 'O'): ":call <SID>OpenRecursively(line('.'))<CR>",
@@ -66,14 +67,14 @@ endfunction
 function! s:UpdateOpen()   " {{{1
     let l:pos = getpos('.')
     setlocal modifiable
-    normal gg0llGr0
+    execute 'normal gg0'.repeat('l',g:MinTreeIndentDigits).'Gr0'
     for buf in range(1,bufnr('$'))
         let buf = fnamemodify(bufname(buf),':p')
         if bufexists(buf) && stridx(buf, s:root) == 0
             let l:line = s:LocateFile(buf,0). bufname(buf)
             if l:line != -1
                 let l:text = getline(l:line)
-                call setline(l:line, l:text[0:1].'1'.text[3:])
+                call setline(l:line, mintree#metadataString(mintree#indent(l:line), 1).text[g:MinTreeMetadataWidth:])
             endif
         endif
     endfor
@@ -91,12 +92,12 @@ function! s:_locateFile(path, indent, line, get_children)
     else
         let l:part = a:path[0]
         let [_,l:end] = s:FoldLimits(a:line)
-        if search(printf('^%02d. *%s%s%s', a:indent+1, g:MinTreeCollapsed, l:part ,mintree#slash()), 'W', l:end) > 0 && a:get_children
+        if search(printf('^%s *%s%s%s', mintree#metadataString(a:indent+1, '.'), g:MinTreeCollapsed, l:part ,mintree#slash()), 'W', l:end) > 0 && a:get_children
             call s:GetChildren(line('.'))
             return s:_locateFile(a:path[1:], a:indent+1, line('.'), a:get_children)
-        elseif search(printf('^%02d. *%s%s%s', a:indent+1, g:MinTreeExpanded, l:part ,mintree#slash()), 'W', l:end) > 0
+        elseif search(printf('^%s *%s%s%s', mintree#metadataString(a:indent+1, '.'), g:MinTreeExpanded, l:part ,mintree#slash()), 'W', l:end) > 0
             return s:_locateFile(a:path[1:], a:indent+1, line('.'), a:get_children)
-        elseif search(printf('^%02d. *%s$', a:indent+1, l:part), 'W', l:end) > 0
+        elseif search(printf('^%s *%s$', mintree#metadataString(a:indent+1, '.'), l:part), 'W', l:end) > 0
             return line('.')
         else
             return -1
@@ -111,7 +112,7 @@ function! s:MinTreeOpen(path)   " {{{1
 
     setlocal modifiable
     %delete
-    call setline(1, printf('000%s%s', g:MinTreeCollapsed, s:root))
+    call setline(1, printf('%s%s%s', mintree#metadataString(0,0), g:MinTreeCollapsed, s:root))
     call s:ActivateNode(1)
 
     call map(copy(s:key_bindings), {key, cmd -> execute("nnoremap <silent> <buffer> ".key." ".cmd)})
@@ -150,7 +151,7 @@ function! s:GetChildren(line)   " {{{1
     let l:indent = mintree#indent(a:line)
     let l:parent = mintree#fullPath(a:line)
     let l:children = split(system(printf(s:DirCmd(), shellescape(l:parent))), '\n')
-    let l:prefix = printf('%02d0%s',l:indent+1, repeat(' ', (l:indent+1)*1))
+    let l:prefix = printf('%s%s', mintree#metadataString(l:indent+1, 0), repeat(' ', (l:indent+1)*g:MinTreeIndentSize))
     call map(l:children, {idx,val -> printf((isdirectory(l:parent.mintree#slash().val) ? '%s'.g:MinTreeCollapsed.'%s'.mintree#slash(): '%s %s'), l:prefix, val)})
     setlocal modifiable
     call append(a:line, l:children)
@@ -167,7 +168,7 @@ function! s:CloseParent(line)   " {{{1
 endfunction
 
 function! s:GoToParent(line)   " {{{1
-    call search(printf('^%02d', mintree#indent(a:line)-1),'bW')
+    call search(printf('^%s', mintree#metadataString(mintree#indent(a:line)-1),''), 'bW')
 endfunction
 
 function! s:GoToSibling(delta, stop_when)   " {{{1
