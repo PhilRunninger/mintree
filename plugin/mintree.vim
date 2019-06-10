@@ -7,7 +7,7 @@ endif
 
 " Initialization   {{{1
 let s:MinTreeBuffer = '=MinTree='
-let s:BookmarksFile = expand('<sfile>:p:h:h').mintree#slash().'.MinTreeBookmarks'
+let s:MinTreeBookmarksFile = expand('<sfile>:p:h:h').mintree#slash().'.MinTreeBookmarks'
 let g:MinTreeCollapsed = get(g:, 'MinTreeCollapsed', '▸')
 let g:MinTreeExpanded = get(g:, 'MinTreeExpanded', '▾')
 let g:MinTreeShowHidden = get(g:, 'MinTreeShowHidden', 0)
@@ -267,7 +267,7 @@ function! s:CreateMark(line)   " {{{1
         else
             let l:bookmarks = s:_readMarks()
             let l:bookmarks[l:mark] = mintree#fullPath(a:line)
-            call writefile([string(l:bookmarks)], s:BookmarksFile)
+            call s:_writeMarks(l:bookmarks)
             echomsg "Mark ".l:mark." points to ".l:bookmarks[l:mark]
         endif
     endif
@@ -310,14 +310,17 @@ function! s:DeleteMarks()   " {{{1
             endif
         endfor
     endif
-    call writefile([string(l:bookmarks)], s:BookmarksFile)
+    call s:_writeMarks(l:bookmarks)
 endfunction
 
 function! s:_readMarks()   " {{{1
-    if filereadable(s:BookmarksFile)
-        execute "let l:bookmarks = " . readfile(s:BookmarksFile)[0]
-        return l:bookmarks
-    else
-        return {}
+    let l:bookmarks = {}
+    if filereadable(s:MinTreeBookmarksFile)
+        execute "let l:bookmarks = " . readfile(s:MinTreeBookmarksFile)[0]
     endif
+    return l:bookmarks
+endfunction
+
+function! s:_writeMarks(bookmarks)   " {{{1
+    call writefile([string(a:bookmarks)], s:MinTreeBookmarksFile)
 endfunction
