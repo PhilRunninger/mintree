@@ -115,7 +115,7 @@ function! s:MinTreeOpen(path)   " {{{1
     call setline(1, printf('%s%s%s', mintree#metadataString(0,0), g:MinTreeCollapsed, s:root))
     call s:ActivateNode(1)
 
-    call map(copy(s:key_bindings), {key, cmd -> execute("nnoremap <silent> <buffer> ".key." ".cmd)})
+    call map(copy(s:key_bindings), {key, cmd -> execute("nnoremap <silent> <nowait> <buffer> ".key." ".cmd)})
 endfunction
 
 function! s:ActivateNode(line)   " {{{1
