@@ -275,7 +275,7 @@ endfunction
 
 function! s:GotoMark()   " {{{1
     let l:bookmarks = s:_readMarks()
-    for key in sort(keys(l:bookmarks))
+    for key in sort(keys(l:bookmarks),'i')
         echomsg key.": ".l:bookmarks[key]
     endfor
     echo "Name: "
