@@ -49,7 +49,7 @@ Default Key | Variable                   | Function
 **`<C-K>`** | `g:MinTreePrevSibling`     | Navigate quickly to the previous sibling file or directory.
 **`u`**     | `g:MinTreeSetRootUp`       | Change the root of the tree to the parent directory of the current root.
 **`C`**     | `g:MinTreeSetRoot`         | Change the root of the tree to the directory under the cursor.
-**`x`**     | `g:MinTreeCloseParent`     | Close the directory containing the current file or directory.
+**`x`**     | `g:MinTreeCloseParent`     | Collapse the directory containing the current file or directory.
 **`r`**     | `g:MinTreeRefresh`         | Refresh the directory under the cursor, or the directory containing the file under the cursor.
 **`R`**     | `g:MinTreeRefreshRoot`     | Refresh the whole tree.
 **`I`**     | `g:MinTreeToggleHidden`    | Toggles the display of hidden files, those starting with a period, or marked hidden in Windows.
@@ -57,6 +57,7 @@ Default Key | Variable                   | Function
 **`'`**     | `g:MinTreeGotoMark`        | Displays all bookmarks, and opens the one selected.
 **`dm`**    | `g:MinTreeCreateMark`      | Displays all bookmarks, and deletes the ones selected. This is the same variable used for creating bookmarks, but prefixed with a `d`.
 **`q`**     | `g:MinTreeExit`            | Exit the MinTree, and return to the previous buffer.
+**`?`**     |                            | Display short descriptions of these commands.
 
 ## Settings
 
