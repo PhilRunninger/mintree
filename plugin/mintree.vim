@@ -12,28 +12,25 @@ let g:MinTreeCollapsed = get(g:, 'MinTreeCollapsed', '▸')
 let g:MinTreeExpanded = get(g:, 'MinTreeExpanded', '▾')
 let g:MinTreeShowHidden = get(g:, 'MinTreeShowHidden', 0)
 let g:MinTreeIndentSize = get(g:, 'MinTreeIndentSize', 2)
-let s:key_bindings =
-    \ {get(g:, 'MinTreeOpen',            'o'): ":call <SID>ActivateNode(line('.'))<CR>",
-    \  get(g:, 'MinTreeOpenRecursively', 'O'): ":call <SID>OpenRecursively(line('.'))<CR>",
-    \  get(g:, 'MinTreeOpenSplit',       's'): ":call <SID>OpenFile('wincmd s', line('.'))<CR>",
-    \  get(g:, 'MinTreeOpenVSplit',      'v'): ":call <SID>OpenFile('wincmd v', line('.'))<CR>",
-    \  get(g:, 'MinTreeOpenTab',         't'): ":call <SID>OpenFile('tabnew', line('.'))<CR>",
-    \  get(g:, 'MinTreeGoToParent',      'p'): ":call <SID>GoToParent(line('.'))<CR>",
-    \  get(g:, 'MinTreeLastSibling',     'J'): ":call <SID>GoToSibling( 1, {dest,start -> dest < start})<CR>",
-    \  get(g:, 'MinTreeFirstSibling',    'K'): ":call <SID>GoToSibling(-1, {dest,start -> dest < start})<CR>",
-    \  get(g:, 'MinTreeNextSibling', '<C-J>'): ":call <SID>GoToSibling( 1, {dest,start -> dest <= start})<CR>",
-    \  get(g:, 'MinTreePrevSibling', '<C-K>'): ":call <SID>GoToSibling(-1, {dest,start -> dest <= start})<CR>",
-    \  get(g:, 'MinTreeSetRootUp',       'u'): ":call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>",
-    \  get(g:, 'MinTreeSetRoot',         'C'): ":call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>",
-    \  get(g:, 'MinTreeCloseParent',     'x'): ":call <SID>CloseParent(line('.'))<CR>",
-    \  get(g:, 'MinTreeRefresh',         'r'): ":call <SID>Refresh(line('.'))<CR>",
-    \  get(g:, 'MinTreeRefreshRoot',     'R'): ":call <SID>Refresh(1)<CR>",
-    \  get(g:, 'MinTreeToggleHidden',    'I'): ":call <SID>ToggleHidden()<CR>",
-    \  get(g:, 'MinTreeExit',            'q'): ":buffer #<CR>",
-    \  get(g:, 'MinTreeCreateMark',      'm'): ":call <SID>CreateMark(line('.'))<CR>",
-    \  get(g:, 'MinTreeGotoMark',        "'"): ":call <SID>GotoMark()<CR>",
-    \  'd'.get(g:, 'MinTreeCreateMark',  "m"): ":call <SID>DeleteMarks()<CR>",
-    \ }
+let g:MinTreeOpen = get(g:, 'MinTreeOpen', 'o')
+let g:MinTreeOpenRecursively = get(g:, 'MinTreeOpenRecursively', 'O')
+let g:MinTreeOpenSplit = get(g:, 'MinTreeOpenSplit', 's')
+let g:MinTreeOpenVSplit = get(g:, 'MinTreeOpenVSplit', 'v')
+let g:MinTreeOpenTab = get(g:, 'MinTreeOpenTab', 't')
+let g:MinTreeGoToParent = get(g:, 'MinTreeGoToParent', 'p')
+let g:MinTreeLastSibling = get(g:, 'MinTreeLastSibling', 'J')
+let g:MinTreeFirstSibling = get(g:, 'MinTreeFirstSibling', 'K')
+let g:MinTreeNextSibling = get(g:, 'MinTreeNextSibling', '<C-J>')
+let g:MinTreePrevSibling = get(g:, 'MinTreePrevSibling', '<C-K>')
+let g:MinTreeSetRootUp = get(g:, 'MinTreeSetRootUp', 'u')
+let g:MinTreeSetRoot = get(g:, 'MinTreeSetRoot', 'C')
+let g:MinTreeCloseParent = get(g:, 'MinTreeCloseParent', 'x')
+let g:MinTreeRefresh = get(g:, 'MinTreeRefresh', 'r')
+let g:MinTreeRefreshRoot = get(g:, 'MinTreeRefreshRoot', 'R')
+let g:MinTreeToggleHidden = get(g:, 'MinTreeToggleHidden', 'I')
+let g:MinTreeExit = get(g:, 'MinTreeExit', 'q')
+let g:MinTreeCreateMark = get(g:, 'MinTreeCreateMark', 'm')
+let g:MinTreeGotoMark = get(g:, 'MinTreeGotoMark', "'")
 
 command! -n=? -complete=dir MinTree :call <SID>MinTree('<args>')
 command! -n=? -complete=file MinTreeFind :call <SID>MinTreeFind('<args>')
@@ -115,7 +112,30 @@ function! s:MinTreeOpen(path)   " {{{1
     call setline(1, printf('%s%s%s', mintree#metadataString(0,0), g:MinTreeCollapsed, s:root))
     call s:ActivateNode(1)
 
-    call map(copy(s:key_bindings), {key, cmd -> execute("nnoremap <silent> <nowait> <buffer> ".key." ".cmd)})
+    let l:key_bindings =
+        \ {g:MinTreeOpen:            ":call <SID>ActivateNode(line('.'))<CR>",
+        \  g:MinTreeOpenRecursively: ":call <SID>OpenRecursively(line('.'))<CR>",
+        \  g:MinTreeOpenSplit:       ":call <SID>OpenFile('wincmd s', line('.'))<CR>",
+        \  g:MinTreeOpenVSplit:      ":call <SID>OpenFile('wincmd v', line('.'))<CR>",
+        \  g:MinTreeOpenTab:         ":call <SID>OpenFile('tabnew', line('.'))<CR>",
+        \  g:MinTreeGoToParent:      ":call <SID>GoToParent(line('.'))<CR>",
+        \  g:MinTreeLastSibling:     ":call <SID>GoToSibling( 1, {dest,start -> dest < start})<CR>",
+        \  g:MinTreeFirstSibling:    ":call <SID>GoToSibling(-1, {dest,start -> dest < start})<CR>",
+        \  g:MinTreeNextSibling:     ":call <SID>GoToSibling( 1, {dest,start -> dest <= start})<CR>",
+        \  g:MinTreePrevSibling:     ":call <SID>GoToSibling(-1, {dest,start -> dest <= start})<CR>",
+        \  g:MinTreeSetRootUp:       ":call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>",
+        \  g:MinTreeSetRoot:         ":call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>",
+        \  g:MinTreeCloseParent:     ":call <SID>CloseParent(line('.'))<CR>",
+        \  g:MinTreeRefresh:         ":call <SID>Refresh(line('.'))<CR>",
+        \  g:MinTreeRefreshRoot:     ":call <SID>Refresh(1)<CR>",
+        \  g:MinTreeToggleHidden:    ":call <SID>ToggleHidden()<CR>",
+        \  g:MinTreeExit:            ":buffer #<CR>",
+        \  g:MinTreeCreateMark:      ":call <SID>CreateMark(line('.'))<CR>",
+        \  g:MinTreeGotoMark:        ":call <SID>GotoMark()<CR>",
+        \  'd'.g:MinTreeCreateMark:  ":call <SID>DeleteMarks()<CR>",
+        \  '?':                      ":call <SID>ShowHelp()<CR>"
+        \ }
+    call map(l:key_bindings, {key, cmd -> execute("nnoremap <silent> <nowait> <buffer> ".key." ".cmd)})
 endfunction
 
 function! s:ActivateNode(line)   " {{{1
@@ -323,4 +343,37 @@ endfunction
 
 function! s:_writeMarks(bookmarks)   " {{{1
     call writefile([string(a:bookmarks)], s:MinTreeBookmarksFile)
+endfunction
+
+function! s:ShowHelp()   " {{{1
+    let l:help = [
+                \ [g:MinTreeOpen,            "Open file in the current window. Or expand/collapse directory."],
+                \ [g:MinTreeOpenRecursively, "Fully expand the tree at selected directory."],
+                \ [g:MinTreeOpenSplit,       "Split the window horizontally, and open file there."],
+                \ [g:MinTreeOpenVSplit,      "Split the window vertically, and open file there."],
+                \ [g:MinTreeOpenTab,         "Open file in a new tab."],
+                \ [g:MinTreeGoToParent,      "Move to the closest parent directory."],
+                \ [g:MinTreeLastSibling,     "Move to the last sibling node."],
+                \ [g:MinTreeFirstSibling,    "Move to the first sibling node."],
+                \ [g:MinTreeNextSibling,     "Move to the next sibling node."],
+                \ [g:MinTreePrevSibling,     "Move to the previous sibling node."],
+                \ [g:MinTreeSetRootUp,       "Make the root's parent become the new root of the tree."],
+                \ [g:MinTreeSetRoot,         "Make the directory become the new root of the tree."],
+                \ [g:MinTreeCloseParent,     "Collapse the node's parent directory."],
+                \ [g:MinTreeRefresh,         "Refresh the directory under cursor."],
+                \ [g:MinTreeRefreshRoot,     "Refresh the whole tree."],
+                \ [g:MinTreeToggleHidden,    "Toggle display of hidden files."],
+                \ [g:MinTreeCreateMark,      "Bookmark a node."],
+                \ [g:MinTreeGotoMark,        "Open a bookmark."],
+                \ ["d".g:MinTreeCreateMark,  "Delete a bookmark."],
+                \ [g:MinTreeExit,            "Exit the tree."]
+               \ ]
+    for key in l:help
+        echohl Identifier
+        echon printf("%5s", key[0])
+        echohl Normal
+        echon "  ".key[1]
+        echo ""
+    endfor
+    echohl None
 endfunction
