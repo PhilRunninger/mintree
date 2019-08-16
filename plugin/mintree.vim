@@ -110,6 +110,7 @@ function! s:MinTreeOpen(path)   " {{{1
     setlocal modifiable
     %delete
     call setline(1, printf('%s%s%s', mintree#metadataString(0,0), g:MinTreeCollapsed, s:root))
+    setlocal nomodifiable
     call s:ActivateNode(1)
 
     let l:key_bindings =
