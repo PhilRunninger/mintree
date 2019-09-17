@@ -142,10 +142,14 @@ endfunction
 function! s:ActivateNode(line)   " {{{1
     if getline(a:line) =~ g:MinTreeCollapsed
         call s:GetChildren(a:line)
-        normal! zO
+        if foldlevel(a:line)
+            normal! zO
+        endif
         call s:UpdateOpen()
     elseif getline(a:line) =~ g:MinTreeExpanded
-        normal! za
+        if foldlevel(a:line)
+            normal! za
+        endif
     else
         call s:OpenFile('', a:line)
     endif
@@ -182,7 +186,7 @@ function! s:GetChildren(line)   " {{{1
 endfunction
 
 function! s:CloseParent(line)   " {{{1
-    if foldlevel(a:line) > 0
+    if foldlevel(a:line)
         normal zc
         execute 'normal! '.foldclosed(a:line).'gg'
     endif
@@ -250,13 +254,17 @@ endfunction
 
 function! s:FoldLimits(line)   " {{{1
     execute 'normal! '.a:line.'gg'
-    let l:is_fold_open = foldclosed(a:line) == -1
-    if l:is_fold_open
-        normal! zc
-    endif
-    let l:limits = [foldclosed(a:line), foldclosedend(a:line)]
-    if l:is_fold_open
-        normal! zo
+    if foldlevel(a:line)
+        let l:is_fold_open = foldclosed(a:line) == -1
+        if l:is_fold_open
+            normal! zc
+        endif
+        let l:limits = [foldclosed(a:line), foldclosedend(a:line)]
+        if l:is_fold_open
+            normal! zo
+        endif
+    else
+        let l:limits = [a:line, a:line]
     endif
     return l:limits
 endfunction
