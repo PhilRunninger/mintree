@@ -241,12 +241,16 @@ endfunction
 
 function! s:Refresh(line)   " {{{1
     let [l:start,l:end] = s:FoldLimits(a:line)
-    let l:open_folders = map(filter(range(l:start+1,l:end), {_,l->getline(l)=~g:MinTreeExpanded && foldclosed(l)==-1}), {_,l->mintree#fullPath(l)})
-    setlocal modifiable
-    execute 'silent '.(l:start+1).','.l:end.'delete'
-    call setline(l:start, substitute(getline(l:start),g:MinTreeExpanded,g:MinTreeCollapsed,''))
-    call s:ActivateNode(l:start)
-    call map(l:open_folders, {_,f -> s:LocateFile(f,1)})
+    if l:start <= l:end
+        let l:open_folders = map(filter(range(l:start+1,l:end), {_,l->getline(l)=~g:MinTreeExpanded && foldclosed(l)==-1}), {_,l->mintree#fullPath(l)})
+        setlocal modifiable
+        if l:start < l:end
+            execute 'silent '.(l:start+1).','.l:end.'delete'
+        endif
+        call setline(l:start, substitute(getline(l:start),g:MinTreeExpanded,g:MinTreeCollapsed,''))
+        call s:ActivateNode(l:start)
+        call map(l:open_folders, {_,f -> s:LocateFile(f,1)})
+    endif
     call s:UpdateOpen()
     execute 'normal! '.l:start.'gg'
     setlocal nomodifiable
