@@ -142,10 +142,14 @@ endfunction
 function! s:ActivateNode(line)   " {{{1
     if getline(a:line) =~ g:MinTreeCollapsed
         call s:GetChildren(a:line)
-        normal! zO
+        if foldlevel(a:line)
+            normal! zO
+        endif
         call s:UpdateOpen()
     elseif getline(a:line) =~ g:MinTreeExpanded
-        normal! za
+        if foldlevel(a:line)
+            normal! za
+        endif
     else
         call s:OpenFile('', a:line)
     endif
@@ -182,7 +186,7 @@ function! s:GetChildren(line)   " {{{1
 endfunction
 
 function! s:CloseParent(line)   " {{{1
-    if foldlevel(a:line) > 0
+    if foldlevel(a:line)
         normal zc
         execute 'normal! '.foldclosed(a:line).'gg'
     endif
@@ -237,12 +241,16 @@ endfunction
 
 function! s:Refresh(line)   " {{{1
     let [l:start,l:end] = s:FoldLimits(a:line)
-    let l:open_folders = map(filter(range(l:start+1,l:end), {_,l->getline(l)=~g:MinTreeExpanded && foldclosed(l)==-1}), {_,l->mintree#fullPath(l)})
-    setlocal modifiable
-    execute 'silent '.(l:start+1).','.l:end.'delete'
-    call setline(l:start, substitute(getline(l:start),g:MinTreeExpanded,g:MinTreeCollapsed,''))
-    call s:ActivateNode(l:start)
-    call map(l:open_folders, {_,f -> s:LocateFile(f,1)})
+    if l:start <= l:end
+        let l:open_folders = map(filter(range(l:start+1,l:end), {_,l->getline(l)=~g:MinTreeExpanded && foldclosed(l)==-1}), {_,l->mintree#fullPath(l)})
+        setlocal modifiable
+        if l:start < l:end
+            execute 'silent '.(l:start+1).','.l:end.'delete'
+        endif
+        call setline(l:start, substitute(getline(l:start),g:MinTreeExpanded,g:MinTreeCollapsed,''))
+        call s:ActivateNode(l:start)
+        call map(l:open_folders, {_,f -> s:LocateFile(f,1)})
+    endif
     call s:UpdateOpen()
     execute 'normal! '.l:start.'gg'
     setlocal nomodifiable
@@ -250,13 +258,17 @@ endfunction
 
 function! s:FoldLimits(line)   " {{{1
     execute 'normal! '.a:line.'gg'
-    let l:is_fold_open = foldclosed(a:line) == -1
-    if l:is_fold_open
-        normal! zc
-    endif
-    let l:limits = [foldclosed(a:line), foldclosedend(a:line)]
-    if l:is_fold_open
-        normal! zo
+    if foldlevel(a:line)
+        let l:is_fold_open = foldclosed(a:line) == -1
+        if l:is_fold_open
+            normal! zc
+        endif
+        let l:limits = [foldclosed(a:line), foldclosedend(a:line)]
+        if l:is_fold_open
+            normal! zo
+        endif
+    else
+        let l:limits = [a:line, a:line]
     endif
     return l:limits
 endfunction
