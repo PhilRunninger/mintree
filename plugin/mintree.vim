@@ -67,7 +67,7 @@ function! s:UpdateOpen()   " {{{1
     execute 'normal gg0'.repeat('l',g:MinTreeIndentDigits).'Gr0'
     for buf in range(1,bufnr('$'))
         let buf = fnamemodify(bufname(buf),':p')
-        if bufexists(buf) && stridx(buf, s:root) == 0
+        if bufexists(buf) && buflisted(buf) && stridx(buf, s:root) == 0
             let l:line = s:LocateFile(buf,0). bufname(buf)
             if l:line != -1
                 let l:text = getline(l:line)
