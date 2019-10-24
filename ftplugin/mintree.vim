@@ -2,6 +2,7 @@
 " Settings   {{{1
 setlocal nomodifiable
 setlocal buftype=nofile noswapfile
+execute 'setlocal statusline='.escape("[MinTree]  Press ? for key mappings.", " ")
 setlocal nowrap nonumber nolist
 setlocal conceallevel=3 concealcursor=nvic
 setlocal foldcolumn=0 foldmethod=expr foldexpr=MinTreeFoldLevel(v:lnum)
