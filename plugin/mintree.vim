@@ -193,7 +193,7 @@ function! s:CloseParent(line)   " {{{1
 endfunction
 
 function! s:GoToParent(line)   " {{{1
-    call search(printf('^%s', mintree#metadataString(mintree#indent(a:line)-1),''), 'bW')
+    call search(printf('^%s', mintree#metadataString(mintree#indent(a:line)-1,'')), 'bW')
 endfunction
 
 function! s:GoToSibling(delta, stop_when)   " {{{1
