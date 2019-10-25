@@ -31,6 +31,13 @@ nnoremap <leader>o :MinTree<CR>
 nnoremap <leader>f :MinTreeFind<CR>
 ```
 
+To split the window first, mappings like these can be used:
+
+```vim
+nnoremap <leader>vo :vsplit<Bar>wincmd H<Bar>MinTree<CR>
+nnoremap <leader>ho :split<Bar>wincmd J<Bar>MinTree<CR>
+```
+
 ## Key Bindings
 
 The following key bindings are used only within the **`=MinTree=`** buffer. They are configurable by setting the corresponding global variables.
