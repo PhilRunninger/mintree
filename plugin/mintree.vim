@@ -64,7 +64,7 @@ endfunction
 function! s:UpdateOpen()   " {{{1
     let l:pos = getpos('.')
     setlocal modifiable
-    execute 'normal gg0'.repeat('l',g:MinTreeIndentDigits).'Gr0'
+    execute 'normal gg0'.g:MinTreeIndentDigits.'lG0'.g:MinTreeIndentDigits.'lr0'
     for buf in range(1,bufnr('$'))
         let buf = fnamemodify(bufname(buf),':p')
         if bufexists(buf) && buflisted(buf) && stridx(buf, s:root) == 0
