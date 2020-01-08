@@ -105,7 +105,7 @@ endfunction
 function! s:MinTreeOpen(path)   " {{{1
     let s:root = simplify(fnamemodify(a:path, ':p'))
     execute 'silent buffer ' . bufnr(s:MinTreeBuffer, 1)
-    set ft=mintree
+    set filetype=mintree
 
     setlocal modifiable
     %delete
