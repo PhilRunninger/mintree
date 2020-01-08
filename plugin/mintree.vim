@@ -177,7 +177,8 @@ function! s:GetChildren(line)   " {{{1
     let l:parent = mintree#fullPath(a:line)
     let l:children = split(system(printf(s:DirCmd(), shellescape(l:parent))), '\n')
     let l:prefix = printf('%s%s', mintree#metadataString(l:indent+1, 0), repeat(' ', (l:indent+1)*g:MinTreeIndentSize))
-    call map(l:children, {idx,val -> printf((isdirectory(l:parent.mintree#slash().val) ? '%s'.g:MinTreeCollapsed.'%s'.mintree#slash(): '%s %s'), l:prefix, val)})
+    let l:slash = mintree#slash()
+    call map(l:children, {idx,val -> printf((isdirectory(l:parent.l:slash.val) ? '%s'.g:MinTreeCollapsed.'%s'.l:slash : '%s %s'), l:prefix, val)})
     setlocal modifiable
     call append(a:line, l:children)
     call setline(a:line, substitute(getline(a:line),g:MinTreeCollapsed,g:MinTreeExpanded,''))
