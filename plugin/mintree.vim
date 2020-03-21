@@ -25,6 +25,7 @@ let g:MinTreePrevSibling     = get(g:, 'MinTreePrevSibling', '<C-K>')
 let g:MinTreeSetRootUp       = get(g:, 'MinTreeSetRootUp', 'u')
 let g:MinTreeSetRoot         = get(g:, 'MinTreeSetRoot', 'C')
 let g:MinTreeCloseParent     = get(g:, 'MinTreeCloseParent', 'x')
+let g:MinTreeWipeout         = get(g:, 'MinTreeWipeout', 'w')
 let g:MinTreeRefresh         = get(g:, 'MinTreeRefresh', 'r')
 let g:MinTreeRefreshRoot     = get(g:, 'MinTreeRefreshRoot', 'R')
 let g:MinTreeToggleHidden    = get(g:, 'MinTreeToggleHidden', 'I')
@@ -127,6 +128,7 @@ function! s:MinTreeOpen(path)   " {{{1
         \  g:MinTreeSetRootUp:       ":call <SID>MinTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>",
         \  g:MinTreeSetRoot:         ":call <SID>MinTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>",
         \  g:MinTreeCloseParent:     ":call <SID>CloseParent(line('.'))<CR>",
+        \  g:MinTreeWipeout:         ":call <SID>Wipeout(line('.'))<CR>",
         \  g:MinTreeRefresh:         ":call <SID>Refresh(line('.'))<CR>",
         \  g:MinTreeRefreshRoot:     ":call <SID>Refresh(1)<CR>",
         \  g:MinTreeToggleHidden:    ":call <SID>ToggleHidden()<CR>",
@@ -257,6 +259,17 @@ function! s:Refresh(line)   " {{{1
     setlocal nomodifiable
 endfunction
 
+function! s:Wipeout(line)   " {{{1
+    let l:path = mintree#fullPath(a:line)
+    if bufexists(l:path)
+        execute 'bwipeout '.l:path
+        call s:Refresh(a:line)
+    else
+        let l:path = substitute(l:path, '^'.s:root, '', '')
+        echomsg l:path.' is not open.'
+    endif
+endfunction
+
 function! s:FoldLimits(line)   " {{{1
     execute 'normal! '.a:line.'gg'
     if foldlevel(a:line)
@@ -366,6 +379,7 @@ function! s:ShowHelp()   " {{{1
                 \ [g:MinTreeOpenSplit,       "Split the window horizontally, and open the selected file there."],
                 \ [g:MinTreeOpenVSplit,      "Split the window vertically, and open the selected file there."],
                 \ [g:MinTreeOpenTab,         "Open the selected file in a new tab."],
+                \ [g:MinTreeWipeout,         "Close the selected node if already open."],
                 \ [g:MinTreeGoToParent,      "Navigate quickly to the next closest parent directory."],
                 \ [g:MinTreeLastSibling,     "Navigate quickly to the last sibling file or directory."],
                 \ [g:MinTreeFirstSibling,    "Navigate quickly to the first sibling file or directory."],
