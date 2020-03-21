@@ -49,6 +49,7 @@ Default Key | Variable                   | Function
 **`s`**     | `g:MinTreeOpenSplit`       | Split the window horizontally, and open the selected file there.
 **`v`**     | `g:MinTreeOpenVSplit`      | Split the window vertically, and open the selected file there.
 **`t`**     | `g:MinTreeOpenTab`         | Open the selected file in a new tab.
+**`w`**     | `g:MinTreeWipeout`         | Close the selected node if already open.
 **`p`**     | `g:MinTreeGoToParent`      | Navigate quickly to the next closest parent directory.
 **`J`**     | `g:MinTreeLastSibling`     | Navigate quickly to the last sibling file or directory.
 **`K`**     | `g:MinTreeFirstSibling`    | Navigate quickly to the first sibling file or directory.
