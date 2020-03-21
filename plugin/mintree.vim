@@ -132,7 +132,7 @@ function! s:MinTreeOpen(path)   " {{{1
         \  g:MinTreeRefresh:         ":call <SID>Refresh(line('.'))<CR>",
         \  g:MinTreeRefreshRoot:     ":call <SID>Refresh(1)<CR>",
         \  g:MinTreeToggleHidden:    ":call <SID>ToggleHidden()<CR>",
-        \  g:MinTreeExit:            ":buffer #<CR>",
+        \  g:MinTreeExit:            ":call <SID>ExitMinTree()<CR>",
         \  g:MinTreeCreateMark:      ":call <SID>CreateMark(line('.'))<CR>",
         \  g:MinTreeGotoMark:        ":call <SID>GotoMark()<CR>",
         \  'd'.g:MinTreeCreateMark:  ":call <SID>DeleteMarks()<CR>",
@@ -164,7 +164,9 @@ endfunction
 
 function! s:_openFile(windowCmd, path)   " {{{1
     if a:path !~ escape(mintree#slash(),'\').'$'
-        buffer #
+        if bufnr('#') != -1
+            buffer #
+        endif
         execute a:windowCmd
         if bufnr('^'.a:path.'$') == -1
             execute 'edit '.a:path
@@ -240,6 +242,14 @@ function! s:OpenRecursively(line)   " {{{1
         let l:line = search(g:MinTreeCollapsed,'cW')
     endwhile
     call s:UpdateOpen()
+endfunction
+
+function! s:ExitMinTree()   " {{{1
+        if bufnr('#') != -1
+            buffer #
+        else
+            enew
+        endif
 endfunction
 
 function! s:Refresh(line)   " {{{1
