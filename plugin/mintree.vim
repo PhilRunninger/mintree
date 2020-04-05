@@ -274,7 +274,7 @@ function! s:Wipeout(line)   " {{{1
     if bufexists(l:path)
         execute 'bwipeout '.l:path
         call s:Refresh(a:line)
-        call s:MinTreeFind(l:path)
+        call s:LocateFile(l:path, 0)
     else
         let l:path = substitute(l:path, '^'.s:root, '', '')
         echomsg l:path.' is not open.'
@@ -299,8 +299,10 @@ function! s:FoldLimits(line)   " {{{1
 endfunction
 
 function! s:ToggleHidden()   " {{{1
+    let l:path = mintree#fullPath(line('.'))
     let g:MinTreeShowHidden = !g:MinTreeShowHidden
     call s:Refresh(1)
+    call s:LocateFile(l:path, 0)
 endfunction
 
 function! s:DirCmd()   " {{{1
