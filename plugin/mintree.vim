@@ -274,6 +274,7 @@ function! s:Wipeout(line)   " {{{1
     if bufexists(l:path)
         execute 'bwipeout '.l:path
         call s:Refresh(a:line)
+        call s:MinTreeFind(l:path)
     else
         let l:path = substitute(l:path, '^'.s:root, '', '')
         echomsg l:path.' is not open.'
