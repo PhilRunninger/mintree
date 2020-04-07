@@ -28,6 +28,9 @@ endfunction
 
 function! mintree#tree#minTreeOpen(path)   " {{{1
     let g:minTreeRoot = simplify(fnamemodify(a:path, ':p'))
+    if !isdirectory(g:minTreeRoot)
+        let g:minTreeRoot = simplify(fnamemodify(g:minTreeRoot, ':h').mintree#slash())
+    endif
     execute 'silent buffer ' . bufnr(g:MinTreeBuffer, 1)
     set filetype=mintree
 
