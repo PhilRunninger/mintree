@@ -9,7 +9,7 @@ function! mintree#marks#createMark(line)   " {{{1
             echomsg "Invalid mark name"
         else
             let l:bookmarks = s:_readMarks()
-            let l:bookmarks[l:mark] = mintree#fullPath(a:line)
+            let l:bookmarks[l:mark] = mintree#common#fullPath(a:line)
             call s:_writeMarks(l:bookmarks)
             echomsg "Mark ".l:mark." points to ".l:bookmarks[l:mark]
         endif

@@ -29,14 +29,14 @@ endfunction
 function! mintree#tree#minTreeOpen(path)   " {{{1
     let g:minTreeRoot = simplify(fnamemodify(a:path, ':p'))
     if !isdirectory(g:minTreeRoot)
-        let g:minTreeRoot = simplify(fnamemodify(g:minTreeRoot, ':h').mintree#slash())
+        let g:minTreeRoot = simplify(fnamemodify(g:minTreeRoot, ':h').mintree#common#slash())
     endif
     execute 'silent buffer ' . bufnr(g:MinTreeBuffer, 1)
     set filetype=mintree
 
     setlocal modifiable
     %delete
-    call setline(1, printf('%s%s%s', mintree#metadataString(0,0), g:MinTreeCollapsed, g:minTreeRoot))
+    call setline(1, printf('%s%s%s', mintree#common#metadataString(0,0), g:MinTreeCollapsed, g:minTreeRoot))
     setlocal nomodifiable
     call mintree#tree#activateNode(1)
 
@@ -51,8 +51,8 @@ function! mintree#tree#minTreeOpen(path)   " {{{1
         \  g:MinTreeFirstSibling:    ":call mintree#nav#goToSibling(-1, {dest,start -> dest < start})<CR>",
         \  g:MinTreeNextSibling:     ":call mintree#nav#goToSibling( 1, {dest,start -> dest <= start})<CR>",
         \  g:MinTreePrevSibling:     ":call mintree#nav#goToSibling(-1, {dest,start -> dest <= start})<CR>",
-        \  g:MinTreeSetRootUp:       ":call mintree#tree#minTreeOpen(simplify(mintree#fullPath(1).'..'))<CR>",
-        \  g:MinTreeSetRoot:         ":call mintree#tree#minTreeOpen(simplify(mintree#fullPath(line('.'))))<CR>",
+        \  g:MinTreeSetRootUp:       ":call mintree#tree#minTreeOpen(simplify(mintree#common#fullPath(1).'..'))<CR>",
+        \  g:MinTreeSetRoot:         ":call mintree#tree#minTreeOpen(simplify(mintree#common#fullPath(line('.'))))<CR>",
         \  g:MinTreeCloseParent:     ":call mintree#tree#closeParent(line('.'))<CR>",
         \  g:MinTreeWipeout:         ":call mintree#tree#wipeout(line('.'))<CR>",
         \  g:MinTreeRefresh:         ":call mintree#tree#refresh(line('.'))<CR>",
@@ -77,7 +77,7 @@ function! mintree#tree#updateOpen()   " {{{1
             let l:line = mintree#tree#locateFile(buf,0). bufname(buf)
             if l:line != -1
                 let l:text = getline(l:line)
-                call setline(l:line, mintree#metadataString(mintree#indent(l:line), 1).text[g:MinTreeMetadataWidth:])
+                call setline(l:line, mintree#common#metadataString(mintree#common#indent(l:line), 1).text[g:MinTreeMetadataWidth:])
             endif
         endif
     endfor
@@ -86,7 +86,7 @@ function! mintree#tree#updateOpen()   " {{{1
 endfunction
 
 function! mintree#tree#locateFile(path,get_children)   " {{{1
-    return s:_locateFile(split(a:path[len(g:minTreeRoot):],mintree#slash()), 0, 1, a:get_children)
+    return s:_locateFile(split(a:path[len(g:minTreeRoot):],mintree#common#slash()), 0, 1, a:get_children)
 endfunction
 
 function! s:_locateFile(path, indent, line, get_children)
@@ -95,12 +95,12 @@ function! s:_locateFile(path, indent, line, get_children)
     else
         let l:part = a:path[0]
         let [_,l:end] = mintree#tree#foldLimits(a:line)
-        if search(printf('^%s *%s%s%s', mintree#metadataString(a:indent+1, '.'), g:MinTreeCollapsed, l:part ,mintree#slash()), 'W', l:end) > 0 && a:get_children
+        if search(printf('^%s *%s%s%s', mintree#common#metadataString(a:indent+1, '.'), g:MinTreeCollapsed, l:part ,mintree#common#slash()), 'W', l:end) > 0 && a:get_children
             call mintree#tree#getChildren(line('.'))
             return s:_locateFile(a:path[1:], a:indent+1, line('.'), a:get_children)
-        elseif search(printf('^%s *%s%s%s', mintree#metadataString(a:indent+1, '.'), g:MinTreeExpanded, l:part ,mintree#slash()), 'W', l:end) > 0
+        elseif search(printf('^%s *%s%s%s', mintree#common#metadataString(a:indent+1, '.'), g:MinTreeExpanded, l:part ,mintree#common#slash()), 'W', l:end) > 0
             return s:_locateFile(a:path[1:], a:indent+1, line('.'), a:get_children)
-        elseif search(printf('^%s *%s$', mintree#metadataString(a:indent+1, '.'), l:part), 'W', l:end) > 0
+        elseif search(printf('^%s *%s$', mintree#common#metadataString(a:indent+1, '.'), l:part), 'W', l:end) > 0
             return line('.')
         else
             return -1
@@ -125,12 +125,12 @@ function! mintree#tree#activateNode(line)   " {{{1
 endfunction
 
 function! mintree#tree#openFileOnLine(windowCmd, line)   " {{{1
-    let l:path = mintree#fullPath(a:line)
+    let l:path = mintree#common#fullPath(a:line)
     call mintree#tree#openFileByPath(a:windowCmd, l:path)
 endfunction
 
 function! mintree#tree#openFileByPath(windowCmd, path)   " {{{1
-    if a:path !~ escape(mintree#slash(),'\').'$'
+    if a:path !~ escape(mintree#common#slash(),'\').'$'
         if bufnr('#') != -1
             buffer #
         endif
@@ -144,11 +144,11 @@ function! mintree#tree#openFileByPath(windowCmd, path)   " {{{1
 endfunction
 
 function! mintree#tree#getChildren(line)   " {{{1
-    let l:indent = mintree#indent(a:line)
-    let l:parent = mintree#fullPath(a:line)
+    let l:indent = mintree#common#indent(a:line)
+    let l:parent = mintree#common#fullPath(a:line)
     let l:children = split(system(printf(mintree#tree#dirCmd(), shellescape(l:parent))), '\n')
-    let l:prefix = printf('%s%s', mintree#metadataString(l:indent+1, 0), repeat(' ', (l:indent+1)*g:MinTreeIndentSize))
-    let l:slash = mintree#slash()
+    let l:prefix = printf('%s%s', mintree#common#metadataString(l:indent+1, 0), repeat(' ', (l:indent+1)*g:MinTreeIndentSize))
+    let l:slash = mintree#common#slash()
     call map(l:children, {idx,val -> printf((isdirectory(l:parent.l:slash.val) ? '%s'.g:MinTreeCollapsed.'%s'.l:slash : '%s %s'), l:prefix, val)})
     setlocal modifiable
     call append(a:line, l:children)
@@ -200,7 +200,7 @@ endfunction
 function! mintree#tree#refresh(line)   " {{{1
     let [l:start,l:end] = mintree#tree#foldLimits(a:line)
     if l:start <= l:end
-        let l:open_folders = map(filter(range(l:start+1,l:end), {_,l->getline(l)=~g:MinTreeExpanded && foldclosed(l)==-1}), {_,l->mintree#fullPath(l)})
+        let l:open_folders = map(filter(range(l:start+1,l:end), {_,l->getline(l)=~g:MinTreeExpanded && foldclosed(l)==-1}), {_,l->mintree#common#fullPath(l)})
         setlocal modifiable
         if l:start < l:end
             execute 'silent '.(l:start+1).','.l:end.'delete'
@@ -215,7 +215,7 @@ function! mintree#tree#refresh(line)   " {{{1
 endfunction
 
 function! mintree#tree#wipeout(line)   " {{{1
-    let l:path = mintree#fullPath(a:line)
+    let l:path = mintree#common#fullPath(a:line)
     if bufexists(l:path)
         execute 'bwipeout '.l:path
         call mintree#tree#refresh(a:line)
@@ -244,14 +244,14 @@ function! mintree#tree#foldLimits(line)   " {{{1
 endfunction
 
 function! mintree#tree#toggleHidden()   " {{{1
-    let l:path = mintree#fullPath(line('.'))
+    let l:path = mintree#common#fullPath(line('.'))
     let g:MinTreeShowHidden = !g:MinTreeShowHidden
     call mintree#tree#refresh(1)
     call mintree#tree#locateFile(l:path, 0)
 endfunction
 
 function! mintree#tree#dirCmd()   " {{{1
-    if mintree#runningWindows()
+    if mintree#common#runningWindows()
         return (g:MinTreeShowHidden ?
              \  get(g:, 'MinTreeDirAll', 'dir /b %s') :
              \  get(g:, 'MinTreeDirNoHidden', 'dir /b /a:-h %s | findstr -v "^\."'))
