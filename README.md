@@ -44,13 +44,13 @@ The following key bindings are used only within the **`=MinTree=`** buffer. They
 
 Default Key | Variable                   | Function
 ---         | ---                        | ---
-**`o`**     | `g:MinTreeOpen`            | Open the selected file in the current window, or expand/close the directory.
-**`O`**     | `g:MinTreeOpenRecursively` | Fully expand the tree under the cursor.
+**`o`**     | `g:MinTreeOpen`            | Open the selected file in the current window, or expand or collapse the directory.
+**`O`**     | `g:MinTreeOpenRecursively` | Fully expand the selected directory.
 **`s`**     | `g:MinTreeOpenSplit`       | Split the window horizontally, and open the selected file there.
 **`v`**     | `g:MinTreeOpenVSplit`      | Split the window vertically, and open the selected file there.
 **`t`**     | `g:MinTreeOpenTab`         | Open the selected file in a new tab.
 **`w`**     | `g:MinTreeWipeout`         | Close the selected node if already open.
-**`p`**     | `g:MinTreeGoToParent`      | Navigate quickly to the next closest parent directory.
+**`p`**     | `g:MinTreeGoToParent`      | Navigate quickly to the closest parent directory.
 **`J`**     | `g:MinTreeLastSibling`     | Navigate quickly to the last sibling file or directory.
 **`K`**     | `g:MinTreeFirstSibling`    | Navigate quickly to the first sibling file or directory.
 **`<C-J>`** | `g:MinTreeNextSibling`     | Navigate quickly to the next sibling file or directory.
@@ -58,7 +58,7 @@ Default Key | Variable                   | Function
 **`u`**     | `g:MinTreeSetRootUp`       | Change the root of the tree to the parent directory of the current root.
 **`C`**     | `g:MinTreeSetRoot`         | Change the root of the tree to the directory under the cursor.
 **`x`**     | `g:MinTreeCloseParent`     | Collapse the directory containing the current file or directory.
-**`r`**     | `g:MinTreeRefresh`         | Refresh the directory under the cursor, or the directory containing the file under the cursor.
+**`r`**     | `g:MinTreeRefresh`         | Refresh the selected directory or the directory containing the selected file.
 **`R`**     | `g:MinTreeRefreshRoot`     | Refresh the whole tree.
 **`I`**     | `g:MinTreeToggleHidden`    | Toggles the display of hidden files, those starting with a period, or marked hidden in Windows.
 **`m`**     | `g:MinTreeCreateMark`      | Creates a single-letter bookmark for the current node.

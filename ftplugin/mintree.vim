@@ -1,4 +1,7 @@
 " vim: foldmethod=marker
+"
+" Vim settings and a custom folding level function for the MinTree buffer.
+
 " Settings   {{{1
 setlocal nomodifiable
 setlocal buftype=nofile noswapfile

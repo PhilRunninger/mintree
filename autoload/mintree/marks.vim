@@ -1,4 +1,6 @@
 " vim: foldmethod=marker
+"
+" This module contains functions to manage the bookmarks in MinTree.
 
 function! mintree#marks#CreateMark(line)   " {{{1
     echo "Name: "

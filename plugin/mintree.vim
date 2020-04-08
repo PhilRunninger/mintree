@@ -1,4 +1,8 @@
 " vim: foldmethod=marker
+"
+" This module kicks things off. The guts of MinTree are located in the
+" autoload modules.
+
 " Compatibility Check   {{{1
 if !has("folding") && !has("conceal") && !has("lambda")
     echomsg "MinTree requires Vim 8.0+, and to be compiled with the +folding, +conceal, and +lambda features."

@@ -1,4 +1,7 @@
 " vim: foldmethod=marker
+"
+" This module sets up all the key bindings within MinTree, and displays the
+" help for the commands.
 
 function! mintree#commands#Setup()   " {{{1
     let s:commands =

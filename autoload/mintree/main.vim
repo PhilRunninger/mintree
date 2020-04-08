@@ -1,4 +1,7 @@
 " vim: foldmethod=marker
+"
+" This module contains the main functions that MinTree uses for creating the
+" tree. It is also where some shared functions exist.
 
 function! mintree#main#MinTree(path)   " {{{1
     if bufexists(g:MinTreeBuffer) && (empty(a:path) || simplify(fnamemodify(a:path, ':p')) == g:minTreeRoot)
