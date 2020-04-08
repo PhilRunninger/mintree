@@ -7,7 +7,7 @@ endif
 
 " Initialization   {{{1
 let g:MinTreeBuffer          = '=MinTree='
-let g:MinTreeBookmarksFile   = expand('<sfile>:p:h:h').mintree#common#slash().'.MinTreeBookmarks'
+let g:MinTreeBookmarksFile   = expand('<sfile>:p:h:h').mintree#common#Slash().'.MinTreeBookmarks'
 let g:MinTreeCollapsed       = get(g:, 'MinTreeCollapsed', '▸')
 let g:MinTreeExpanded        = get(g:, 'MinTreeExpanded', '▾')
 let g:MinTreeShowHidden      = get(g:, 'MinTreeShowHidden', 0)
@@ -33,5 +33,5 @@ let g:MinTreeExit            = get(g:, 'MinTreeExit', 'q')
 let g:MinTreeCreateMark      = get(g:, 'MinTreeCreateMark', 'm')
 let g:MinTreeGotoMark        = get(g:, 'MinTreeGotoMark', "'")
 
-command! -n=? -complete=dir MinTree :call mintree#tree#minTree('<args>')
-command! -n=? -complete=file MinTreeFind :call mintree#tree#minTreeFind('<args>')
+command! -n=? -complete=dir MinTree :call mintree#tree#MinTree('<args>')
+command! -n=? -complete=file MinTreeFind :call mintree#tree#MinTreeFind('<args>')

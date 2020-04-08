@@ -1,6 +1,6 @@
 " vim: foldmethod=marker
 
-function! mintree#marks#createMark(line)   " {{{1
+function! mintree#marks#CreateMark(line)   " {{{1
     echo "Name: "
     let l:mark = nr2char(getchar())
     redraw!
@@ -9,14 +9,14 @@ function! mintree#marks#createMark(line)   " {{{1
             echomsg "Invalid mark name"
         else
             let l:bookmarks = s:_readMarks()
-            let l:bookmarks[l:mark] = mintree#common#fullPath(a:line)
+            let l:bookmarks[l:mark] = mintree#common#FullPath(a:line)
             call s:_writeMarks(l:bookmarks)
             echomsg "Mark ".l:mark." points to ".l:bookmarks[l:mark]
         endif
     endif
 endfunction
 
-function! mintree#marks#gotoMark()   " {{{1
+function! mintree#marks#GotoMark()   " {{{1
     let l:bookmarks = s:_readMarks()
     cal s:_listMarks(l:bookmarks)
     echo "Name: "
@@ -26,9 +26,9 @@ function! mintree#marks#gotoMark()   " {{{1
         if has_key(l:bookmarks, l:mark)
             let l:path = l:bookmarks[l:mark]
             if isdirectory(l:path)
-                call mintree#tree#minTree(l:path)
+                call mintree#tree#MinTree(l:path)
             else
-                call mintree#tree#openFileByPath('', l:path)
+                call mintree#tree#OpenFileByPath('', l:path)
             endif
         else
             echomsg "Mark ".l:mark." is not set"
@@ -36,7 +36,7 @@ function! mintree#marks#gotoMark()   " {{{1
     endif
 endfunction
 
-function! mintree#marks#deleteMarks()   " {{{1
+function! mintree#marks#DeleteMarks()   " {{{1
     let l:bookmarks = s:_readMarks()
     cal s:_listMarks(l:bookmarks)
     let l:marks = input("Which mark(s) to delete: (* for all) ")
