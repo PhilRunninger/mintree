@@ -9,7 +9,7 @@ function! mintree#marks#CreateMark(line)   " {{{1
             echomsg "Invalid mark name"
         else
             let l:bookmarks = s:_readMarks()
-            let l:bookmarks[l:mark] = mintree#common#FullPath(a:line)
+            let l:bookmarks[l:mark] = mintree#main#FullPath(a:line)
             call s:_writeMarks(l:bookmarks)
             echomsg "Mark ".l:mark." points to ".l:bookmarks[l:mark]
         endif
@@ -26,9 +26,9 @@ function! mintree#marks#GotoMark()   " {{{1
         if has_key(l:bookmarks, l:mark)
             let l:path = l:bookmarks[l:mark]
             if isdirectory(l:path)
-                call mintree#tree#MinTree(l:path)
+                call mintree#main#MinTree(l:path)
             else
-                call mintree#tree#OpenFileByPath('', l:path)
+                call mintree#main#OpenFileByPath('', l:path)
             endif
         else
             echomsg "Mark ".l:mark." is not set"
