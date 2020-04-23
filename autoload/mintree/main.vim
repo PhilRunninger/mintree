@@ -19,7 +19,7 @@ function! mintree#main#MinTreeFind(path)   " {{{1
     else
         call mintree#main#MinTreeOpen(fnamemodify(l:path,':h'))
     endif
-    if s:LocateFile(fnamemodify(l:path,':p'),1) == -1
+    if mintree#main#LocateFile(fnamemodify(l:path,':p'),1) == -1
         buffer #
         echomsg 'File '.l:path.' was not found.'
         echomsg ' '
@@ -52,7 +52,7 @@ function! s:UpdateOpen()   " {{{1
     for buf in range(1,bufnr('$'))
         let buf = fnamemodify(bufname(buf),':p')
         if bufexists(buf) && buflisted(buf) && stridx(buf, g:minTreeRoot) == 0
-            let l:line = s:LocateFile(buf,0). bufname(buf)
+            let l:line = mintree#main#LocateFile(buf,0). bufname(buf)
             if l:line != -1
                 let l:text = getline(l:line)
                 call setline(l:line, mintree#main#MetadataString(mintree#main#Indent(l:line), 1).text[g:MinTreeMetadataWidth:])
@@ -63,7 +63,7 @@ function! s:UpdateOpen()   " {{{1
     call setpos('.', l:pos)
 endfunction
 
-function! s:LocateFile(path,get_children)   " {{{1
+function! mintree#main#LocateFile(path,get_children)   " {{{1
     return s:_locateFile(split(a:path[len(g:minTreeRoot):],mintree#main#Slash()), 0, 1, a:get_children)
 endfunction
 
@@ -185,7 +185,7 @@ function! mintree#main#Refresh(line)   " {{{1
         endif
         call setline(l:start, substitute(getline(l:start),g:MinTreeExpanded,g:MinTreeCollapsed,''))
         call mintree#main#ActivateNode(l:start)
-        call map(l:open_folders, {_,f -> s:LocateFile(f,1)})
+        call map(l:open_folders, {_,f -> mintree#main#LocateFile(f,1)})
     endif
     call s:UpdateOpen()
     execute 'normal! '.l:start.'gg'
@@ -197,7 +197,7 @@ function! mintree#main#Wipeout(line)   " {{{1
     if bufexists(l:path)
         execute 'bwipeout '.l:path
         call mintree#main#Refresh(a:line)
-        call s:LocateFile(l:path, 0)
+        call mintree#main#LocateFile(l:path, 0)
     else
         let l:path = substitute(l:path, '^'.g:minTreeRoot, '', '')
         echomsg l:path.' is not open.'
@@ -225,7 +225,7 @@ function! mintree#main#ToggleHidden()   " {{{1
     let l:path = mintree#main#FullPath(line('.'))
     let g:MinTreeShowHidden = !g:MinTreeShowHidden
     call mintree#main#Refresh(1)
-    call s:LocateFile(l:path, 0)
+    call mintree#main#LocateFile(l:path, 0)
 endfunction
 
 function! s:DirCmd()   " {{{1
