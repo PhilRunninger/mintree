@@ -26,11 +26,11 @@ function! mintree#commands#Setup()   " {{{1
         \ [ g:MinTreeCreateMark,      ":call mintree#marks#CreateMark(line('.'))<CR>",                                  "Creates a single-letter bookmark for the current node."],
         \ [ g:MinTreeGotoMark,        ":call mintree#marks#GotoMark()<CR>",                                             "Displays all bookmarks, and opens the one selected."],
         \ [ 'd'.g:MinTreeCreateMark,  ":call mintree#marks#DeleteMarks()<CR>",                                          "Displays all bookmarks, and deletes the ones selected."],
-        \ [ 'A',                      ":call mintree#file#Create(line('.'))<CR>",                                       "Create a new file or subdirectory in selected directory"],
-        \ [ 'S',                      ":call mintree#file#Rename(line('.'))<CR>",                                       "Rename selected file or directory"],
-        \ [ 'D',                      ":call mintree#file#Delete(line('.'))<CR>",                                       "Delete selected file or subdirectory"],
-        \ [ 'Y',                      ":call mintree#file#Yank(line('.'))<CR>",                                         "Yank selected file or subdirectory"],
-        \ [ 'P',                      ":call mintree#file#Put(line('.'))<CR>",                                          "Paste the deleted or yanked file or subdirectory"],
+        \ [ g:MinTreeFileCreate,      ":call mintree#file#Create(line('.'))<CR>",                                       "Create a new file or subdirectory in selected directory"],
+        \ [ g:MinTreeFileRename,      ":call mintree#file#Rename(line('.'))<CR>",                                       "Rename selected file or directory"],
+        \ [ g:MinTreeFileDelete,      ":call mintree#file#Delete(line('.'))<CR>",                                       "Delete selected file or subdirectory"],
+        \ [ g:MinTreeFileYank,        ":call mintree#file#Yank(line('.'))<CR>",                                         "Yank selected file or subdirectory"],
+        \ [ g:MinTreeFilePut,         ":call mintree#file#Put(line('.'))<CR>",                                          "Paste the deleted or yanked file or subdirectory"],
         \ [ g:MinTreeExit,            ":call mintree#main#ExitMinTree()<CR>",                                           "Exit the MinTree, returning to the previous buffer."],
         \ [ '?',                      ":call mintree#commands#Help()<CR>",                                              ""]
     \ ]

@@ -43,37 +43,42 @@ nnoremap <leader>ho :split<Bar>wincmd J<Bar>MinTree<CR>
 The following key bindings are used only within the **`=MinTree=`** buffer. They are configurable by setting the corresponding global variables.
 
 Default Key | Variable                   | Function
----         | ---                        | ---
+-|-|-
 **`o`**     | `g:MinTreeOpen`            | Open the selected file in the current window, or expand or collapse the directory.
 **`O`**     | `g:MinTreeOpenRecursively` | Fully expand the selected directory.
 **`s`**     | `g:MinTreeOpenSplit`       | Split the window horizontally, and open the selected file there.
 **`v`**     | `g:MinTreeOpenVSplit`      | Split the window vertically, and open the selected file there.
 **`t`**     | `g:MinTreeOpenTab`         | Open the selected file in a new tab.
-**`w`**     | `g:MinTreeWipeout`         | Close the selected node if already open.
+|||
 **`p`**     | `g:MinTreeGoToParent`      | Navigate quickly to the closest parent directory.
 **`J`**     | `g:MinTreeLastSibling`     | Navigate quickly to the last sibling file or directory.
 **`K`**     | `g:MinTreeFirstSibling`    | Navigate quickly to the first sibling file or directory.
 **`<C-J>`** | `g:MinTreeNextSibling`     | Navigate quickly to the next sibling file or directory.
 **`<C-K>`** | `g:MinTreePrevSibling`     | Navigate quickly to the previous sibling file or directory.
+|||
 **`u`**     | `g:MinTreeSetRootUp`       | Change the root of the tree to the parent directory of the current root.
 **`C`**     | `g:MinTreeSetRoot`         | Change the root of the tree to the directory under the cursor.
 **`x`**     | `g:MinTreeCloseParent`     | Collapse the directory containing the current file or directory.
 **`r`**     | `g:MinTreeRefresh`         | Refresh the selected directory or the directory containing the selected file.
 **`R`**     | `g:MinTreeRefreshRoot`     | Refresh the whole tree.
 **`I`**     | `g:MinTreeToggleHidden`    | Toggles the display of hidden files, those starting with a period, or marked hidden in Windows.
+**`w`**     | `g:MinTreeWipeout`         | Close the buffer associated with the selected node.
+|||
 **`m`**     | `g:MinTreeCreateMark`      | Creates a single-letter bookmark for the current node.
 **`'`**     | `g:MinTreeGotoMark`        | Displays all bookmarks, and opens the one selected.
 **`dm`**    | `g:MinTreeCreateMark`      | Displays all bookmarks, and deletes the ones selected. This is the same variable used for creating bookmarks, but prefixed with a `d`.
-**`A`**     |                            | Create a file or directory in the selected directory.
-**`S`**     |                            | Rename a file or directory.
-**`D`**     |                            | Delete a file or directory. Use with **`P`** to move a file or directory.
-**`Y`**     |                            | Yank a file or directory.
-**`P`**     |                            | Put a deleted or yanked object in the selected directory.
+|||
+**`A`**     | `g:MinTreeFileCreate`      | Create a file or directory in the selected directory.
+**`S`**     | `g:MinTreeFileRename`      | Rename a file or directory.
+**`D`**     | `g:MinTreeFileDelete`      | Delete a file or directory. Use with **`P`** to move a file or directory.
+**`Y`**     | `g:MinTreeFileYank`        | Yank a file or directory.
+**`P`**     | `g:MinTreeFilePut`         | Put a deleted or yanked object in the selected directory.
+|||
 **`q`**     | `g:MinTreeExit`            | Exit the MinTree, and return to the previous buffer.
 **`?`**     |                            | Display short descriptions of these commands.
 
 ## File Operations
-The keys **`A`**, **`S`**, **`D`**, **`Y`**, and **`P`** are used to perform file operations on the disk. They behave much like their counterpart normal-mode Vim commands. When creating a new file or directory, you can specify a deeply nested path for it. Renaming a file or directory allows you to change only that level. When a file or directory is deleted, it is *moved* to a temporary location so that it can be **P**ut into one or more other directories. Similarly, a yanked file or directory is *copied* to a temporary location for subsequent **P**utting.
+The default keys **`A`**, **`S`**, **`D`**, **`Y`**, and **`P`** are used to perform file operations on the disk. They behave much like their counterpart normal-mode Vim commands. When creating a new file or directory, you can specify a deeply nested path for it. Renaming a file or directory allows you to change only that level. When a file or directory is deleted, it is *moved* to a temporary location so that it can be **P**ut into one or more other directories. Similarly, a yanked file or directory is *copied* to a temporary location for subsequent **P**utting.
 
 ## Settings
 
