@@ -268,5 +268,8 @@ function! mintree#main#FullPath(line)    " {{{1
 endfunction
 
 function! mintree#main#Slash()    " {{{1
-    return (mintree#main#RunningWindows() ? '\' : '/')
+    if !exists('s:slash')
+        let s:slash = (mintree#main#RunningWindows() ? '\' : '/')
+    endif
+    return s:slash
 endfunction
