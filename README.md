@@ -64,8 +64,16 @@ Default Key | Variable                   | Function
 **`m`**     | `g:MinTreeCreateMark`      | Creates a single-letter bookmark for the current node.
 **`'`**     | `g:MinTreeGotoMark`        | Displays all bookmarks, and opens the one selected.
 **`dm`**    | `g:MinTreeCreateMark`      | Displays all bookmarks, and deletes the ones selected. This is the same variable used for creating bookmarks, but prefixed with a `d`.
+**`A`**     |                            | Create a file or directory in the selected directory.
+**`S`**     |                            | Rename a file or directory.
+**`D`**     |                            | Delete a file or directory. Use with **`P`** to move a file or directory.
+**`Y`**     |                            | Yank a file or directory.
+**`P`**     |                            | Put a deleted or yanked object in the selected directory.
 **`q`**     | `g:MinTreeExit`            | Exit the MinTree, and return to the previous buffer.
 **`?`**     |                            | Display short descriptions of these commands.
+
+## File Operations
+The keys **`A`**, **`S`**, **`D`**, **`Y`**, and **`P`** are used to perform file operations on the disk. They behave much like their counterpart normal-mode Vim commands. When creating a new file or directory, you can specify a deeply nested path for it. Renaming a file or directory allows you to change only that level. When a file or directory is deleted, it is *moved* to a temporary location so that it can be **P**ut into one or more other directories. Similarly, a yanked file or directory is *copied* to a temporary location for subsequent **P**utting.
 
 ## Settings
 
