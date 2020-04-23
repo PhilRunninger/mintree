@@ -2,7 +2,7 @@
 "
 " This module contains functions for performing basic file operations.
 
-function! s:Directory(line)
+function! s:Directory(line)   " {{{1
     let l:path = mintree#main#FullPath(a:line)
     if !isdirectory(l:path)
         let l:path = fnamemodify(l:path, ":h:s?$?".mintree#main#Slash().'?')
@@ -10,11 +10,11 @@ function! s:Directory(line)
     return l:path
 endfunction
 
-function! s:Object(fullPath)
+function! s:Object(fullPath)   " {{{1
     return fnamemodify(a:fullPath, isdirectory(a:fullPath) ? ':h:t:s?$?'.mintree#main#Slash().'?' : ':t')
 endfunction
 
-function! s:CreateTempFolder()
+function! s:CreateTempFolder()   " {{{1
     if exists('g:MinTreeTempObject')
         call system('rm -rf ' . shellescape(g:MinTreeTempObject))
     endif
@@ -22,17 +22,17 @@ function! s:CreateTempFolder()
     call system('mkdir ' . g:MinTreeTempObject)
 endfunction
 
-function! s:MoveToTemp(fullPath)
+function! s:MoveToTemp(fullPath)   " {{{1
     call s:CreateTempFolder()
     call system('mv ' . a:fullPath . ' ' . g:MinTreeTempObject . mintree#main#Slash() . s:Object(a:fullPath))
 endfunction
 
-function! s:CopyToTemp(fullPath)
+function! s:CopyToTemp(fullPath)   " {{{1
     call s:CreateTempFolder()
     call system('cp -R ' . a:fullPath . ' ' . g:MinTreeTempObject . mintree#main#Slash() . s:Object(a:fullPath))
 endfunction
 
-function! s:CopyFromTemp(path)
+function! s:CopyFromTemp(path)   " {{{1
     if !exists('g:MinTreeTempObject') || !isdirectory(g:MinTreeTempObject)
         echomsg "ERROR! Nothing to paste. Yank or Delete a node first."
         return
