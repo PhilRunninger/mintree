@@ -14,10 +14,10 @@ If you have no favorite, or want to manage your plugins without 3rd-party depend
 
 ## Commands
 
-### **`:MinTree [path]`**
+### `:MinTree [path]`
 This command opens a buffer with the name **`=MinTree=`** in the current window, and shows a tree of either the path given or the current working directory.
 
-### **`:MinTreeFind [path]`**
+### `:MinTreeFind [path]`
 This command searches the **`=MinTree=`** buffer for the given path. If no path was given, it looks for the current buffer. If not found in the current tree, a new one is created to show the file being sought.
 
 The commands can be assigned to a key, and these assignments are left to the user, so as not to interfere with any existing mappings. For example,
@@ -39,41 +39,32 @@ nnoremap <leader>ho :split<Bar>wincmd J<Bar>MinTree<CR>
 The following, configurable key bindings are used only within the **`=MinTree=`** buffer. The lists below show the default key bindings, a description of the action each key performs, and the corresponding global variable.
 
 #### Opening/Closing Buffers
-- **`o`** ⮕ Open the selected file in the current window, or expand or collapse the directory. (`g:MinTreeOpen`) 
-- **`O`** ⮕ Fully expand the selected directory. (`g:MinTreeOpenRecursively`) 
-- **`s`** ⮕ Split the window horizontally, and open the selected file there. (`g:MinTreeOpenSplit`) 
-- **`v`** ⮕ Split the window vertically, and open the selected file there. (`g:MinTreeOpenVSplit`) 
-- **`t`** ⮕ Open the selected file in a new tab. (`g:MinTreeOpenTab`) 
-- **`w`** ⮕ Close the buffer associated with the selected node. (`g:MinTreeWipeout`) 
+- **`o`** ⮕ Open the selected file in the current window, or expand or collapse the directory. (`g:MinTreeOpen`)
+- **`O`** ⮕ Fully expand the selected directory. (`g:MinTreeOpenRecursively`)
+- **`s`** ⮕ Split the window horizontally, and open the selected file there. (`g:MinTreeOpenSplit`)
+- **`v`** ⮕ Split the window vertically, and open the selected file there. (`g:MinTreeOpenVSplit`)
+- **`t`** ⮕ Open the selected file in a new tab. (`g:MinTreeOpenTab`)
+- **`w`** ⮕ Close the buffer associated with the selected node. (`g:MinTreeWipeout`)
 #### Navigating the Tree
-- **`p`** ⮕ Navigate quickly to the closest parent directory. (`g:MinTreeGoToParent`) 
-- **`J`** ⮕ Navigate quickly to the last sibling file or directory. (`g:MinTreeLastSibling`) 
-- **`K`** ⮕ Navigate quickly to the first sibling file or directory. (`g:MinTreeFirstSibling`) 
-- **`<C-J>`** ⮕ Navigate quickly to the next sibling file or directory. (`g:MinTreeNextSibling`) 
-- **`<C-K>`** ⮕ Navigate quickly to the previous sibling file or directory. (`g:MinTreePrevSibling`) 
+- **`p`** ⮕ Navigate quickly to the closest parent directory. (`g:MinTreeGoToParent`)
+- **`J`** ⮕ Navigate quickly to the last sibling file or directory. (`g:MinTreeLastSibling`)
+- **`K`** ⮕ Navigate quickly to the first sibling file or directory. (`g:MinTreeFirstSibling`)
+- **`<C-J>`** ⮕ Navigate quickly to the next sibling file or directory. (`g:MinTreeNextSibling`)
+- **`<C-K>`** ⮕ Navigate quickly to the previous sibling file or directory. (`g:MinTreePrevSibling`)
 #### Updating the Tree
-- **`u`** ⮕ Change the root of the tree to the parent directory of the current root. (`g:MinTreeSetRootUp`) 
-- **`C`** ⮕ Change the root of the tree to the directory under the cursor. (`g:MinTreeSetRoot`) 
-- **`x`** ⮕ Collapse the directory containing the current file or directory. (`g:MinTreeCloseParent`) 
-- **`r`** ⮕ Refresh the selected directory or the directory containing the selected file. (`g:MinTreeRefresh`) 
-- **`R`** ⮕ Refresh the whole tree. (`g:MinTreeRefreshRoot`) 
-- **`I`** ⮕ Toggles hidden files, those starting with a period, or marked hidden in Windows. (`g:MinTreeToggleHidden`) 
+- **`u`** ⮕ Change the root of the tree to the parent directory of the current root. (`g:MinTreeSetRootUp`)
+- **`C`** ⮕ Change the root of the tree to the directory under the cursor. (`g:MinTreeSetRoot`)
+- **`x`** ⮕ Collapse the directory containing the current file or directory. (`g:MinTreeCloseParent`)
+- **`r`** ⮕ Refresh the selected directory or the directory containing the selected file. (`g:MinTreeRefresh`)
+- **`R`** ⮕ Refresh the whole tree. (`g:MinTreeRefreshRoot`)
+- **`I`** ⮕ Toggles hidden files, those starting with a period, or marked hidden in Windows. (`g:MinTreeToggleHidden`)
 #### Bookmarks
-- **`m`** ⮕ Creates a single-letter bookmark for the current node. (`g:MinTreeCreateMark`) 
-- **`'`** ⮕ Displays all bookmarks, and opens the one selected. (`g:MinTreeGotoMark`) 
-- **`dm`** ⮕ Displays all bookmarks, and deletes the ones selected. This is the same key used for creating bookmarks, but prefixed with a `d`. (`g:MinTreeCreateMark`) 
-#### File System Operations
-- **`A`** ⮕ Create a file or directory in the selected directory. (`g:MinTreeFileCreate`) 
-- **`S`** ⮕ Rename a file or directory. (`g:MinTreeFileRename`) 
-- **`D`** ⮕ Delete a file or directory. Use with **`P`** to move a file or directory. (`g:MinTreeFileDelete`) 
-- **`Y`** ⮕ Yank a file or directory. (`g:MinTreeFileYank`) 
-- **`P`** ⮕ Put a deleted or yanked object in the selected directory. (`g:MinTreeFilePut`) 
+- **`m`** ⮕ Creates a single-letter bookmark for the current node. (`g:MinTreeCreateMark`)
+- **`'`** ⮕ Displays all bookmarks, and opens the one selected. (`g:MinTreeGotoMark`)
+- **`dm`** ⮕ Displays all bookmarks, and deletes the ones selected. This is the same key used for creating bookmarks, but prefixed with a `d`. (`g:MinTreeCreateMark`)
 #### Miscellaneous
-- **`q`** ⮕ Exit the MinTree, and return to the previous buffer. (`g:MinTreeExit`) 
+- **`q`** ⮕ Exit the MinTree, and return to the previous buffer. (`g:MinTreeExit`)
 - **`?`** ⮕ Display short descriptions of these commands.
-
-## File Operations
-The default keys **`A`**, **`S`**, **`D`**, **`Y`**, and **`P`** are used to perform file operations on the disk. They behave much like their counterpart normal-mode Vim commands. When creating a new file or directory, you can specify a deeply nested path for it. Renaming a file or directory allows you to change only that level. When a file or directory is deleted, it is *moved* to a temporary location so that it can be **P**ut into one or more other directories. Similarly, a yanked file or directory is *copied* to a temporary location for subsequent **P**utting.
 
 ## Settings
 
