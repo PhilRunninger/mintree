@@ -1,3 +1,5 @@
+" Instructions for coloring or hiding text in the MinTree bufer.
+
 let s:Arrows = '['.g:MinTreeCollapsed.g:MinTreeExpanded.']'
 
 execute 'syntax match MinTreeArrows #'.s:Arrows.'\ze.*# containedin=MinTreeDir'

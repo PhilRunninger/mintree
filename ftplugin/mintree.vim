@@ -1,4 +1,7 @@
 " vim: foldmethod=marker
+"
+" Vim settings and a custom folding level function for the MinTree buffer.
+
 " Settings   {{{1
 setlocal nomodifiable
 setlocal buftype=nofile noswapfile
@@ -9,11 +12,11 @@ setlocal foldcolumn=0 foldmethod=expr foldexpr=MinTreeFoldLevel(v:lnum)
 execute "setlocal foldtext=substitute(getline(v:foldstart)[".g:MinTreeMetadataWidth.":],g:MinTreeExpanded,g:MinTreeCollapsed,'')"
 
 function! MinTreeFoldLevel(lnum)   " {{{1
-    let l:current_indent = mintree#indent(a:lnum)
+    let l:current_indent = mintree#main#Indent(a:lnum)
     if a:lnum == line('$')
         let l:result = ['<', l:current_indent]
     else
-        let l:next_indent = mintree#indent(a:lnum+1)
+        let l:next_indent = mintree#main#Indent(a:lnum+1)
         if l:current_indent < l:next_indent
             let l:result = ['>', l:next_indent]
         elseif l:current_indent > l:next_indent
