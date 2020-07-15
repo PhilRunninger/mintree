@@ -1,6 +1,6 @@
 # MinTree
 
-A minimalist version of [NERDTree](https://github.com/scrooloose/nerdtree). How much of NERDTree can I replicate with the fewest lines of code while, at the same time, doing it faster? This project is my answer to that question.
+MinTree is a minimalist tree-based file explorer. It initially was a proof of concept to solve [NERDTree](https://github.com/scrooloose/nerdtree)'s performance issues with very large directories. It was very successful in that effort, and has grown in its functionality since. It was never intended to be, and will never be, a feature-for-feature replacement of NERDTree. A lot of features overlap, but each will have its own unique set of capabilities.
 
 ## Prerequisite
 
@@ -10,7 +10,7 @@ MinTree requires Vim version 8.0+, and it must be compiled with the `folding`, `
 
 Use your favorite plugin manager to install this plugin. [vim-pathogen](https://github.com/tpope/vim-pathogen), [Vundle.vim](https://github.com/VundleVim/Vundle.vim), [vim-plug](https://github.com/junegunn/vim-plug), [neobundle.vim](https://github.com/Shougo/neobundle.vim), and [dein.vim](https://github.com/Shougo/dein.vim) are some of the more popular ones. A lengthy discussion of these and other managers can be found on [vi.stackexchange.com](https://vi.stackexchange.com/questions/388/what-is-the-difference-between-the-vim-plugin-managers).
 
-If you have no favorite, or want to manage your plugins without 3rd-party dependencies, I recommend using Vim 8 packages, as described in Greg Hurrell's excellent Youtube video: [Vim screencast #75: Plugin managers](http://img.youtube.com/vi/X2_R3uxDN6g/0.jpg)
+If you have no favorite, or want to manage your plugins without 3rd-party dependencies, I recommend using Vim 8 packages, as described in Greg Hurrell's excellent Youtube video: [Vim screencast #75: Plugin managers](https://www.youtube.com/watch?v=X2_R3uxDN6g)
 
 ## Commands
 
