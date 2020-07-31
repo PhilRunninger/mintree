@@ -63,7 +63,8 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 <br>**`'`** ⮕ Displays all bookmarks, and opens the one selected. (`g:MinTreeGotoMark`)
 <br>**`dm`** ⮕ Displays all bookmarks, and deletes the ones selected. This is the same key used for creating bookmarks, but prefixed with a `d`. (`g:MinTreeCreateMark`)
 #### Miscellaneous
-**`q`** ⮕ Exit the MinTree, and return to the previous buffer. (`g:MinTreeExit`)
+**`cd`** ⮕ Change the current working directory to that of the selected node. (`g:MinTreeSetCWD`)
+<br>**`q`** ⮕ Exit the MinTree, and return to the previous buffer. (`g:MinTreeExit`)
 <br>**`?`** ⮕ Display short descriptions of these commands.
 
 ## Settings

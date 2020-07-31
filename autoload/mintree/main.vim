@@ -204,6 +204,15 @@ function! mintree#main#Wipeout(line)   " {{{1
     endif
 endfunction
 
+function! mintree#main#SetCWD(line)   " {{{1
+    let l:path = mintree#main#FullPath(a:line)
+    if !isdirectory(l:path)
+        let l:path = fnamemodify(l:path, '%p')
+    endif
+    execute 'cd '.l:path
+    echomsg 'CWD: '.getcwd()
+endfunction
+
 function! s:FoldLimits(line)   " {{{1
     execute 'normal! '.a:line.'gg'
     if foldlevel(a:line)
