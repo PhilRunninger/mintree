@@ -70,7 +70,7 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 
 ## Settings
 
-* The following variables govern which nodes MinTree shows or hides.
+* The following variables govern which nodes MinTree shows or hides. **Note:** MinTree will always respect the `'wildignore'` setting. Any file or directory that matches one of its patterns be excluded from the tree.
 
     Variable | Default
     --- | ---
