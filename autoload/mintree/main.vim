@@ -122,14 +122,14 @@ function! mintree#main#OpenFileByPath(windowCmd, path)   " {{{1
 endfunction
 
 function! s:GetChildren(line)   " {{{1
-    let l:indent = mintree#main#Indent(a:line)
     let l:parent = mintree#main#FullPath(a:line)
+    let l:children = (g:MinTreeShowHidden ? globpath(l:parent,'.*',0,1)[2:] : []) + globpath(l:parent,'*',0,1)
+    call map(l:children, {_,x -> fnamemodify(x,':t')})
+    if !g:MinTreeShowFiles
+        call filter(l:children, {_,x -> (isdirectory(l:parent . x))})
+    endif
 
-    let l:children = globpath(l:parent,'.*',0,1)[2:] + globpath(l:parent,'*',0,1)
-    call map(l:children, {_,p -> fnamemodify(p,':t')})
-    call filter(l:children, {_,x -> (g:MinTreeShowFiles || isdirectory(l:parent . x)) &&
-                                  \ (g:MinTreeShowHidden || x !~ '^\.')})
-
+    let l:indent = mintree#main#Indent(a:line)
     let l:prefix = printf('%s%s', mintree#main#MetadataString(l:indent+1, 0), repeat(' ', (l:indent+1)*g:MinTreeIndentSize))
     let l:slash = mintree#main#Slash()
     call map(l:children, {idx,val -> printf((isdirectory(l:parent.l:slash.val) ? '%s'.g:MinTreeCollapsed.'%s'.l:slash : '%s %s'), l:prefix, val)})
