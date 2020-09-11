@@ -57,7 +57,8 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 <br>**`x`** ⮕ Collapse the directory containing the current file or directory. (`g:MinTreeCloseParent`)
 <br>**`r`** ⮕ Refresh the selected directory or the directory containing the selected file. (`g:MinTreeRefresh`)
 <br>**`R`** ⮕ Refresh the whole tree. (`g:MinTreeRefreshRoot`)
-<br>**`I`** ⮕ Toggles hidden files, those starting with a period, or marked hidden in Windows. (`g:MinTreeToggleHidden`)
+<br>**`I`** ⮕ Toggles hidden files and directories, those starting with a period. (`g:MinTreeToggleHidden`)
+<br>**`F`** ⮕ Toggles files, leaving only directories showing. (`g:MinTreeToggleFiles`)
 #### Bookmarks
 **`m`** ⮕ Creates a single-letter bookmark for the current node. (`g:MinTreeCreateMark`)
 <br>**`'`** ⮕ Displays all bookmarks, and opens the one selected. (`g:MinTreeGotoMark`)
@@ -69,13 +70,12 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 
 ## Settings
 
-* The following variables define the OS commands that gather files and directories. If necessary, you can customize them for your unique situation.
+* The following variables govern which nodes MinTree shows or hides. **Note:** MinTree will always respect the `'wildignore'` setting. Any file or directory that matches one of its patterns be excluded from the tree.
 
     Variable | Default
     --- | ---
-    **`g:MinTreeDirAll`**<br>returns all files/dirs in the `%s` directory. | Windows: `dir /b %s`<br>others: `ls -A %s \| sort -f`
-    **`g:MinTreeDirNoHidden`**<br>returns all non hidden files/dirs in the `%s` directory. | Windows: `dir /b /a:-h %s \| findstr -v "^\."`<br>others: `ls %s \| sort -f`
-    **`g:MinTreeShowHidden`**<br>sets which of the above two commands to use by default. | `0`
+    **`g:MinTreeShowHidden`**<br>show hidden files or directories (those that begin with a period) | `0`<br>keep them hidden
+    **`g:MinTreeShowFiles`**<br>show or hide all files | `1`<br>show both files and directories
 
 * The characters used to indicate whether a directory is collapsed or expanded can be customized with these two variables
 

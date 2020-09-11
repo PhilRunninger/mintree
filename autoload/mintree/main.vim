@@ -122,9 +122,14 @@ function! mintree#main#OpenFileByPath(windowCmd, path)   " {{{1
 endfunction
 
 function! s:GetChildren(line)   " {{{1
-    let l:indent = mintree#main#Indent(a:line)
     let l:parent = mintree#main#FullPath(a:line)
-    let l:children = split(system(printf(s:DirCmd(), shellescape(l:parent))), '\n')
+    let l:children = (g:MinTreeShowHidden ? globpath(l:parent,'.*',0,1)[2:] : []) + globpath(l:parent,'*',0,1)
+    call map(l:children, {_,x -> fnamemodify(x,':t')})
+    if !g:MinTreeShowFiles
+        call filter(l:children, {_,x -> (isdirectory(l:parent . x))})
+    endif
+
+    let l:indent = mintree#main#Indent(a:line)
     let l:prefix = printf('%s%s', mintree#main#MetadataString(l:indent+1, 0), repeat(' ', (l:indent+1)*g:MinTreeIndentSize))
     let l:slash = mintree#main#Slash()
     call map(l:children, {idx,val -> printf((isdirectory(l:parent.l:slash.val) ? '%s'.g:MinTreeCollapsed.'%s'.l:slash : '%s %s'), l:prefix, val)})
@@ -237,16 +242,11 @@ function! mintree#main#ToggleHidden()   " {{{1
     call mintree#main#LocateFile(l:path, 0)
 endfunction
 
-function! s:DirCmd()   " {{{1
-    if mintree#main#RunningWindows()
-        return (g:MinTreeShowHidden ?
-             \  get(g:, 'MinTreeDirAll', 'dir /b %s') :
-             \  get(g:, 'MinTreeDirNoHidden', 'dir /b /a:-h %s | findstr -v "^\."'))
-    else
-        return (g:MinTreeShowHidden ?
-             \  get(g:, 'MinTreeDirAll', 'ls -A %s | sort -f') :
-             \  get(g:, 'MinTreeDirNoHidden', 'ls %s | sort -f'))
-    endif
+function! mintree#main#ToggleFiles()   " {{{1
+    let l:path = mintree#main#FullPath(line('.'))
+    let g:MinTreeShowFiles = !g:MinTreeShowFiles
+    call mintree#main#Refresh(1)
+    call mintree#main#LocateFile(l:path, 0)
 endfunction
 
 function! mintree#main#RunningWindows()    " {{{1
