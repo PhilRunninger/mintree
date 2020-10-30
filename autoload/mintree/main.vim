@@ -48,7 +48,9 @@ endfunction
 function! s:UpdateOpen()   " {{{1
     let l:pos = getpos('.')
     let l:folded = foldclosed(1) != -1
-    normal! ggzo
+    if l:folded
+        normal! ggzo
+    endif
     setlocal modifiable
     execute 'normal! gg0'.g:MinTreeIndentDigits.'lG0'.g:MinTreeIndentDigits.'lr0'
     for buf in range(1,bufnr('$'))
