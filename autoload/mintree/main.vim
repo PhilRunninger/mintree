@@ -21,8 +21,8 @@ function! mintree#main#MinTreeFind(path)   " {{{1
     endif
     if mintree#main#LocateFile(fnamemodify(l:path,':p'),1) == -1
         buffer #
-        echomsg 'File '.l:path.' was not found.'
-        echomsg ' '
+        echo 'File '.l:path.' was not found.'
+        echo ' '
     else
         normal zO
         call s:UpdateOpen()
@@ -205,7 +205,7 @@ function! mintree#main#Wipeout(line)   " {{{1
         call mintree#main#LocateFile(l:path, 0)
     else
         let l:path = substitute(l:path, '^'.g:minTreeRoot, '', '')
-        echomsg l:path.' is not open.'
+        echo l:path.' is not open.'
     endif
 endfunction
 
@@ -215,7 +215,7 @@ function! mintree#main#SetCWD(line)   " {{{1
         let l:path = fnamemodify(l:path, '%p')
     endif
     execute 'cd '.l:path
-    echomsg 'CWD: '.getcwd()
+    echo 'CWD: '.getcwd()
 endfunction
 
 function! s:FoldLimits(line)   " {{{1
