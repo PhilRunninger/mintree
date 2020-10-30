@@ -41,7 +41,7 @@ function! mintree#main#MinTreeOpen(path)   " {{{1
     %delete
     call setline(1, printf('%s%s%s', mintree#main#MetadataString(0,0), g:MinTreeCollapsed, g:minTreeRoot))
     setlocal nomodifiable
-    call mintree#main#ActivateNode(1)
+    call mintree#main#OpenNode(1)
     call mintree#commands#Setup()
 endfunction
 
@@ -91,7 +91,7 @@ function! s:_locateFile(path, indent, line, get_children)
     endif
 endfunction
 
-function! mintree#main#ActivateNode(line)   " {{{1
+function! mintree#main#OpenNode(line)   " {{{1
     if getline(a:line) =~ g:MinTreeCollapsed
         call s:GetChildren(a:line)
         if foldlevel(a:line)
@@ -102,6 +102,8 @@ function! mintree#main#ActivateNode(line)   " {{{1
         if foldlevel(a:line)
             normal! zo
         endif
+    elseif foldclosed(a:line) != -1
+        normal! zo
     else
         call mintree#main#OpenFileOnLine('', a:line)
     endif
@@ -147,7 +149,6 @@ endfunction
 
 function! mintree#main#CloseParent(line)   " {{{1
     if foldlevel(a:line)
-        execute 'normal! '.foldclosed(a:line).'gg'
         normal! zc
     endif
 endfunction
@@ -194,7 +195,7 @@ function! mintree#main#Refresh(line)   " {{{1
             execute 'silent '.(l:start+1).','.l:end.'delete'
         endif
         call setline(l:start, substitute(getline(l:start),g:MinTreeExpanded,g:MinTreeCollapsed,''))
-        call mintree#main#ActivateNode(l:start)
+        call mintree#main#OpenNode(l:start)
         call map(l:open_folders, {_,f -> mintree#main#LocateFile(f,1)})
     endif
     call s:UpdateOpen()

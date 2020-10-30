@@ -6,8 +6,9 @@
 function! mintree#commands#Setup()   " {{{1
     for mapping in
       \ [
-        \ [ g:MinTreeOpen,            ":call mintree#main#ActivateNode(line('.'))<CR>" ],
+        \ [ g:MinTreeOpen,            ":call mintree#main#OpenNode(line('.'))<CR>" ],
         \ [ g:MinTreeOpenRecursively, ":call mintree#main#OpenRecursively(line('.'))<CR>" ],
+        \ [ g:MinTreeCloseParent,     ":call mintree#main#CloseParent(line('.'))<CR>" ],
         \ [ g:MinTreeOpenSplit,       ":call mintree#main#OpenFileOnLine('wincmd s', line('.'))<CR>" ],
         \ [ g:MinTreeOpenVSplit,      ":call mintree#main#OpenFileOnLine('wincmd v', line('.'))<CR>" ],
         \ [ g:MinTreeOpenTab,         ":call mintree#main#OpenFileOnLine('tabnew', line('.'))<CR>" ],
@@ -20,7 +21,6 @@ function! mintree#commands#Setup()   " {{{1
         \ [ g:MinTreeSetRootUp,       ":call mintree#main#MinTreeOpen(simplify(mintree#main#FullPath(1).'..'))<CR>" ],
         \ [ g:MinTreeSetRoot,         ":call mintree#main#MinTreeOpen(simplify(mintree#main#FullPath(line('.'))))<CR>" ],
         \ [ g:MinTreeSetCWD,          ":call mintree#main#SetCWD(line('.'))<CR>" ],
-        \ [ g:MinTreeCloseParent,     ":call mintree#main#CloseParent(line('.'))<CR>" ],
         \ [ g:MinTreeRefresh,         ":call mintree#main#Refresh(line('.'))<CR>" ],
         \ [ g:MinTreeRefreshRoot,     ":call mintree#main#Refresh(1)<CR>" ],
         \ [ g:MinTreeToggleFiles,     ":call mintree#main#ToggleFiles()<CR>" ],
@@ -38,8 +38,9 @@ endfunction
 function! mintree#commands#Help()   " {{{1
     for mapping in
       \ [
-        \ [ g:MinTreeOpen,            "Open file in the current window, or expand/collapse directory." ],
+        \ [ g:MinTreeOpen,            "Open file in the current window, or expand directory." ],
         \ [ g:MinTreeOpenRecursively, "Fully expand the tree under the cursor." ],
+        \ [ g:MinTreeCloseParent,     "Collapse the current or containing directory." ],
         \ [ g:MinTreeOpenSplit,       "Split the window horizontally, and open the selected file there." ],
         \ [ g:MinTreeOpenVSplit,      "Split the window vertically, and open the selected file there." ],
         \ [ g:MinTreeOpenTab,         "Open the selected file in a new tab." ],
@@ -52,7 +53,6 @@ function! mintree#commands#Help()   " {{{1
         \ [ g:MinTreeSetRootUp,       "Change the root of the tree to the parent directory of the current root." ],
         \ [ g:MinTreeSetRoot,         "Change the root of the tree to the directory under the cursor." ],
         \ [ g:MinTreeSetCWD,          "Set CWD to the selected directory or selected file's directory." ],
-        \ [ g:MinTreeCloseParent,     "Collapse the directory containing the current file or directory." ],
         \ [ g:MinTreeRefresh,         "Refresh the selected directory or the directory containing the selected file." ],
         \ [ g:MinTreeRefreshRoot,     "Refresh the whole tree." ],
         \ [ g:MinTreeToggleFiles,     "Toggles the display of files." ],
