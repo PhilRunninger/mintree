@@ -24,7 +24,7 @@ function! mintree#main#MinTreeFind(path)   " {{{1
         echo 'File '.l:path.' was not found.'
         echo ' '
     else
-        normal zO
+        normal! zO
         call s:UpdateOpen()
     endif
 endfunction
@@ -50,7 +50,7 @@ function! s:UpdateOpen()   " {{{1
     let l:folded = foldclosed(1) != -1
     normal! ggzo
     setlocal modifiable
-    execute 'normal gg0'.g:MinTreeIndentDigits.'lG0'.g:MinTreeIndentDigits.'lr0'
+    execute 'normal! gg0'.g:MinTreeIndentDigits.'lG0'.g:MinTreeIndentDigits.'lr0'
     for buf in range(1,bufnr('$'))
         let buf = fnamemodify(bufname(buf),':p')
         if bufexists(buf) && buflisted(buf) && stridx(buf, g:minTreeRoot) == 0
@@ -100,7 +100,7 @@ function! mintree#main#ActivateNode(line)   " {{{1
         call s:UpdateOpen()
     elseif getline(a:line) =~ g:MinTreeExpanded
         if foldlevel(a:line)
-            normal! za
+            normal! zo
         endif
     else
         call mintree#main#OpenFileOnLine('', a:line)
@@ -147,8 +147,8 @@ endfunction
 
 function! mintree#main#CloseParent(line)   " {{{1
     if foldlevel(a:line)
-        normal zc
         execute 'normal! '.foldclosed(a:line).'gg'
+        normal! zc
     endif
 endfunction
 
