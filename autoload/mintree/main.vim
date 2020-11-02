@@ -100,10 +100,6 @@ function! mintree#main#OpenNode(line)   " {{{1
             normal! zO
         endif
         call s:UpdateOpen()
-    elseif getline(a:line) =~ g:MinTreeExpanded
-        if foldlevel(a:line)
-            normal! zo
-        endif
     elseif foldclosed(a:line) != -1
         normal! zo
     else
