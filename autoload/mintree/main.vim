@@ -96,7 +96,7 @@ endfunction
 function! mintree#main#OpenNode(line)   " {{{1
     if getline(a:line) =~ g:MinTreeCollapsed
         call s:GetChildren(a:line)
-        if foldlevel(a:line)
+        if s:hasAFold(a:line)
             normal! zO
         endif
         call s:UpdateOpen()
@@ -146,7 +146,7 @@ function! s:GetChildren(line)   " {{{1
 endfunction
 
 function! mintree#main#CloseParent(line)   " {{{1
-    if foldlevel(a:line)
+    if s:hasAFold(a:line)
         normal! zc
     endif
 endfunction
@@ -224,13 +224,12 @@ endfunction
 
 function! s:FoldLimits(line)   " {{{1
     execute 'normal! '.a:line.'gg'
-    if foldlevel(a:line)
-        let l:is_fold_open = foldclosed(a:line) == -1
-        if l:is_fold_open
+    if s:hasAFold(a:line)
+        if s:isFolded(a:line)
+            let l:limits = [foldclosed(a:line), foldclosedend(a:line)]
+        else
             normal! zc
-        endif
-        let l:limits = [foldclosed(a:line), foldclosedend(a:line)]
-        if l:is_fold_open
+            let l:limits = [foldclosed(a:line), foldclosedend(a:line)]
             normal! zo
         endif
     else
@@ -285,4 +284,12 @@ function! mintree#main#Slash()    " {{{1
         let s:slash = (mintree#main#RunningWindows() ? '\' : '/')
     endif
     return s:slash
+endfunction
+
+function! s:hasAFold(line)   " {{{1
+    return foldlevel(a:line) != 0
+endfunction
+
+function! s:isFolded(line)   " {{{1
+    return foldclosed(a:line) != -1
 endfunction
