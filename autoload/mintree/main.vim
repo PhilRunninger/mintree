@@ -21,10 +21,10 @@ function! mintree#main#MinTreeFind(path)   " {{{1
     endif
     if mintree#main#LocateFile(fnamemodify(l:path,':p'),1) == -1
         buffer #
-        echomsg 'File '.l:path.' was not found.'
-        echomsg ' '
+        echo 'File '.l:path.' was not found.'
+        echo ' '
     else
-        normal zO
+        normal! zO
         call s:UpdateOpen()
     endif
 endfunction
@@ -41,14 +41,18 @@ function! mintree#main#MinTreeOpen(path)   " {{{1
     %delete
     call setline(1, printf('%s%s%s', mintree#main#MetadataString(0,0), g:MinTreeCollapsed, g:minTreeRoot))
     setlocal nomodifiable
-    call mintree#main#ActivateNode(1)
+    call mintree#main#OpenNode(1)
     call mintree#commands#Setup()
 endfunction
 
 function! s:UpdateOpen()   " {{{1
     let l:pos = getpos('.')
+    let l:folded = foldclosed(1) != -1
+    if l:folded
+        normal! ggzo
+    endif
     setlocal modifiable
-    execute 'normal gg0'.g:MinTreeIndentDigits.'lG0'.g:MinTreeIndentDigits.'lr0'
+    execute 'normal! gg0'.g:MinTreeIndentDigits.'lG0'.g:MinTreeIndentDigits.'lr0'
     for buf in range(1,bufnr('$'))
         let buf = fnamemodify(bufname(buf),':p')
         if bufexists(buf) && buflisted(buf) && stridx(buf, g:minTreeRoot) == 0
@@ -60,6 +64,9 @@ function! s:UpdateOpen()   " {{{1
         endif
     endfor
     setlocal nomodifiable
+    if l:folded
+        normal! ggzc
+    endif
     call setpos('.', l:pos)
 endfunction
 
@@ -86,17 +93,15 @@ function! s:_locateFile(path, indent, line, get_children)
     endif
 endfunction
 
-function! mintree#main#ActivateNode(line)   " {{{1
+function! mintree#main#OpenNode(line)   " {{{1
     if getline(a:line) =~ g:MinTreeCollapsed
         call s:GetChildren(a:line)
-        if foldlevel(a:line)
+        if s:hasAFold(a:line)
             normal! zO
         endif
         call s:UpdateOpen()
-    elseif getline(a:line) =~ g:MinTreeExpanded
-        if foldlevel(a:line)
-            normal! za
-        endif
+    elseif foldclosed(a:line) != -1
+        normal! zo
     else
         call mintree#main#OpenFileOnLine('', a:line)
     endif
@@ -141,9 +146,11 @@ function! s:GetChildren(line)   " {{{1
 endfunction
 
 function! mintree#main#CloseParent(line)   " {{{1
-    if foldlevel(a:line)
-        normal zc
-        execute 'normal! '.foldclosed(a:line).'gg'
+    if foldclosed(a:line) == 1
+        call mintree#main#MinTreeOpen(simplify(mintree#main#FullPath(1).'..'))
+    endif
+    if s:hasAFold(a:line)
+        normal! zc
     endif
 endfunction
 
@@ -189,7 +196,7 @@ function! mintree#main#Refresh(line)   " {{{1
             execute 'silent '.(l:start+1).','.l:end.'delete'
         endif
         call setline(l:start, substitute(getline(l:start),g:MinTreeExpanded,g:MinTreeCollapsed,''))
-        call mintree#main#ActivateNode(l:start)
+        call mintree#main#OpenNode(l:start)
         call map(l:open_folders, {_,f -> mintree#main#LocateFile(f,1)})
     endif
     call s:UpdateOpen()
@@ -205,7 +212,7 @@ function! mintree#main#Wipeout(line)   " {{{1
         call mintree#main#LocateFile(l:path, 0)
     else
         let l:path = substitute(l:path, '^'.g:minTreeRoot, '', '')
-        echomsg l:path.' is not open.'
+        echo l:path.' is not open.'
     endif
 endfunction
 
@@ -215,18 +222,17 @@ function! mintree#main#SetCWD(line)   " {{{1
         let l:path = fnamemodify(l:path, '%p')
     endif
     execute 'cd '.l:path
-    echomsg 'CWD: '.getcwd()
+    echo 'CWD: '.getcwd()
 endfunction
 
 function! s:FoldLimits(line)   " {{{1
     execute 'normal! '.a:line.'gg'
-    if foldlevel(a:line)
-        let l:is_fold_open = foldclosed(a:line) == -1
-        if l:is_fold_open
+    if s:hasAFold(a:line)
+        if s:isFolded(a:line)
+            let l:limits = [foldclosed(a:line), foldclosedend(a:line)]
+        else
             normal! zc
-        endif
-        let l:limits = [foldclosed(a:line), foldclosedend(a:line)]
-        if l:is_fold_open
+            let l:limits = [foldclosed(a:line), foldclosedend(a:line)]
             normal! zo
         endif
     else
@@ -281,4 +287,12 @@ function! mintree#main#Slash()    " {{{1
         let s:slash = (mintree#main#RunningWindows() ? '\' : '/')
     endif
     return s:slash
+endfunction
+
+function! s:hasAFold(line)   " {{{1
+    return foldlevel(a:line) != 0
+endfunction
+
+function! s:isFolded(line)   " {{{1
+    return foldclosed(a:line) != -1
 endfunction

@@ -38,13 +38,16 @@ nnoremap <leader>ho :split<Bar>wincmd J<Bar>MinTree<CR>
 
 The following, configurable key bindings are used only within the **`=MinTree=`** buffer. The lists below show the default key bindings, a description of the action each key performs, and the corresponding global variable.
 
-#### Opening/Closing Buffers
-**`o`** ⮕ Open the selected file in the current window, or expand or collapse the directory. (`g:MinTreeOpen`)
-<br>**`O`** ⮕ Fully expand the selected directory. (`g:MinTreeOpenRecursively`)
+#### Opening/Closing Files
+**`o`** ⮕ Open the selected file in the current window. (`g:MinTreeOpen`)
 <br>**`s`** ⮕ Split the window horizontally, and open the selected file there. (`g:MinTreeOpenSplit`)
 <br>**`v`** ⮕ Split the window vertically, and open the selected file there. (`g:MinTreeOpenVSplit`)
 <br>**`t`** ⮕ Open the selected file in a new tab. (`g:MinTreeOpenTab`)
 <br>**`w`** ⮕ Close the buffer associated with the selected node. (`g:MinTreeWipeout`)
+#### Opening/Closing Directories
+**`o`** ⮕ Expand the selected directory. (`g:MinTreeOpen`)
+<br>**`O`** ⮕ Recursively expand the selected directory. (`g:MinTreeOpenRecursively`)
+<br>**`x`** ⮕ Collapse the current of containing directory. (`g:MinTreeCloseParent`)
 #### Navigating the Tree
 **`p`** ⮕ Navigate quickly to the closest parent directory. (`g:MinTreeGoToParent`)
 <br>**`J`** ⮕ Navigate quickly to the last sibling file or directory. (`g:MinTreeLastSibling`)
@@ -52,9 +55,7 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 <br>**`<C-J>`** ⮕ Navigate quickly to the next sibling file or directory. (`g:MinTreeNextSibling`)
 <br>**`<C-K>`** ⮕ Navigate quickly to the previous sibling file or directory. (`g:MinTreePrevSibling`)
 #### Updating the Tree
-**`u`** ⮕ Change the root of the tree to the parent directory of the current root. (`g:MinTreeSetRootUp`)
-<br>**`C`** ⮕ Change the root of the tree to the directory under the cursor. (`g:MinTreeSetRoot`)
-<br>**`x`** ⮕ Collapse the directory containing the current file or directory. (`g:MinTreeCloseParent`)
+**`C`** ⮕ Change the root of the tree to be the directory under the cursor. (`g:MinTreeSetRoot`)
 <br>**`r`** ⮕ Refresh the selected directory or the directory containing the selected file. (`g:MinTreeRefresh`)
 <br>**`R`** ⮕ Refresh the whole tree. (`g:MinTreeRefreshRoot`)
 <br>**`I`** ⮕ Toggles hidden files and directories, those starting with a period. (`g:MinTreeToggleHidden`)
@@ -70,7 +71,7 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 
 ## Settings
 
-* The following variables govern which nodes MinTree shows or hides. **Note:** MinTree will always respect the `'wildignore'` setting. Any file or directory that matches one of its patterns be excluded from the tree.
+* The following variables govern which nodes MinTree shows or hides. **Note:** MinTree will always respect the `'wildignore'` setting. Any file or directory that matches one of its patterns will be excluded from the tree.
 
     Variable | Default
     --- | ---
