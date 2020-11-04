@@ -146,6 +146,9 @@ function! s:GetChildren(line)   " {{{1
 endfunction
 
 function! mintree#main#CloseParent(line)   " {{{1
+    if foldclosed(a:line) == 1
+        call mintree#main#MinTreeOpen(simplify(mintree#main#FullPath(1).'..'))
+    endif
     if s:hasAFold(a:line)
         normal! zc
     endif
