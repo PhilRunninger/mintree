@@ -55,8 +55,7 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 <br>**`<C-J>`** ⮕ Navigate quickly to the next sibling file or directory. (`g:MinTreeNextSibling`)
 <br>**`<C-K>`** ⮕ Navigate quickly to the previous sibling file or directory. (`g:MinTreePrevSibling`)
 #### Updating the Tree
-**`u`** ⮕ Change the root of the tree to be the parent directory of the current root. (`g:MinTreeSetRootUp`)
-<br>**`C`** ⮕ Change the root of the tree to be the directory under the cursor. (`g:MinTreeSetRoot`)
+**`C`** ⮕ Change the root of the tree to be the directory under the cursor. (`g:MinTreeSetRoot`)
 <br>**`r`** ⮕ Refresh the selected directory or the directory containing the selected file. (`g:MinTreeRefresh`)
 <br>**`R`** ⮕ Refresh the whole tree. (`g:MinTreeRefreshRoot`)
 <br>**`I`** ⮕ Toggles hidden files and directories, those starting with a period. (`g:MinTreeToggleHidden`)
