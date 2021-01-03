@@ -39,11 +39,11 @@ function! mintree#commands#Help()   " {{{1
       \ [
         \ [ g:MinTreeOpen,            "Open file in the current window, or expand directory." ],
         \ [ g:MinTreeOpenRecursively, "Fully expand the tree under the cursor." ],
-        \ [ g:MinTreeCloseParent,     "Collapse the current or containing directory." ],
+        \ [ g:MinTreeCloseParent,     "Collapse the directory, or change the root up one level." ],
         \ [ g:MinTreeOpenSplit,       "Split the window horizontally, and open the selected file there." ],
         \ [ g:MinTreeOpenVSplit,      "Split the window vertically, and open the selected file there." ],
         \ [ g:MinTreeOpenTab,         "Open the selected file in a new tab." ],
-        \ [ g:MinTreeWipeout,         "Close the selected node if already open." ],
+        \ [ g:MinTreeWipeout,         "Close the buffer containing the selected file." ],
         \ [ g:MinTreeGoToParent,      "Navigate quickly to the closest parent directory." ],
         \ [ g:MinTreeLastSibling,     "Navigate quickly to the last sibling file or directory." ],
         \ [ g:MinTreeFirstSibling,    "Navigate quickly to the first sibling file or directory." ],
