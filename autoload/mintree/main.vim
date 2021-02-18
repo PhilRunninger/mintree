@@ -119,7 +119,7 @@ function! mintree#main#OpenFileByPath(windowCmd, path)   " {{{1
         endif
         execute a:windowCmd
         if bufnr('^'.a:path.'$') == -1
-            execute 'edit '.a:path
+            execute 'edit '.fnamemodify(a:path,':.')
         else
             execute 'buffer '.a:path
         endif
