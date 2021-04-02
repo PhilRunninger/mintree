@@ -30,8 +30,8 @@ nnoremap <leader>f :MinTreeFind<CR>
 To split the window first, mappings like these can be used:
 
 ```vim
-nnoremap <leader>vo :vsplit<Bar>wincmd H<Bar>MinTree<CR>
-nnoremap <leader>ho :split<Bar>wincmd J<Bar>MinTree<CR>
+nnoremap <silent> <leader>vo <Cmd>leftabove vsplit<Bar>MinTree<CR>
+nnoremap <silent> <leader>ho <Cmd>leftabove split<Bar>MinTree<CR>
 ```
 
 ## Key Bindings
@@ -39,35 +39,35 @@ nnoremap <leader>ho :split<Bar>wincmd J<Bar>MinTree<CR>
 The following, configurable key bindings are used only within the **`=MinTree=`** buffer. The lists below show the default key bindings, a description of the action each key performs, and the corresponding global variable.
 
 #### Opening/Closing Files
-**`o`** ⮕ Open the selected file in the current window. (`g:MinTreeOpen`)
-<br>**`s`** ⮕ Split the window horizontally, and open the selected file there. (`g:MinTreeOpenSplit`)
-<br>**`v`** ⮕ Split the window vertically, and open the selected file there. (`g:MinTreeOpenVSplit`)
-<br>**`t`** ⮕ Open the selected file in a new tab. (`g:MinTreeOpenTab`)
-<br>**`w`** ⮕ Close the buffer associated with the selected node. (`g:MinTreeWipeout`)
+<kbd>o</kbd> ⮕ Open the selected file in the current window. (`g:MinTreeOpen`)
+<br><kbd>s</kbd> ⮕ Split the window horizontally, and open the selected file there. (`g:MinTreeOpenSplit`)
+<br><kbd>v</kbd> ⮕ Split the window vertically, and open the selected file there. (`g:MinTreeOpenVSplit`)
+<br><kbd>t</kbd> ⮕ Open the selected file in a new tab. (`g:MinTreeOpenTab`)
+<br><kbd>w</kbd> ⮕ Close the buffer associated with the selected node. (`g:MinTreeWipeout`)
 #### Opening/Closing Directories
-**`o`** ⮕ Expand the selected directory. (`g:MinTreeOpen`)
-<br>**`O`** ⮕ Recursively expand the selected directory. (`g:MinTreeOpenRecursively`)
-<br>**`x`** ⮕ Collapse the current of containing directory. (`g:MinTreeCloseParent`)
+<kbd>o</kbd> ⮕ Expand the selected directory. (`g:MinTreeOpen`)
+<br><kbd>O</kbd> ⮕ Recursively expand the selected directory. (`g:MinTreeOpenRecursively`)
+<br><kbd>x</kbd> ⮕ Collapse the current of containing directory. (`g:MinTreeCloseParent`)
 #### Navigating the Tree
-**`p`** ⮕ Navigate quickly to the closest parent directory. (`g:MinTreeGoToParent`)
-<br>**`J`** ⮕ Navigate quickly to the last sibling file or directory. (`g:MinTreeLastSibling`)
-<br>**`K`** ⮕ Navigate quickly to the first sibling file or directory. (`g:MinTreeFirstSibling`)
-<br>**`<C-J>`** ⮕ Navigate quickly to the next sibling file or directory. (`g:MinTreeNextSibling`)
-<br>**`<C-K>`** ⮕ Navigate quickly to the previous sibling file or directory. (`g:MinTreePrevSibling`)
+<kbd>p</kbd> ⮕ Navigate quickly to the closest parent directory. (`g:MinTreeGoToParent`)
+<br><kbd>J</kbd> ⮕ Navigate quickly to the last sibling file or directory. (`g:MinTreeLastSibling`)
+<br><kbd>K</kbd> ⮕ Navigate quickly to the first sibling file or directory. (`g:MinTreeFirstSibling`)
+<br><kbd>Ctrl+j</kbd> ⮕ Navigate quickly to the next sibling file or directory. (`g:MinTreeNextSibling`)
+<br><kbd>Ctrl+k</kbd> ⮕ Navigate quickly to the previous sibling file or directory. (`g:MinTreePrevSibling`)
 #### Updating the Tree
-**`C`** ⮕ Change the root of the tree to be the directory under the cursor. (`g:MinTreeSetRoot`)
-<br>**`r`** ⮕ Refresh the selected directory or the directory containing the selected file. (`g:MinTreeRefresh`)
-<br>**`R`** ⮕ Refresh the whole tree. (`g:MinTreeRefreshRoot`)
-<br>**`I`** ⮕ Toggles hidden files and directories, those starting with a period. (`g:MinTreeToggleHidden`)
-<br>**`F`** ⮕ Toggles files, leaving only directories showing. (`g:MinTreeToggleFiles`)
+<kbd>C</kbd> ⮕ Change the root of the tree to be the directory under the cursor. (`g:MinTreeSetRoot`)
+<br><kbd>r</kbd> ⮕ Refresh the selected directory or the directory containing the selected file. (`g:MinTreeRefresh`)
+<br><kbd>R</kbd> ⮕ Refresh the whole tree. (`g:MinTreeRefreshRoot`)
+<br><kbd>I</kbd> ⮕ Toggles hidden files and directories, those starting with a period. (`g:MinTreeToggleHidden`)
+<br><kbd>F</kbd> ⮕ Toggles files, leaving only directories showing. (`g:MinTreeToggleFiles`)
 #### Bookmarks
-**`m`** ⮕ Creates a single-letter bookmark for the current node. (`g:MinTreeCreateMark`)
-<br>**`'`** ⮕ Displays all bookmarks, and opens the one selected. (`g:MinTreeGotoMark`)
-<br>**`dm`** ⮕ Displays all bookmarks, and deletes the ones selected. This is the same key used for creating bookmarks, but prefixed with a `d`. (`g:MinTreeCreateMark`)
+<kbd>m</kbd> ⮕ Creates a single-letter bookmark for the current node. (`g:MinTreeCreateMark`)
+<br><kbd>'</kbd> ⮕ Displays all bookmarks, and opens the one selected. (`g:MinTreeGotoMark`)
+<br><kbd>dm</kbd> ⮕ Displays all bookmarks, and deletes the ones selected. This is the same key used for creating bookmarks, but prefixed with a `d`. (`g:MinTreeCreateMark`)
 #### Miscellaneous
-**`cd`** ⮕ Change the current working directory to that of the selected node. (`g:MinTreeSetCWD`)
-<br>**`q`** ⮕ Exit the MinTree, and return to the previous buffer. (`g:MinTreeExit`)
-<br>**`?`** ⮕ Display short descriptions of these commands.
+<kbd>cd</kbd> ⮕ Change the current working directory to that of the selected node. (`g:MinTreeSetCWD`)
+<br><kbd>q</kbd> ⮕ Exit the MinTree, and return to the previous buffer. (`g:MinTreeExit`)
+<br><kbd>?</kbd> ⮕ Display short descriptions of these commands.
 
 ## Settings
 
