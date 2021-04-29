@@ -30,8 +30,8 @@ nnoremap <leader>f :MinTreeFind<CR>
 To split the window first, mappings like these can be used:
 
 ```vim
-nnoremap <leader>vo :vsplit<Bar>wincmd H<Bar>MinTree<CR>
-nnoremap <leader>ho :split<Bar>wincmd J<Bar>MinTree<CR>
+nnoremap <silent> <leader>vo <Cmd>leftabove vsplit<Bar>MinTree<CR>
+nnoremap <silent> <leader>ho <Cmd>leftabove split<Bar>MinTree<CR>
 ```
 
 ## Key Bindings
@@ -47,7 +47,7 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 #### Opening/Closing Directories
 <kbd>o</kbd> ⮕ Expand the selected directory. (`g:MinTreeOpen`)
 <br><kbd>O</kbd> ⮕ Recursively expand the selected directory. (`g:MinTreeOpenRecursively`)
-<br><kbd>x</kbd> ⮕ Collapse the current or containing directory. (`g:MinTreeCloseParent`)
+<br><kbd>x</kbd> ⮕ Collapse the current of containing directory. (`g:MinTreeCloseParent`)
 #### Navigating the Tree
 <kbd>p</kbd> ⮕ Navigate quickly to the closest parent directory. (`g:MinTreeGoToParent`)
 <br><kbd>J</kbd> ⮕ Navigate quickly to the last sibling file or directory. (`g:MinTreeLastSibling`)
