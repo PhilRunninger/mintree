@@ -47,7 +47,7 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 #### Opening/Closing Directories
 <kbd>o</kbd> ⮕ Expand the selected directory. (`g:MinTreeOpen`)
 <br><kbd>O</kbd> ⮕ Recursively expand the selected directory. (`g:MinTreeOpenRecursively`)
-<br><kbd>x</kbd> ⮕ Collapse the current of containing directory. (`g:MinTreeCloseParent`)
+<br><kbd>x</kbd> ⮕ Collapse the current or containing directory. (`g:MinTreeCloseParent`)
 #### Navigating the Tree
 <kbd>p</kbd> ⮕ Navigate quickly to the closest parent directory. (`g:MinTreeGoToParent`)
 <br><kbd>J</kbd> ⮕ Navigate quickly to the last sibling file or directory. (`g:MinTreeLastSibling`)
@@ -63,7 +63,7 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 #### Bookmarks
 <kbd>m</kbd> ⮕ Creates a single-letter bookmark for the current node. (`g:MinTreeCreateMark`)
 <br><kbd>'</kbd> ⮕ Displays all bookmarks, and opens the one selected. (`g:MinTreeGotoMark`)
-<br><kbd>dm</kbd> ⮕ Displays all bookmarks, and deletes the ones selected. This is the same key used for creating bookmarks, but prefixed with a <kbd>d</kbd>. (`g:MinTreeCreateMark`)
+<br><kbd>dm</kbd> ⮕ Displays all bookmarks, and deletes the ones selected. (`g:MinTreeCreateMark`, prefixed by <kbd>d</kbd>)
 #### Miscellaneous
 <kbd>cd</kbd> ⮕ Change the current working directory to that of the selected node. (`g:MinTreeSetCWD`)
 <br><kbd>q</kbd> ⮕ Exit the MinTree, and return to the previous buffer. (`g:MinTreeExit`)
