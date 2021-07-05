@@ -221,7 +221,7 @@ endfunction
 function! mintree#main#SetCWD(line)   " {{{1
     let l:path = mintree#main#FullPath(a:line)
     if !isdirectory(l:path)
-        let l:path = fnamemodify(l:path, '%p')
+        let l:path = fnamemodify(l:path, ':p:h')
     endif
     execute 'cd '.l:path
     echo 'CWD: '.getcwd()
