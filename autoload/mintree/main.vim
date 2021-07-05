@@ -206,13 +206,15 @@ endfunction
 
 function! mintree#main#Wipeout(line)   " {{{1
     let l:path = mintree#main#FullPath(a:line)
-    if bufexists(l:path)
-        execute 'bwipeout '.l:path
-        call mintree#main#Refresh(a:line)
-        call mintree#main#LocateFile(l:path, 0)
-    else
-        let l:path = substitute(l:path, '^'.g:minTreeRoot, '', '')
-        echo l:path.' is not open.'
+    if !isdirectory(l:path)
+        if bufexists(l:path)
+            execute 'bwipeout '.l:path
+            call mintree#main#Refresh(a:line)
+            call mintree#main#LocateFile(l:path, 0)
+        else
+            let l:path = substitute(l:path, '^'.g:minTreeRoot, '', '')
+            echo l:path.' is not open.'
+        endif
     endif
 endfunction
 
