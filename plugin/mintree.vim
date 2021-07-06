@@ -40,6 +40,8 @@ let g:MinTreeToggleHidden    = get(g:, 'MinTreeToggleHidden', 'I')
 let g:MinTreeExit            = get(g:, 'MinTreeExit', 'q')
 let g:MinTreeCreateMark      = get(g:, 'MinTreeCreateMark', 'm')
 let g:MinTreeGotoMark        = get(g:, 'MinTreeGotoMark', "'")
+let g:MinTreeFindCharNext    = get(g:, 'MinTreeFindCharNext', 'f')
+let g:MinTreeFindCharPrev    = get(g:, 'MinTreeFindCharPrev', 'F')
 
 command! -n=? -complete=dir MinTree :call mintree#main#MinTree('<args>')
 command! -n=? -complete=file MinTreeFind :call mintree#main#MinTreeFind('<args>')
