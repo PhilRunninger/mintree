@@ -26,7 +26,16 @@ function! mintree#nav#GoToSibling(delta, stop_when)   " {{{1
 endfunction
 
 function! mintree#nav#FindChar(direction)   " {{{1
-    call search('^\d\{'.(g:MinTreeIndentDigits+1).'}'
-            \  .'\s*['.g:MinTreeCollapsed.g:MinTreeExpanded.' ]'.nr2char(getchar()),
-            \  'w'.a:direction)
+    if a:direction =~ '[/?]'
+        let s:findCharParms = [a:direction, nr2char(getchar())]
+        let l:findCharParms = s:findCharParms
+    elseif exists('s:findCharParms')
+        let l:findCharParms = [xor(s:findCharParms[0]=='/', a:direction==';') ? '?' : '/', s:findCharParms[1]]
+    else
+        return
+    endif
+    try
+        execute l:findCharParms[0].'^\d\{'.(g:MinTreeIndentDigits+1).'}\s*['.g:MinTreeCollapsed.g:MinTreeExpanded.' ]'.l:findCharParms[1]
+    catch /^Vim\%((\a\+)\)\=:E486/
+    endtry
 endfunction

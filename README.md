@@ -54,8 +54,8 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 <br><kbd>K</kbd> → Navigate quickly to the first sibling file or directory. (`g:MinTreeFirstSibling`)
 <br><kbd>Ctrl+J</kbd> → Navigate quickly to the next sibling file or directory. (`g:MinTreeNextSibling`)
 <br><kbd>Ctrl+K</kbd> → Navigate quickly to the previous sibling file or directory. (`g:MinTreePrevSibling`)
-<br><kbd>f</kbd> → Find next node starting with `<char>`. (`g:MinTreeFindCharNext`)
-<br><kbd>F</kbd> → Find previous node starting with `<char>`. (`g:MinTreeFindCharPrev`)
+<br><kbd>f</kbd> → Find next node starting with `<char>`. (`g:MinTreeFindCharDown`)
+<br><kbd>F</kbd> → Find previous node starting with `<char>`. (`g:MinTreeFindCharUp`)
 #### Updating the Tree
 <kbd>C</kbd> → Change the root of the tree to be the directory under the cursor. (`g:MinTreeSetRoot`)
 <br><kbd>r</kbd> → Refresh the selected directory or the directory containing the selected file. (`g:MinTreeRefresh`)
