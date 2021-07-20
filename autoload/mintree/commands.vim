@@ -40,34 +40,34 @@ endfunction
 function! mintree#commands#Help()   " {{{1
     for mapping in
       \ [
-        \ [ g:MinTreeOpen,            "Open file in the current window, or expand directory." ],
-        \ [ g:MinTreeOpenRecursively, "Fully expand the tree under the cursor." ],
-        \ [ g:MinTreeCloseParent,     "Collapse the directory, or change the root up one level." ],
-        \ [ g:MinTreeOpenSplit,       "Split the window horizontally, and open the selected file there." ],
-        \ [ g:MinTreeOpenVSplit,      "Split the window vertically, and open the selected file there." ],
-        \ [ g:MinTreeOpenTab,         "Open the selected file in a new tab." ],
-        \ [ g:MinTreeWipeout,         "Close the buffer containing the selected file." ],
-        \ [ g:MinTreeGoToParent,      "Navigate quickly to the closest parent directory." ],
-        \ [ g:MinTreeLastSibling,     "Navigate quickly to the last sibling file or directory." ],
-        \ [ g:MinTreeFirstSibling,    "Navigate quickly to the first sibling file or directory." ],
-        \ [ g:MinTreeNextSibling,     "Navigate quickly to the next sibling file or directory." ],
-        \ [ g:MinTreePrevSibling,     "Navigate quickly to the previous sibling file or directory." ],
-        \ [ g:MinTreeFindCharDown,    "Find next node that starts with <char>." ],
-        \ [ g:MinTreeFindCharUp,      "Find previous node that starts with <char>." ],
-        \ [ ';',                      "Repeat latest f or F command." ],
-        \ [ ',',                      "Repeat latest f or F command in opposite direction." ],
-        \ [ g:MinTreeSetRoot,         "Change the root of the tree to be the directory under the cursor." ],
-        \ [ g:MinTreeSetCWD,          "Set CWD to the selected directory or selected file's directory." ],
-        \ [ g:MinTreeRefresh,         "Refresh the selected directory or the directory containing the selected file." ],
-        \ [ g:MinTreeRefreshRoot,     "Refresh the whole tree." ],
-        \ [ g:MinTreeToggleHidden,    "Toggles the display of hidden files and directories." ],
-        \ [ g:MinTreeCreateMark,      "Creates a single-letter bookmark for the current node." ],
-        \ [ g:MinTreeGotoMark,        "Displays all bookmarks, and opens the one selected." ],
-        \ [ 'd'.g:MinTreeCreateMark,  "Displays all bookmarks, and deletes the ones selected." ],
-        \ [ g:MinTreeExit,            "Exit the MinTree, returning to the previous buffer." ]
+        \ [ g:MinTreeOpen,                  "Open file in the current window, or expand directory." ],
+        \ [ g:MinTreeOpenRecursively,       "Fully expand the tree under the cursor." ],
+        \ [ g:MinTreeCloseParent,           "Collapse the directory, or change the root up one level." ],
+        \ [ g:MinTreeOpenSplit,             "Split the window horizontally, and open the selected file there." ],
+        \ [ g:MinTreeOpenVSplit,            "Split the window vertically, and open the selected file there." ],
+        \ [ g:MinTreeOpenTab,               "Open the selected file in a new tab." ],
+        \ [ g:MinTreeWipeout,               "Close the buffer containing the selected file." ],
+        \ [ g:MinTreeGoToParent,            "Navigate quickly to the closest parent directory." ],
+        \ [ g:MinTreeLastSibling,           "Navigate quickly to the last sibling file or directory." ],
+        \ [ g:MinTreeFirstSibling,          "Navigate quickly to the first sibling file or directory." ],
+        \ [ g:MinTreeNextSibling,           "Navigate quickly to the next sibling file or directory." ],
+        \ [ g:MinTreePrevSibling,           "Navigate quickly to the previous sibling file or directory." ],
+        \ [ g:MinTreeFindCharDown.'<char>', "Find next node that starts with <char>." ],
+        \ [ g:MinTreeFindCharUp.'<char>',   "Find previous node that starts with <char>." ],
+        \ [ ';',                            "Repeat latest ".g:MinTreeFindCharDown." or ".g:MinTreeFindCharUp." command." ],
+        \ [ ',',                            "Repeat latest ".g:MinTreeFindCharDown." or ".g:MinTreeFindCharUp." command in opposite direction." ],
+        \ [ g:MinTreeSetRoot,               "Change the root of the tree to be the directory under the cursor." ],
+        \ [ g:MinTreeSetCWD,                "Set CWD to the selected directory or selected file's directory." ],
+        \ [ g:MinTreeRefresh,               "Refresh the selected directory or the directory containing the selected file." ],
+        \ [ g:MinTreeRefreshRoot,           "Refresh the whole tree." ],
+        \ [ g:MinTreeToggleHidden,          "Toggles the display of hidden files and directories." ],
+        \ [ g:MinTreeCreateMark,            "Creates a single-letter bookmark for the current node." ],
+        \ [ g:MinTreeGotoMark,              "Displays all bookmarks, and opens the one selected." ],
+        \ [ 'd'.g:MinTreeCreateMark,        "Displays all bookmarks, and deletes the ones selected." ],
+        \ [ g:MinTreeExit,                  "Exit the MinTree, returning to the previous buffer." ]
       \ ]
         echohl Identifier
-        echon printf("%5s", mapping[0])
+        echon printf("%7s", mapping[0])
         echohl Normal
         echon "  ".mapping[1]
         echo ""
