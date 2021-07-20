@@ -1,6 +1,7 @@
 " vim: foldmethod=marker
 "
-" This module contains functions to handle navigation to siblings and parents.
+" Functions to handle navigation to siblings and parents, and searching by
+" nodes' first character.
 
 function! mintree#nav#GoToParent(line)   " {{{1
     call search(printf('^%s', mintree#main#MetadataString(mintree#main#Indent(a:line)-1,'')), 'bW')
@@ -24,3 +25,17 @@ function! mintree#nav#GoToSibling(delta, stop_when)   " {{{1
     execute 'normal! '.l:destination.'gg'
 endfunction
 
+function! mintree#nav#FindChar(direction)   " {{{1
+    if a:direction =~ '[/?]'
+        let s:findCharParms = [a:direction, nr2char(getchar())]
+        let l:findCharParms = s:findCharParms
+    elseif exists('s:findCharParms')
+        let l:findCharParms = [xor(s:findCharParms[0]=='/', a:direction==';') ? '?' : '/', s:findCharParms[1]]
+    else
+        return
+    endif
+    try
+        execute l:findCharParms[0].'^\d\{'.(g:MinTreeIndentDigits+1).'}\s*['.g:MinTreeCollapsed.g:MinTreeExpanded.' ]'.l:findCharParms[1]
+    catch /^Vim\%((\a\+)\)\=:E486/
+    endtry
+endfunction
