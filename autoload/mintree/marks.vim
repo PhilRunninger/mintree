@@ -30,7 +30,8 @@ function! mintree#marks#GotoMark()   " {{{1
             if isdirectory(l:path)
                 call mintree#main#MinTree(l:path)
             else
-                call mintree#main#OpenFileByPath('', l:path)
+                call mintree#main#ExitMinTree()
+                call mintree#main#OpenFileByPath('edit', l:path)
             endif
         else
             echomsg "Mark ".l:mark." is not set"
