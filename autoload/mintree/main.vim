@@ -108,8 +108,14 @@ function! mintree#main#OpenNode(line)   " {{{1
 endfunction
 
 function! mintree#main#OpenFileOnLine(windowCmd, line)   " {{{1
-    let l:path = mintree#main#FullPath(a:line)
-    call mintree#main#OpenFileByPath(a:windowCmd, l:path)
+    if empty(g:MinTreeTaggedFiles)
+        let l:path = mintree#main#FullPath(a:line)
+        call mintree#main#OpenFileByPath(a:windowCmd, l:path)
+    else
+        for l:path in g:MinTreeTaggedFiles
+            call mintree#main#OpenFileByPath(a:windowCmd, l:path)
+        endfor
+    endif
 endfunction
 
 function! mintree#main#OpenFileByPath(windowCmd, path)   " {{{1
@@ -214,6 +220,20 @@ function! mintree#main#Wipeout(line)   " {{{1
         let l:path = substitute(l:path, '^'.g:minTreeRoot, '', '')
         echo l:path.' is not open.'
     endif
+endfunction
+
+function! mintree#main#TagAFile(line)   " {{{1
+    let l:path = mintree#main#FullPath(a:line)
+    if isdirectory(l:path)
+        return
+    endif
+
+    if count(g:MinTreeTaggedFiles, l:path) > 0
+        call remove(g:MinTreeTaggedFiles, l:path)
+    else
+        call add(g:MinTreeTaggedFiles,l:path)
+    endif
+    call s:UpdateMetaData()
 endfunction
 
 function! mintree#main#SetCWD(line)   " {{{1

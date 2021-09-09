@@ -12,14 +12,15 @@ endif
 " Initialization   {{{1
 let g:MinTreeBuffer          = '=MinTree='
 let g:MinTreeBookmarksFile   = expand('<sfile>:p:h:h').mintree#main#Slash().'.MinTreeBookmarks'
-
 let g:MinTreeMetadataWidth = 4
 let g:MinTreeIndentDigits = 3
+let g:MinTreeTaggedFiles     = []
 
 let g:MinTreeCollapsed       = get(g:, 'MinTreeCollapsed', '▸')
 let g:MinTreeExpanded        = get(g:, 'MinTreeExpanded', '▾')
 let g:MinTreeShowHidden      = get(g:, 'MinTreeShowHidden', 0)
 let g:MinTreeIndentSize      = get(g:, 'MinTreeIndentSize', 2)
+let g:MinTreeTagAFile        = get(g:, 'MinTreeTagAFile', '<Space>')
 let g:MinTreeOpen            = get(g:, 'MinTreeOpen', 'o')
 let g:MinTreeOpenRecursively = get(g:, 'MinTreeOpenRecursively', 'O')
 let g:MinTreeOpenSplit       = get(g:, 'MinTreeOpenSplit', 's')
