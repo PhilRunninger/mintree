@@ -62,10 +62,10 @@ function! mintree#commands#Help()   " {{{1
         \ [ g:MinTreeSetCWD,                "Set CWD to the selected directory or selected file's directory." ],
         \ [ g:MinTreeRefresh,               "Refresh the selected directory or the directory containing the selected file." ],
         \ [ g:MinTreeRefreshRoot,           "Refresh the whole tree." ],
-        \ [ g:MinTreeToggleHidden,          "Toggles the display of hidden files and directories." ],
-        \ [ g:MinTreeCreateMark,            "Creates a single-letter bookmark for the current node." ],
-        \ [ g:MinTreeGotoMark,              "Displays all bookmarks, and opens the one selected." ],
-        \ [ 'd'.g:MinTreeCreateMark,        "Displays all bookmarks, and deletes the ones selected." ],
+        \ [ g:MinTreeToggleHidden,          "Toggle the display of hidden files and directories." ],
+        \ [ g:MinTreeCreateMark,            "Create a single-letter bookmark for the current node." ],
+        \ [ g:MinTreeGotoMark,              "Display all bookmarks, and open the one selected." ],
+        \ [ 'd'.g:MinTreeCreateMark,        "Display all bookmarks, and delete the ones selected." ],
         \ [ g:MinTreeExit,                  "Exit the MinTree, returning to the previous buffer." ]
       \ ]
         echohl Identifier

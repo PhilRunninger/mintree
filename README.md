@@ -63,11 +63,11 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 <kbd>C</kbd> - Change the root of the tree to be the directory under the cursor. (`g:MinTreeSetRoot`)
 <br><kbd>r</kbd> - Refresh the selected directory or the directory containing the selected file. (`g:MinTreeRefresh`)
 <br><kbd>R</kbd> - Refresh the whole tree. (`g:MinTreeRefreshRoot`)
-<br><kbd>I</kbd> - Toggles hidden files and directories, those starting with a period. (`g:MinTreeToggleHidden`)
+<br><kbd>I</kbd> - Toggle hidden files and directories, those starting with a period. (`g:MinTreeToggleHidden`)
 #### Bookmarks
-<kbd>m</kbd> - Creates a single-letter bookmark for the current node. (`g:MinTreeCreateMark`)
-<br><kbd>'</kbd> - Displays all bookmarks, and opens the one selected. (`g:MinTreeGotoMark`)
-<br><kbd>dm</kbd> - Displays all bookmarks, and deletes the ones selected. (`g:MinTreeCreateMark`, prefixed by <kbd>d</kbd>)
+<kbd>m</kbd> - Create a single-letter bookmark for the current node. (`g:MinTreeCreateMark`)
+<br><kbd>'</kbd> - Display all bookmarks, and open the one selected. (`g:MinTreeGotoMark`)
+<br><kbd>dm</kbd> - Display all bookmarks, and delete the ones selected. (`g:MinTreeCreateMark`, prefixed by <kbd>d</kbd>)
 #### Miscellaneous
 <kbd>cd</kbd> - Change the current working directory to that of the selected node. (`g:MinTreeSetCWD`)
 <br><kbd>q</kbd> - Exit the MinTree, and return to the previous buffer. (`g:MinTreeExit`)
