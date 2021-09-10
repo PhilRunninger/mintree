@@ -116,7 +116,11 @@ endfunction
 
 function! mintree#main#OpenFileOnLine(openCmd, line)   " {{{1
     if empty(g:MinTreeTaggedFiles)
-        call add(g:MinTreeTaggedFiles, mintree#main#FullPath(a:line))
+        let l:path = mintree#main#FullPath(a:line)
+        if isdirectory(l:path)
+            return
+        endif
+        call add(g:MinTreeTaggedFiles, l:path)
     endif
     call mintree#main#ExitMinTree()
 
