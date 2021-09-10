@@ -40,8 +40,8 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 
 #### Opening/Closing Files
 <kbd>o</kbd> - Open the selected file in the current window. (`g:MinTreeOpen`)
-<br><kbd>s</kbd> - Split the window horizontally, and open the selected file there. (`g:MinTreeOpenSplit`)
-<br><kbd>v</kbd> - Split the window vertically, and open the selected file there. (`g:MinTreeOpenVSplit`)
+<br><kbd>s</kbd> - Open the selected file in a new horizontal split. (`g:MinTreeOpenSplit`)
+<br><kbd>v</kbd> - Open the selected file in a new vertical split. (`g:MinTreeOpenVSplit`)
 <br><kbd>t</kbd> - Open the selected file in a new tab. (`g:MinTreeOpenTab`)
 <br><kbd>w</kbd> - Close the buffer associated with the selected node. (`g:MinTreeWipeout`)
 <br><kbd>Space</kbd> - Tag a file, to open or close many at once. (`g:MinTreeTagAFile`)
@@ -50,10 +50,11 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 <br><kbd>O</kbd> - Recursively expand the selected directory. (`g:MinTreeOpenRecursively`)
 <br><kbd>x</kbd> - Collapse the current of containing directory. (`g:MinTreeCloseParent`)
 #### Navigating the Tree
-<kbd>p</kbd> - Navigate quickly to the closest parent directory. (`g:MinTreeGoToParent`)
-<br><kbd>J</kbd> - Navigate quickly to the last sibling file or directory. (`g:MinTreeLastSibling`)
-<br><kbd>K</kbd> - Navigate quickly to the first sibling file or directory. (`g:MinTreeFirstSibling`)
-<br><kbd>Ctrl+J</kbd> - Navigate quickly to the next sibling file or directory. (`g:MinTreeNextSibling`) <br><kbd>Ctrl+K</kbd> - Navigate quickly to the previous sibling file or directory. (`g:MinTreePrevSibling`)
+<kbd>p</kbd> - Go to the parent directory. (`g:MinTreeGoToParent`)
+<br><kbd>J</kbd> - Go to the last sibling file or directory. (`g:MinTreeLastSibling`)
+<br><kbd>K</kbd> - Go to the first sibling file or directory. (`g:MinTreeFirstSibling`)
+<br><kbd>Ctrl+J</kbd> - Go to the next sibling file or directory. (`g:MinTreeNextSibling`)
+<br><kbd>Ctrl+K</kbd> - Go to the previous sibling file or directory. (`g:MinTreePrevSibling`)
 <br><kbd>f</kbd>*char* - Find next node starting with *char*. (`g:MinTreeFindCharDown`)
 <br><kbd>F</kbd>*char* - Find previous node starting with *char*. (`g:MinTreeFindCharUp`)
 <br><kbd>;</kbd> - Repeat latest <kbd>f</kbd> or <kbd>F</kbd> command.
