@@ -44,6 +44,7 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 <br><kbd>v</kbd> - Split the window vertically, and open the selected file there. (`g:MinTreeOpenVSplit`)
 <br><kbd>t</kbd> - Open the selected file in a new tab. (`g:MinTreeOpenTab`)
 <br><kbd>w</kbd> - Close the buffer associated with the selected node. (`g:MinTreeWipeout`)
+<br><kbd>Space</kbd> - Tag a file, to open or close many at once. (`g:MinTreeTagAFile`)
 #### Opening/Closing Directories
 <kbd>o</kbd> - Expand the selected directory. (`g:MinTreeOpen`)
 <br><kbd>O</kbd> - Recursively expand the selected directory. (`g:MinTreeOpenRecursively`)
