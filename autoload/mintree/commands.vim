@@ -10,7 +10,7 @@ function! mintree#commands#Setup()   " {{{1
         \ [ g:MinTreeOpenRecursively, ":call mintree#main#OpenRecursively(line('.'))<CR>" ],
         \ [ g:MinTreeCloseParent,     ":call mintree#main#CloseParent(line('.'))<CR>" ],
         \ [ g:MinTreeOpenSplit,       ":call mintree#main#OpenFileOnLine('split', line('.'))<CR>" ],
-        \ [ g:MinTreeOpenVSplit,      ":debug noautocmd call mintree#main#OpenFileOnLine('vsplit', line('.'))<CR>" ],
+        \ [ g:MinTreeOpenVSplit,      ":call mintree#main#OpenFileOnLine('vsplit', line('.'))<CR>" ],
         \ [ g:MinTreeOpenTab,         ":call mintree#main#OpenFileOnLine('tabedit', line('.'))<CR>" ],
         \ [ g:MinTreeWipeout,         ":call mintree#main#Wipeout(line('.'))<CR>" ],
         \ [ g:MinTreeTagAFile,        ":call mintree#main#TagAFile(line('.'))<CR>" ],
