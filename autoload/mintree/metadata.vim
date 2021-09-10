@@ -1,5 +1,13 @@
 " vim: foldmethod=marker
 
+" Metadata format is 5 digits starting in column 1, as such:
+"   3 Digits - Indent level. Root is level 000.
+"   [01] - Flag to indicate the file is open.
+"   [01] - Flag to indicate the file is tagged for bulk operation.
+function mintree#metadata#Width()
+    return 5
+endfunction
+
 function! mintree#metadata#Reset()
     execute 'normal! gg03lG04lr0'
 endfunction

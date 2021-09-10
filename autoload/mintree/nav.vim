@@ -35,7 +35,7 @@ function! mintree#nav#FindChar(direction)   " {{{1
         return
     endif
     try
-        execute l:findCharParms[0].'^\d\{'.(g:MinTreeIndentDigits+1).'}\s*['.g:MinTreeCollapsed.g:MinTreeExpanded.' ]'.l:findCharParms[1]
+        execute l:findCharParms[0].'^\d\{'.mintree#metadata#Width().'}\s*['.g:MinTreeCollapsed.g:MinTreeExpanded.' ]'.l:findCharParms[1]
     catch /^Vim\%((\a\+)\)\=:E486/
     endtry
 endfunction

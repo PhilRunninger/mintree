@@ -10,7 +10,7 @@ setlocal nowrap nonumber nolist
 setlocal foldopen-=search
 setlocal conceallevel=3 concealcursor=nvic
 setlocal fillchars=fold:\  foldcolumn=0 foldmethod=expr foldexpr=MinTreeFoldLevel(v:lnum)
-execute "setlocal foldtext=substitute(getline(v:foldstart)[".g:MinTreeMetadataWidth.":],g:MinTreeExpanded,g:MinTreeCollapsed,'')"
+execute "setlocal foldtext=substitute(getline(v:foldstart)[".mintree#metadata#Width().":],g:MinTreeExpanded,g:MinTreeCollapsed,'')"
 
 function! MinTreeFoldLevel(lnum)   " {{{1
     let l:current_indent = mintree#metadata#Indent(a:lnum)

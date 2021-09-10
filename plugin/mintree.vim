@@ -13,8 +13,6 @@ endif
 let g:MinTreeBuffer          = '=MinTree='
 let g:MinTreeBookmarksFile   = expand('<sfile>:p:h:h').mintree#main#Slash().'.MinTreeBookmarks'
 let g:MinTreeTaggedFiles     = []
-let g:MinTreeMetadataWidth   = 5
-let g:MinTreeIndentDigits    = 3
 
 let g:MinTreeCollapsed       = get(g:, 'MinTreeCollapsed', '▸')
 let g:MinTreeExpanded        = get(g:, 'MinTreeExpanded', '▾')

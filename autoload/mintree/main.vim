@@ -282,11 +282,11 @@ function! mintree#main#FullPath(line)    " {{{1
     let l:pos = getpos('.')
     execute 'normal! '.a:line.'gg'
     let l:indent = mintree#metadata#Indent(a:line)
-    let l:file = strcharpart(getline(a:line),g:MinTreeMetadataWidth + 1 + l:indent*g:MinTreeIndentSize)
+    let l:file = strcharpart(getline(a:line),mintree#metadata#Width() + 1 + l:indent*g:MinTreeIndentSize)
     while l:indent > 0
         let l:indent -= 1
         call search(printf('^%s', mintree#metadata#String(l:indent,'.','.')),'bW')
-        let l:parent = strcharpart(getline('.'),g:MinTreeMetadataWidth + 1 + l:indent*g:MinTreeIndentSize)
+        let l:parent = strcharpart(getline('.'),mintree#metadata#Width() + 1 + l:indent*g:MinTreeIndentSize)
         let l:file = l:parent . l:file
     endwhile
     call setpos('.', l:pos)
