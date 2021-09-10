@@ -115,16 +115,15 @@ function! mintree#main#OpenNode(line)   " {{{1
 endfunction
 
 function! mintree#main#OpenFileOnLine(openCmd, line)   " {{{1
-    let l:path = mintree#main#FullPath(a:line)
-    call mintree#main#ExitMinTree()
     if empty(g:MinTreeTaggedFiles)
-        call mintree#main#OpenFileByPath(a:openCmd, l:path)
-    else
-        for l:path in g:MinTreeTaggedFiles
-            call mintree#main#OpenFileByPath(a:openCmd, l:path)
-        endfor
-        let g:MinTreeTaggedFiles=[]
+        call add(g:MinTreeTaggedFiles, mintree#main#FullPath(a:line))
     endif
+    call mintree#main#ExitMinTree()
+
+    for l:path in g:MinTreeTaggedFiles
+        call mintree#main#OpenFileByPath(a:openCmd, l:path)
+    endfor
+    let g:MinTreeTaggedFiles=[]
 endfunction
 
 function! mintree#main#OpenFileByPath(openCmd, path)   " {{{1
@@ -212,19 +211,25 @@ function! mintree#main#Refresh(line)   " {{{1
 endfunction
 
 function! mintree#main#Wipeout(line)   " {{{1
-    let l:path = mintree#main#FullPath(a:line)
-    if isdirectory(l:path)
-        return
+    if empty(g:MinTreeTaggedFiles)
+        call add(g:MinTreeTaggedFiles, mintree#main#FullPath(a:line))
     endif
 
-    if bufexists(l:path)
-        execute 'bwipeout '.l:path
-        call mintree#main#Refresh(a:line)
-        call mintree#main#LocateFile(l:path, 0)
-    else
-        let l:path = substitute(l:path, '^'.g:minTreeRoot, '', '')
-        echo l:path.' is not open.'
-    endif
+    for l:path in g:MinTreeTaggedFiles
+        if !isdirectory(l:path)
+
+            if bufexists(l:path)
+                execute 'bwipeout '.l:path
+                call mintree#main#Refresh(a:line)
+                call mintree#main#LocateFile(l:path, 0)
+            else
+                let l:path = substitute(l:path, '^'.g:minTreeRoot, '', '')
+                echo l:path.' is not open.'
+            endif
+        endif
+    endfor
+    let g:MinTreeTaggedFiles = []
+    call s:UpdateMetaData()
 endfunction
 
 function! mintree#main#TagAFile(line)   " {{{1
