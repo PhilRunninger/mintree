@@ -11,6 +11,6 @@ execute 'syntax match MinTreeFileIsTagged  #^' . s:indentRegex . '[01]1.*#hs=s+'
 
 highlight default link MinTreeDir Directory
 highlight default link MinTreeArrows Statement
-highlight default link MinTreeFileIsOpen Identifier
+highlight default link MinTreeFileIsOpen Constant
 highlight default link MinTreeFileIsTagged TermCursor
 highlight! default link Folded Directory
