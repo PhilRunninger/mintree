@@ -31,7 +31,7 @@ function! mintree#marks#GotoMark()   " {{{1
                 call mintree#main#MinTree(l:path)
             else
                 call mintree#main#ExitMinTree()
-                call mintree#main#OpenFileByPath('edit', l:path)
+                execute 'edit '.fnamemodify(l:path,':.')
             endif
         else
             echomsg "Mark ".l:mark." is not set"

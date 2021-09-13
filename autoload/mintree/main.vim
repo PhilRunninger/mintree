@@ -125,19 +125,9 @@ function! mintree#main#OpenFileOnLine(openCmd, line)   " {{{1
     call mintree#main#ExitMinTree()
 
     for l:path in g:MinTreeTaggedFiles
-        call mintree#main#OpenFileByPath(a:openCmd, l:path)
+        execute a:openCmd.' '.fnamemodify(l:path,':.')
     endfor
     let g:MinTreeTaggedFiles=[]
-endfunction
-
-function! mintree#main#OpenFileByPath(openCmd, path)   " {{{1
-    if a:path !~ escape(mintree#main#Slash(),'\').'$'
-        if bufnr('^'.a:path.'$') == -1
-            execute a:openCmd.' '.fnamemodify(a:path,':.')
-        else
-            execute 'buffer '.a:path
-        endif
-    endif
 endfunction
 
 function! s:GetChildren(line)   " {{{1
