@@ -31,7 +31,7 @@ function! mintree#commands#Setup()   " {{{1
         \ [ g:MinTreeCreateMark,      ":call mintree#marks#CreateMark(line('.'))<CR>" ],
         \ [ g:MinTreeGotoMark,        ":call mintree#marks#GotoMark()<CR>" ],
         \ [ 'd'.g:MinTreeCreateMark,  ":call mintree#marks#DeleteMarks()<CR>" ],
-        \ [ g:MinTreeExit,            ":call mintree#main#ExitMinTree()<CR>" ],
+        \ [ g:MinTreeExit,            ":call mintree#main#ExitMinTree(1)<CR>" ],
         \ [ '?',                      ":call mintree#commands#Help()<CR>" ]
       \ ]
         execute "nnoremap <silent> <nowait> <buffer> ".mapping[0]." ".mapping[1]

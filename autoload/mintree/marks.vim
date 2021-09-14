@@ -30,7 +30,7 @@ function! mintree#marks#GotoMark()   " {{{1
             if isdirectory(l:path)
                 call mintree#main#MinTree(l:path)
             else
-                call mintree#main#ExitMinTree()
+                call mintree#main#ExitMinTree(0)
                 execute 'edit '.fnamemodify(l:path,':.')
             endif
         else

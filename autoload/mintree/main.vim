@@ -122,7 +122,7 @@ function! mintree#main#OpenFileOnLine(openCmd, line)   " {{{1
         endif
         call add(g:MinTreeTaggedFiles, l:path)
     endif
-    call mintree#main#ExitMinTree()
+    call mintree#main#ExitMinTree(0)
 
     for l:path in g:MinTreeTaggedFiles
         execute a:openCmd.' '.fnamemodify(l:path,':.')
@@ -179,12 +179,15 @@ function! mintree#main#OpenRecursively(line)   " {{{1
     call s:UpdateMetaData()
 endfunction
 
-function! mintree#main#ExitMinTree()   " {{{1
-        if bufnr('#') != -1
-            buffer #
-        else
-            enew
-        endif
+function! mintree#main#ExitMinTree(clearTaggedFiles)   " {{{1
+    if a:clearTaggedFiles
+        let g:MinTreeTaggedFiles = []
+    endif
+    if bufnr('#') != -1
+        buffer #
+    else
+        enew
+    endif
 endfunction
 
 function! mintree#main#Refresh(line)   " {{{1
