@@ -1,17 +1,19 @@
 " vim: foldmethod=marker
 
-let s:bounds = { "indent":   {"start":0, "end":1},
-               \ "isOpen":   {"start":2, "end":2},
-               \ "isTagged": {"start":3, "end":3} }
+let s:columns = { "indent":   {"start":0, "end":1},
+                \ "isOpen":   {"start":2, "end":2},
+                \ "isTagged": {"start":3, "end":3} }
 
-function mintree#metadata#Width()   " {{{1
-    return (s:bounds.indent.end -   s:bounds.indent.start + 1) +
-         \ (s:bounds.isOpen.end -   s:bounds.isOpen.start + 1) +
-         \ (s:bounds.isTagged.end - s:bounds.isTagged.start + 1)
+function! mintree#metadata#Width()   " {{{1
+    return s:Width(s:columns.indent) + s:Width(s:columns.isOpen) + s:Width(s:columns.isTagged)
+endfunction
+
+function! s:Width(bounds)
+    return a:bounds.end - a:bounds.start + 1
 endfunction
 
 function! mintree#metadata#Reset()   " {{{1
-    execute 'normal! gg0' . s:bounds.isOpen.start . 'lG0' . s:bounds.isTagged.end . 'lr0'
+    execute 'normal! gg0' . s:columns.isOpen.start . 'lG0' . s:columns.isTagged.end . 'lr0'
 endfunction
 
 function! s:GetSet(line, bounds, value)   " {{{1
@@ -23,17 +25,17 @@ function! s:GetSet(line, bounds, value)   " {{{1
 endfunction
 
 function! mintree#metadata#Indent(line)   " {{{1
-    return s:GetSet(a:line, s:bounds.indent, '')
+    return s:GetSet(a:line, s:columns.indent, '')
 endfunction
 
 function! mintree#metadata#IsOpen(line, ...)    " {{{1
-    return s:GetSet(a:line, s:bounds.isOpen, a:0 ? a:1 : '')
+    return s:GetSet(a:line, s:columns.isOpen, a:0 ? a:1 : '')
 endfunction
 
 function! mintree#metadata#IsTagged(line, ...)    " {{{1
-    return s:GetSet(a:line, s:bounds.isTagged, a:0 ? a:1 : '')
+    return s:GetSet(a:line, s:columns.isTagged, a:0 ? a:1 : '')
 endfunction
 
 function! mintree#metadata#String(indent, is_open, is_tagged)   " {{{1
-    return printf('%0' . (s:bounds.indent.end - s:bounds.indent.start + 1) . 'd%s%s', a:indent, a:is_open, a:is_tagged)
+    return printf('%0' . s:Width(s:columns.indent) . 'd%s%s', a:indent, a:is_open, a:is_tagged)
 endfunction
