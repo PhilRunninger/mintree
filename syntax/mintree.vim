@@ -1,7 +1,6 @@
 " Instructions for coloring or hiding text in the MinTree bufer.
 
 let s:Arrows = '['.g:MinTreeCollapsed.g:MinTreeExpanded.']'
-let s:indentRegex = repeat('\d', mintree#metadata#Width()-2)
 
 execute 'syntax match MinTreeArrows #'.s:Arrows.'\ze.*# containedin=MinTreeDir'
 execute 'syntax match MinTreeDir #'.s:Arrows.'.*#'
@@ -14,3 +13,5 @@ highlight default link MinTreeArrows Statement
 highlight default link MinTreeFileIsOpen Constant
 highlight default link MinTreeFileIsTagged TermCursor
 highlight! default link Folded Directory
+
+let s:indentRegex = substitute(mintree#metadata#String(0,'',''), '0', '\\d', 'g')

@@ -1,37 +1,39 @@
 " vim: foldmethod=marker
 
-" Metadata format is 5 digits starting in column 1, as such:
-"   3 Digits - Indent level. Root is level 000.
-"   [01] - Flag to indicate the file is open.
-"   [01] - Flag to indicate the file is tagged for bulk operation.
-function mintree#metadata#Width()
-    return 5
+let s:bounds = { "indent":   {"start":0, "end":1},
+               \ "isOpen":   {"start":2, "end":2},
+               \ "isTagged": {"start":3, "end":3} }
+
+function mintree#metadata#Width()   " {{{1
+    return (s:bounds.indent.end -   s:bounds.indent.start + 1) +
+         \ (s:bounds.isOpen.end -   s:bounds.isOpen.start + 1) +
+         \ (s:bounds.isTagged.end - s:bounds.isTagged.start + 1)
 endfunction
 
-function! mintree#metadata#Reset()
-    execute 'normal! gg03lG04lr0'
+function! mintree#metadata#Reset()   " {{{1
+    execute 'normal! gg0' . s:bounds.isOpen.start . 'lG0' . s:bounds.isTagged.end . 'lr0'
+endfunction
+
+function! s:GetSet(line, bounds, value)   " {{{1
+    if a:value != ''
+        let l:text=getline(a:line)
+        call setline(a:line, l:text[:(a:bounds.start-1)] . a:value . l:text[(a:bounds.end+1):])
+    endif
+    return str2nr(getline(a:line)[a:bounds.start : a:bounds.end])
 endfunction
 
 function! mintree#metadata#Indent(line)   " {{{1
-    return str2nr(getline(a:line)[:2])
+    return s:GetSet(a:line, s:bounds.indent, '')
 endfunction
 
 function! mintree#metadata#IsOpen(line, ...)    " {{{1
-    if a:0
-        let l:text=getline(a:line)
-        call setline(a:line, l:text[:2].a:1.l:text[4:])
-    endif
-    return getline(a:line)[3]
+    return s:GetSet(a:line, s:bounds.isOpen, a:0 ? a:1 : '')
 endfunction
 
 function! mintree#metadata#IsTagged(line, ...)    " {{{1
-    if a:0
-        let l:text=getline(a:line)
-        call setline(a:line, l:text[:3].a:1.l:text[5:])
-    endif
-    return getline(a:line)[4]
+    return s:GetSet(a:line, s:bounds.isTagged, a:0 ? a:1 : '')
 endfunction
 
 function! mintree#metadata#String(indent, is_open, is_tagged)   " {{{1
-    return printf("%03d%s%s", a:indent, a:is_open, a:is_tagged)
+    return printf('%0' . (s:bounds.indent.end - s:bounds.indent.start + 1) . 'd%s%s', a:indent, a:is_open, a:is_tagged)
 endfunction
