@@ -44,7 +44,7 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 <br><kbd>v</kbd> - Open the selected file in a new vertical split. (`g:MinTreeOpenVSplit`)
 <br><kbd>t</kbd> - Open the selected file in a new tab. (`g:MinTreeOpenTab`)
 <br><kbd>w</kbd> - Close the buffer associated with the selected node. (`g:MinTreeWipeout`)
-<br><kbd>Space</kbd> - Tag a file, to open or close many at once. (`g:MinTreeTagAFile`)
+<br><kbd>Space</kbd> - Tag a file, to open (<kbd>o</kbd>,<kbd>s</kbd>,<kbd>v</kbd>,<kbd>t</kbd>) or close (<kbd>w</kbd>) many at once. (`g:MinTreeTagAFile`)
 #### Opening/Closing Directories
 <kbd>o</kbd> - Expand the selected directory. (`g:MinTreeOpen`)
 <br><kbd>O</kbd> - Recursively expand the selected directory. (`g:MinTreeOpenRecursively`)
@@ -70,16 +70,12 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 <br><kbd>dm</kbd> - Display all bookmarks, and delete the ones selected. (`g:MinTreeCreateMark`, prefixed by <kbd>d</kbd>)
 #### Miscellaneous
 <kbd>cd</kbd> - Change the current working directory to that of the selected node. (`g:MinTreeSetCWD`)
-<br><kbd>q</kbd> - Exit the MinTree, and return to the previous buffer. (`g:MinTreeExit`)
+<br><kbd>q</kbd> - Exit MinTree, and return to the previous buffer. (`g:MinTreeExit`)
 <br><kbd>?</kbd> - Display short descriptions of these commands.
 
 ## Settings
 
-* This variable governs which nodes MinTree shows or hides. Additionally, MinTree will always respect the `'wildignore'` setting. Any file or directory that matches one of its patterns will be excluded from the tree.
-
-    Variable | Default
-    --- | ---
-    **`g:MinTreeShowHidden`**<br>show hidden files or directories (those that begin with a period) | `0`<br>keep them hidden
+* MinTree will always respect the `'wildignore'` setting when retrieving directories and files. By default, hidden files are not shown. To change this, `let g:MinTreeShowHidden = 1`.
 
 * The characters used to indicate whether a directory is collapsed or expanded can be customized with these two variables
 
