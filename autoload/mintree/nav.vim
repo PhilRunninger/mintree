@@ -4,16 +4,16 @@
 " nodes' first character.
 
 function! mintree#nav#GoToParent(line)   " {{{1
-    call search(printf('^%s', mintree#main#MetadataString(mintree#main#Indent(a:line)-1,'')), 'bW')
+    call search(printf('^%s', mintree#metadata#String(mintree#metadata#Indent(a:line)-1,'.','.')), 'bW')
 endfunction
 
 function! mintree#nav#GoToSibling(delta, stop_when)   " {{{1
     let l:line = line('.')
     let l:destination = l:line
-    let l:indent = mintree#main#Indent(l:line)
+    let l:indent = mintree#metadata#Indent(l:line)
     let l:line += a:delta
     while l:line >=1 && l:line <= line('$')
-        let l:dest_indent = mintree#main#Indent(l:line)
+        let l:dest_indent = mintree#metadata#Indent(l:line)
         if l:dest_indent == l:indent
             let l:destination = l:line
         endif
@@ -35,7 +35,7 @@ function! mintree#nav#FindChar(direction)   " {{{1
         return
     endif
     try
-        execute l:findCharParms[0].'^\d\{'.(g:MinTreeIndentDigits+1).'}\s*['.g:MinTreeCollapsed.g:MinTreeExpanded.' ]'.l:findCharParms[1]
+        execute l:findCharParms[0].'^\d\{'.mintree#metadata#Width().'}\s*['.g:MinTreeCollapsed.g:MinTreeExpanded.' ]'.l:findCharParms[1]
     catch /^Vim\%((\a\+)\)\=:E486/
     endtry
 endfunction

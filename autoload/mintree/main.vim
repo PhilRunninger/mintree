@@ -9,7 +9,7 @@ function! mintree#main#MinTree(path)   " {{{1
     else
         call mintree#main#MinTreeOpen(a:path)
     endif
-    call s:UpdateOpen()
+    call s:UpdateMetaData()
 endfunction
 
 function! mintree#main#MinTreeFind(path)   " {{{1
@@ -25,7 +25,7 @@ function! mintree#main#MinTreeFind(path)   " {{{1
         echo ' '
     else
         normal! zO
-        call s:UpdateOpen()
+        call s:UpdateMetaData()
     endif
 endfunction
 
@@ -39,30 +39,37 @@ function! mintree#main#MinTreeOpen(path)   " {{{1
 
     setlocal modifiable
     %delete
-    call setline(1, printf('%s%s%s', mintree#main#MetadataString(0,0), g:MinTreeCollapsed, g:minTreeRoot))
+    call setline(1, printf('%s%s%s', mintree#metadata#String(0,0,0), g:MinTreeCollapsed, g:minTreeRoot))
     setlocal nomodifiable
     call mintree#main#OpenNode(1)
     call mintree#commands#Setup()
 endfunction
 
-function! s:UpdateOpen()   " {{{1
+function! s:UpdateMetaData()   " {{{1
     let l:pos = getpos('.')
     let l:folded = foldclosed(1) != -1
     if l:folded
         normal! ggzo
     endif
     setlocal modifiable
-    execute 'normal! gg0'.g:MinTreeIndentDigits.'lG0'.g:MinTreeIndentDigits.'lr0'
+
+    call mintree#metadata#Reset()
+
     for buf in range(1,bufnr('$'))
         let buf = fnamemodify(bufname(buf),':p')
         if bufexists(buf) && buflisted(buf) && stridx(buf, g:minTreeRoot) == 0
-            let l:line = mintree#main#LocateFile(buf,0). bufname(buf)
+            let l:line = mintree#main#LocateFile(buf,0)
             if l:line != -1
-                let l:text = getline(l:line)
-                call setline(l:line, mintree#main#MetadataString(mintree#main#Indent(l:line), 1).text[g:MinTreeMetadataWidth:])
+                call mintree#metadata#IsOpen(l:line,1)
             endif
         endif
     endfor
+
+    for buf in g:MinTreeTaggedFiles
+        let l:line = mintree#main#LocateFile(buf,0)
+        call mintree#metadata#IsTagged(l:line, 1)
+    endfor
+
     setlocal nomodifiable
     if l:folded
         normal! ggzc
@@ -80,12 +87,12 @@ function! s:_locateFile(path, indent, line, get_children)
     else
         let l:part = a:path[0]
         let [_,l:end] = s:FoldLimits(a:line)
-        if search(printf('^%s *%s%s%s', mintree#main#MetadataString(a:indent+1, '.'), g:MinTreeCollapsed, l:part ,mintree#main#Slash()), 'W', l:end) > 0 && a:get_children
+        if search(printf('^%s *%s%s%s', mintree#metadata#String(a:indent+1, '.', '.'), g:MinTreeCollapsed, l:part ,mintree#main#Slash()), 'W', l:end) > 0 && a:get_children
             call s:GetChildren(line('.'))
             return s:_locateFile(a:path[1:], a:indent+1, line('.'), a:get_children)
-        elseif search(printf('^%s *%s%s%s', mintree#main#MetadataString(a:indent+1, '.'), g:MinTreeExpanded, l:part ,mintree#main#Slash()), 'W', l:end) > 0
+        elseif search(printf('^%s *%s%s%s', mintree#metadata#String(a:indent+1, '.', '.'), g:MinTreeExpanded, l:part ,mintree#main#Slash()), 'W', l:end) > 0
             return s:_locateFile(a:path[1:], a:indent+1, line('.'), a:get_children)
-        elseif search(printf('^%s *%s$', mintree#main#MetadataString(a:indent+1, '.'), l:part), 'W', l:end) > 0
+        elseif search(printf('^%s *%s$', mintree#metadata#String(a:indent+1, '.', '.'), l:part), 'W', l:end) > 0
             return line('.')
         else
             return -1
@@ -99,39 +106,36 @@ function! mintree#main#OpenNode(line)   " {{{1
         if s:hasAFold(a:line)
             normal! zO
         endif
-        call s:UpdateOpen()
+        call s:UpdateMetaData()
     elseif foldclosed(a:line) != -1
         normal! zo
     else
-        call mintree#main#OpenFileOnLine('', a:line)
+        call mintree#main#OpenFileOnLine('edit', a:line)
     endif
 endfunction
 
-function! mintree#main#OpenFileOnLine(windowCmd, line)   " {{{1
-    let l:path = mintree#main#FullPath(a:line)
-    call mintree#main#OpenFileByPath(a:windowCmd, l:path)
-endfunction
-
-function! mintree#main#OpenFileByPath(windowCmd, path)   " {{{1
-    if a:path !~ escape(mintree#main#Slash(),'\').'$'
-        if bufnr('#') != -1
-            buffer #
+function! mintree#main#OpenFileOnLine(openCmd, line)   " {{{1
+    if empty(g:MinTreeTaggedFiles)
+        let l:path = mintree#main#FullPath(a:line)
+        if isdirectory(l:path)
+            return
         endif
-        execute a:windowCmd
-        if bufnr('^'.a:path.'$') == -1
-            execute 'edit '.fnamemodify(a:path,':.')
-        else
-            execute 'buffer '.a:path
-        endif
+        call add(g:MinTreeTaggedFiles, l:path)
     endif
+    call mintree#main#ExitMinTree(0)
+
+    for l:path in g:MinTreeTaggedFiles
+        execute a:openCmd.' '.fnamemodify(l:path,':.')
+    endfor
+    let g:MinTreeTaggedFiles=[]
 endfunction
 
 function! s:GetChildren(line)   " {{{1
     let l:parent = mintree#main#FullPath(a:line)
     let l:children = (g:MinTreeShowHidden ? globpath(l:parent,'.*',0,1)[2:] : []) + globpath(l:parent,'*',0,1)
     call map(l:children, {_,x -> fnamemodify(x,':t')})
-    let l:indent = mintree#main#Indent(a:line)
-    let l:prefix = printf('%s%s', mintree#main#MetadataString(l:indent+1, 0), repeat(' ', (l:indent+1)*g:MinTreeIndentSize))
+    let l:indent = mintree#metadata#Indent(a:line)
+    let l:prefix = printf('%s%s', mintree#metadata#String(l:indent+1, 0, 0), repeat(' ', (l:indent+1)*g:MinTreeIndentSize))
     let l:slash = mintree#main#Slash()
     call map(l:children, {idx,val -> printf((isdirectory(l:parent.l:slash.val) ? '%s'.g:MinTreeCollapsed.'%s'.l:slash : '%s %s'), l:prefix, val)})
     setlocal modifiable
@@ -172,15 +176,18 @@ function! mintree#main#OpenRecursively(line)   " {{{1
         normal! zO
         let l:line = search(g:MinTreeCollapsed,'cW')
     endwhile
-    call s:UpdateOpen()
+    call s:UpdateMetaData()
 endfunction
 
-function! mintree#main#ExitMinTree()   " {{{1
-        if bufnr('#') != -1
-            buffer #
-        else
-            enew
-        endif
+function! mintree#main#ExitMinTree(clearTaggedFiles)   " {{{1
+    if a:clearTaggedFiles
+        let g:MinTreeTaggedFiles = []
+    endif
+    if bufnr('#') != -1
+        buffer #
+    else
+        enew
+    endif
 endfunction
 
 function! mintree#main#Refresh(line)   " {{{1
@@ -195,25 +202,46 @@ function! mintree#main#Refresh(line)   " {{{1
         call mintree#main#OpenNode(l:start)
         call map(l:open_folders, {_,f -> mintree#main#LocateFile(f,1)})
     endif
-    call s:UpdateOpen()
+    call s:UpdateMetaData()
     execute 'normal! '.l:start.'gg'
     setlocal nomodifiable
 endfunction
 
 function! mintree#main#Wipeout(line)   " {{{1
+    if empty(g:MinTreeTaggedFiles)
+        call add(g:MinTreeTaggedFiles, mintree#main#FullPath(a:line))
+    endif
+
+    for l:path in g:MinTreeTaggedFiles
+        if !isdirectory(l:path)
+
+            if bufexists(l:path)
+                execute 'bwipeout '.l:path
+                call mintree#main#Refresh(a:line)
+                call mintree#main#LocateFile(l:path, 0)
+            else
+                let l:path = substitute(l:path, '^'.g:minTreeRoot, '', '')
+                echo l:path.' is not open.'
+            endif
+        endif
+    endfor
+    let g:MinTreeTaggedFiles = []
+    call s:UpdateMetaData()
+endfunction
+
+function! mintree#main#TagAFile(line)   " {{{1
     let l:path = mintree#main#FullPath(a:line)
     if isdirectory(l:path)
         return
     endif
 
-    if bufexists(l:path)
-        execute 'bwipeout '.l:path
-        call mintree#main#Refresh(a:line)
-        call mintree#main#LocateFile(l:path, 0)
+    let l:idx = index(g:MinTreeTaggedFiles, l:path)
+    if l:idx == -1
+        call add(g:MinTreeTaggedFiles, l:path)
     else
-        let l:path = substitute(l:path, '^'.g:minTreeRoot, '', '')
-        echo l:path.' is not open.'
+        call remove(g:MinTreeTaggedFiles, l:idx)
     endif
+    call s:UpdateMetaData()
 endfunction
 
 function! mintree#main#SetCWD(line)   " {{{1
@@ -252,23 +280,15 @@ function! mintree#main#RunningWindows()    " {{{1
     return has("win16") || has("win32") || has("win64")
 endfunction
 
-function! mintree#main#Indent(line)    " {{{1
-    return str2nr(getline(a:line)[0:(g:MinTreeIndentDigits-1)])
-endfunction
-
-function! mintree#main#MetadataString(indent, is_open)   " {{{1
-    return printf("%03d%s", a:indent, a:is_open)
-endfunction
-
 function! mintree#main#FullPath(line)    " {{{1
     let l:pos = getpos('.')
     execute 'normal! '.a:line.'gg'
-    let l:indent = mintree#main#Indent(a:line)
-    let l:file = strcharpart(getline(a:line),g:MinTreeMetadataWidth + 1 + l:indent*g:MinTreeIndentSize)
+    let l:indent = mintree#metadata#Indent(a:line)
+    let l:file = strcharpart(getline(a:line),mintree#metadata#Width() + 1 + l:indent*g:MinTreeIndentSize)
     while l:indent > 0
         let l:indent -= 1
-        call search(printf('^%s', mintree#main#MetadataString(l:indent,'')),'bW')
-        let l:parent = strcharpart(getline('.'),g:MinTreeMetadataWidth + 1 + l:indent*g:MinTreeIndentSize)
+        call search(printf('^%s', mintree#metadata#String(l:indent,'.','.')),'bW')
+        let l:parent = strcharpart(getline('.'),mintree#metadata#Width() + 1 + l:indent*g:MinTreeIndentSize)
         let l:file = l:parent . l:file
     endwhile
     call setpos('.', l:pos)

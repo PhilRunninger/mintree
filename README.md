@@ -40,19 +40,21 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 
 #### Opening/Closing Files
 <kbd>o</kbd> - Open the selected file in the current window. (`g:MinTreeOpen`)
-<br><kbd>s</kbd> - Split the window horizontally, and open the selected file there. (`g:MinTreeOpenSplit`)
-<br><kbd>v</kbd> - Split the window vertically, and open the selected file there. (`g:MinTreeOpenVSplit`)
+<br><kbd>s</kbd> - Open the selected file in a new horizontal split. (`g:MinTreeOpenSplit`)
+<br><kbd>v</kbd> - Open the selected file in a new vertical split. (`g:MinTreeOpenVSplit`)
 <br><kbd>t</kbd> - Open the selected file in a new tab. (`g:MinTreeOpenTab`)
 <br><kbd>w</kbd> - Close the buffer associated with the selected node. (`g:MinTreeWipeout`)
+<br><kbd>Space</kbd> - Tag a file, to open (<kbd>o</kbd>,<kbd>s</kbd>,<kbd>v</kbd>,<kbd>t</kbd>) or close (<kbd>w</kbd>) many at once. (`g:MinTreeTagAFile`)
 #### Opening/Closing Directories
 <kbd>o</kbd> - Expand the selected directory. (`g:MinTreeOpen`)
 <br><kbd>O</kbd> - Recursively expand the selected directory. (`g:MinTreeOpenRecursively`)
 <br><kbd>x</kbd> - Collapse the current of containing directory. (`g:MinTreeCloseParent`)
 #### Navigating the Tree
-<kbd>p</kbd> - Navigate quickly to the closest parent directory. (`g:MinTreeGoToParent`)
-<br><kbd>J</kbd> - Navigate quickly to the last sibling file or directory. (`g:MinTreeLastSibling`)
-<br><kbd>K</kbd> - Navigate quickly to the first sibling file or directory. (`g:MinTreeFirstSibling`)
-<br><kbd>Ctrl+J</kbd> - Navigate quickly to the next sibling file or directory. (`g:MinTreeNextSibling`) <br><kbd>Ctrl+K</kbd> - Navigate quickly to the previous sibling file or directory. (`g:MinTreePrevSibling`)
+<kbd>p</kbd> - Go to the parent directory. (`g:MinTreeGoToParent`)
+<br><kbd>J</kbd> - Go to the last sibling file or directory. (`g:MinTreeLastSibling`)
+<br><kbd>K</kbd> - Go to the first sibling file or directory. (`g:MinTreeFirstSibling`)
+<br><kbd>Ctrl+J</kbd> - Go to the next sibling file or directory. (`g:MinTreeNextSibling`)
+<br><kbd>Ctrl+K</kbd> - Go to the previous sibling file or directory. (`g:MinTreePrevSibling`)
 <br><kbd>f</kbd>*char* - Find next node starting with *char*. (`g:MinTreeFindCharDown`)
 <br><kbd>F</kbd>*char* - Find previous node starting with *char*. (`g:MinTreeFindCharUp`)
 <br><kbd>;</kbd> - Repeat latest <kbd>f</kbd> or <kbd>F</kbd> command.
@@ -61,23 +63,19 @@ The following, configurable key bindings are used only within the **`=MinTree=`*
 <kbd>C</kbd> - Change the root of the tree to be the directory under the cursor. (`g:MinTreeSetRoot`)
 <br><kbd>r</kbd> - Refresh the selected directory or the directory containing the selected file. (`g:MinTreeRefresh`)
 <br><kbd>R</kbd> - Refresh the whole tree. (`g:MinTreeRefreshRoot`)
-<br><kbd>I</kbd> - Toggles hidden files and directories, those starting with a period. (`g:MinTreeToggleHidden`)
+<br><kbd>I</kbd> - Toggle hidden files and directories, those starting with a period. (`g:MinTreeToggleHidden`)
 #### Bookmarks
-<kbd>m</kbd> - Creates a single-letter bookmark for the current node. (`g:MinTreeCreateMark`)
-<br><kbd>'</kbd> - Displays all bookmarks, and opens the one selected. (`g:MinTreeGotoMark`)
-<br><kbd>dm</kbd> - Displays all bookmarks, and deletes the ones selected. (`g:MinTreeCreateMark`, prefixed by <kbd>d</kbd>)
+<kbd>m</kbd> - Create a single-letter bookmark for the current node. (`g:MinTreeCreateMark`)
+<br><kbd>'</kbd> - Display all bookmarks, and open the one selected. (`g:MinTreeGotoMark`)
+<br><kbd>dm</kbd> - Display all bookmarks, and delete the ones selected. (`g:MinTreeCreateMark`, prefixed by <kbd>d</kbd>)
 #### Miscellaneous
 <kbd>cd</kbd> - Change the current working directory to that of the selected node. (`g:MinTreeSetCWD`)
-<br><kbd>q</kbd> - Exit the MinTree, and return to the previous buffer. (`g:MinTreeExit`)
+<br><kbd>q</kbd> - Exit MinTree, and return to the previous buffer. (`g:MinTreeExit`)
 <br><kbd>?</kbd> - Display short descriptions of these commands.
 
 ## Settings
 
-* This variable governs which nodes MinTree shows or hides. Additionally, MinTree will always respect the `'wildignore'` setting. Any file or directory that matches one of its patterns will be excluded from the tree.
-
-    Variable | Default
-    --- | ---
-    **`g:MinTreeShowHidden`**<br>show hidden files or directories (those that begin with a period) | `0`<br>keep them hidden
+* MinTree will always respect the `'wildignore'` setting when retrieving directories and files. By default, hidden files are not shown. To change this, `let g:MinTreeShowHidden = 1`.
 
 * The characters used to indicate whether a directory is collapsed or expanded can be customized with these two variables
 
