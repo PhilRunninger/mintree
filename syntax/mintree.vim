@@ -17,17 +17,13 @@ execute 'syntax match MinTreeFileOpenTagged  #^' . s:indentRegex . '11.*#hs=s+' 
 " This is how the highlight groups for the files are determined. Reversed
 " Constant requires a bit of creativity to generate it.
 "
-"          | Unopened                     | Open
-" ---------+------------------------------+--------------------
-" UnTagged | Normal                       | Constant
-" Tagged   | reversed Normal (TermCursor) | reversed Constant
+"        | (unopened)                   | Open
+" -------+------------------------------+--------------------
+" NoTag  | Normal (no highlight group)  | Constant
+" Tagged | TermCursor (reversed Normal) | reversed Constant
 
 highlight default link MinTreeFileOpenNoTag Constant
 highlight default link MinTreeFileTagged TermCursor
-if has('gui_running')
-    let fg = synIDattr(synIDtrans(hlID('MinTreeFileOpenNoTag')), 'fg', 'gui')
-    execute 'highlight MinTreeFileOpenTagged gui=reverse guifg=' . fg
-else
-    let fg = synIDattr(synIDtrans(hlID('MinTreeFileOpenNoTag')), 'fg', 'cterm')
-    execute 'highlight MinTreeFileOpenTagged cterm=reverse ctermfg=' . fg
-endif
+let guifg = synIDattr(synIDtrans(hlID('MinTreeFileOpenNoTag')), 'fg', 'gui')
+let ctermfg = synIDattr(synIDtrans(hlID('MinTreeFileOpenNoTag')), 'fg', 'cterm')
+execute 'highlight MinTreeFileOpenTagged cterm=reverse ctermfg=' . ctermfg . ' gui=reverse guifg=' . guifg
