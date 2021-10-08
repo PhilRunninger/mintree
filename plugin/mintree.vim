@@ -44,3 +44,12 @@ let g:MinTreeFindCharUp      = get(g:, 'MinTreeFindCharUp',      'F')
 
 command! -n=? -complete=dir MinTree :call mintree#main#MinTree('<args>')
 command! -n=? -complete=file MinTreeFind :call mintree#main#MinTreeFind('<args>')
+
+" This is a hack to make the Folded highlight group look different in the
+" MinTree buffer, but revert to the colorscheme's setting elsewhere.
+augroup MinTree
+    autocmd!
+    autocmd BufEnter * highlight! default link Folded NONE
+    execute 'autocmd BufEnter '.g:MinTreeBuffer.' highlight! default link Folded Directory'
+augroup END
+

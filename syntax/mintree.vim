@@ -6,7 +6,8 @@ highlight default link MinTreeArrows Statement
 
 execute 'syntax match MinTreeDir #'.s:Arrows.'.*#'
 highlight default link MinTreeDir Directory
-highlight! default link Folded Directory
+" See ../plugin/mintree.vim for the Folded highlight group's hack. It won't
+" run in this file.
 
 let s:indentRegex = substitute(mintree#metadata#String(0,'',''), '0', '\\d', 'g')
 execute 'syntax match MinTreeMetaData        #^' . s:indentRegex . '[01][01]# conceal containedin=MinTreeFileOpenNoTag,MinTreeFileTagged,MinTreeFileOpenTagged'
