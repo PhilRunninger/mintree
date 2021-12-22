@@ -69,12 +69,12 @@ endfunction
 function! s:_readMarks()   " {{{1
     let l:bookmarks = {}
     if filereadable(g:MinTreeBookmarksFile)
-        execute "let l:bookmarks = " . readfile(g:MinTreeBookmarksFile)[0]
+        let l:bookmarks = eval(join(readfile(g:MinTreeBookmarksFile),''))
     endif
     return l:bookmarks
 endfunction
 
 function! s:_writeMarks(bookmarks)   " {{{1
-    call writefile([string(a:bookmarks)], g:MinTreeBookmarksFile)
+    call writefile([json_encode(a:bookmarks)], g:MinTreeBookmarksFile)
 endfunction
 
