@@ -26,5 +26,4 @@ execute 'syntax match MinTreeFileOpenTagged  #^' . s:indentRegex . '11.*#hs=s+' 
 highlight default link MinTreeFileOpenNoTag Constant
 highlight default link MinTreeFileTagged TermCursor
 let guifg = synIDattr(synIDtrans(hlID('MinTreeFileOpenNoTag')), 'fg', 'gui')
-let ctermfg = synIDattr(synIDtrans(hlID('MinTreeFileOpenNoTag')), 'fg', 'cterm')
-execute 'highlight MinTreeFileOpenTagged cterm=reverse ctermfg=' . ctermfg . ' gui=reverse guifg=' . guifg
+execute 'highlight MinTreeFileOpenTagged gui=reverse guifg=' . guifg
