@@ -1,5 +1,7 @@
 # MinTree
 
+**MinTree is no longer being maintained.**
+---
 MinTree is a minimalist tree-based file explorer. It initially was a proof of concept to solve [NERDTree](https://github.com/scrooloose/nerdtree)'s performance issues with very large directories. It was very successful in that effort, and has grown in its functionality since. It was never intended to be, and will never be, a feature-for-feature replacement of NERDTree. A lot of features overlap, but each will have its own unique set of capabilities.
 
 ## Prerequisite
